@@ -27,12 +27,12 @@ sequenceDiagram
     participant P as RTX PRO 6000 (sidecar process)
     G->>G: route tokens (top-k)
     G->>H: pack rows of tokens with a sidecar route (MXFP8 x, scales, local ids, weights)
-    G->>H: header {seq, layer, rows}; words[0] = seq (release, system scope)
-    P->>H: poll words[0]; read header
+    G->>H: write header (seq, layer, rows), then publish seq in words[0] (release, system scope)
+    P->>H: poll words[0], then read the header
     P->>P: copy rows in, dequantize, replay CUDA graph for (layer, bucket)
     G->>G: run its own expert banks (HBM, and Grace if any) meanwhile
-    P->>H: write output rows (BF16); words[1] = seq
-    G->>H: spin until words[1] ≥ seq (acquire, system scope)
+    P->>H: write output rows (BF16), then set words[1] to seq
+    G->>H: spin until words[1] reaches seq (acquire, system scope)
     G->>G: add the output rows back into their tokens
 ```
 
