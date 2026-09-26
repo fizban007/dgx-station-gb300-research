@@ -176,9 +176,10 @@ the page and were not measured by us. Decode is aggregate tok/s with the same re
   ([pp-loop-test2.log](results/logs/pp-loop-test2.log)).
 - **128K thinking loops on SGLang:** SGLang ReplaySSM + FI GDN prefill looped in 3 of 8 runs at 128K, and default
   SGLang in none. (From session notes; raw file not kept.) The chosen vLLM config flagged 0 of 16 cells.
-- **Python frontend text processing:** for chat requests, the Python frontend's chat template and tokenizer add about
-  1.4 µs per prompt token to TTFT: 16 ms at 8K, 188 ms at 128K, about 6% of a long prompt's TTFT. The engine prefills
-  at 46–47K tok/s from 32K up; a client sending text sees about 43K
+- **Python frontend tokenization:** for text prompts, the Python frontend's tokenizer adds about 1.4 µs per prompt
+  token to TTFT: 16 ms at 8K, 188 ms at 128K, about 6% of a long prompt's TTFT. It is paid again on every turn, even
+  on a prefix-cache hit. The engine prefills at 46–47K tok/s from 32K up. A client sending text sees about 42–43K; for
+  example, llm_decode_bench measured 42,550 / 42,714 / 41,943 tok/s at 32K / 64K / 128K
   ([DETAILS.md](DETAILS.md#time-to-first-token-frontend-vs-engine-chosen-config)). Prompts sent as token ids skip most
   of it. The Rust frontend was not measured this way.
 - **Sparse-attention nondeterminism:** above 2,048 prompt tokens (the QSA indexer budget), repeated cold runs of the

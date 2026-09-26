@@ -251,6 +251,23 @@ for line in open(SPLIT):
             add("vllm-py-cg8192-mtp3", "2026-09-25", "ttft-bench", "client_prefill_tok_s", 1, n, n / (int(m.group(3)) / 1e3),
                 "tok/s", rel(SPLIT), note + "; prompt tokens / client TTFT")
 
+# Tokenizer-only timing (tok_time.py) and llm_decode_bench standalone prefill with text prompts, chosen config, idle
+TOK = os.path.join(ROOT, "results/cg/tok-time-vllm-py-cg8192-mtp3.log")
+for line in open(TOK):
+    m = re.match(r"^\s*(\d+) tok\s+(tokenize prompt|tokenize messages)\s+best of 3:\s+(\d+) ms", line)
+    if m:
+        add("vllm-py-cg8192-mtp3", "2026-09-25", "ttft-bench", "tokenize_ms", 1, int(m.group(1)), int(m.group(3)), "ms",
+            rel(TOK), f"/tokenize ({m.group(2)[9:]}), best of 3, includes HTTP and the JSON of the returned ids")
+LLMB = os.path.join(ROOT, "results/runs/llmbench-prefill-vllm-py-cg8192-mtp3/prefill.json")
+j = json.load(open(LLMB))
+for ctx, r in sorted(j["prefill"].items(), key=lambda kv: int(kv[0])):
+    note = (f"llm_decode_bench {j['metadata'].get('version', '')} --prefill-only --standalone-prefill, text prompts from "
+            f"the bench client over the LAN, idle server; {r['samples']} samples, client ISL / TTFT")
+    add("vllm-py-cg8192-mtp3", "2026-09-25", "prefill", "client_prefill_tok_s_text", 1, r["prompt_tokens"],
+        r["client_tok_per_sec"], "tok/s", rel(LLMB), note)
+    add("vllm-py-cg8192-mtp3", "2026-09-25", "prefill", "client_ttft_s_text", 1, r["prompt_tokens"],
+        r["client_ttft_seconds"], "s", rel(LLMB), note)
+
 # catid's published Qwen3.8-Flash-Next page (1x DGX Station, TP1, SGLang). Not our measurement.
 CATID_URL = "https://github.com/catid/dgx_station_benchmarks/tree/main/qwen3.8-flash-next"
 CATID_MODEL = "Qwen3.8-Flash-Next NVFP4 (local-inference-lab/Qwen3.8-Flash-Next-NVFP4-4p89)"

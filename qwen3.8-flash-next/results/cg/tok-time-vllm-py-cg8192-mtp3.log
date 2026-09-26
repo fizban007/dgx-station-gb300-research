@@ -1,0 +1,4 @@
+ 32768 tok  tokenize prompt    best of 3:     47 ms (includes HTTP + JSON of the returned ids)
+ 32768 tok  tokenize messages  best of 3:     47 ms (includes HTTP + JSON of the returned ids)
+131072 tok  tokenize prompt    best of 3:    188 ms (includes HTTP + JSON of the returned ids)
+131072 tok  tokenize messages  best of 3:    188 ms (includes HTTP + JSON of the returned ids)

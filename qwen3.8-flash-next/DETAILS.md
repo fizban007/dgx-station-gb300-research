@@ -481,17 +481,21 @@ The C8–C32 gain comes from mixed steps. New prompts' prefill chunks join the r
   - **Two CG 8,192 servers agree exactly below the sparse-attention budget.** The 1,900-token prompts are identical
     between `cg8192-py-1` and `vllm-py-cg8192-mtp3` (section B: mean |Δ| 0.0000).
   - **Above 2,048 tokens,** whole-prompt differences between the configs (section A: mean |Δ| 0.039–0.102, NLL within
-    ±0.008) are the same size as the differences between the two CG 8,192 servers (section B: 0.038–0.105). Within the
+    ±0.008) are the same size as the differences between the two CG 8,192 servers (section B: 0.038–0.110). Within the
     CG 1,024 server, two passes differed by 0.033–0.107 (session notes).
 - **Run-to-run nondeterminism above the sparse-attention budget** ([nondet.py](scripts/cg/nondet.py) →
   [nondet-vllm-py-cg8192-mtp3.log](results/cg/nondet-vllm-py-cg8192-mtp3.log)):
   - Three cold runs of the same prompt on `vllm-py-cg8192-mtp3` are identical at 1,900 and 2,040 tokens.
-  - From 2,100 tokens on, the top token stays the same, but only 2–4 of the top 5 are shared across runs, and shared
-    entries differ by up to 0.31–2.75.
+  - From 2,100 tokens on, the top token stays the same, but only 3–5 of the top 5 are shared across runs, and shared
+    entries differ by up to 0.81–2.50.
   - Earlier servers showed the same pattern (session notes, logs not kept): identical up to 2,040 tokens, then
     differences up to 1.06–1.81 (`diag-py-uni-cg8192`) and 0.81–1.13 (`diag-py-uni-cg1024-dev`).
   - This comes from the QSA sparse attention (`indexer_budget` 2,048), not from the graphs. Prefix-cache hits on
     prompts over ~3K tokens also change greedy continuations (session notes).
+- **Superseded files:** the versions of `nondet-vllm-py-cg8192-mtp3.log` and `plp-cg8192-b.json.gz` in commit 3ee94fb
+  were measured while another client's benchmark was running on the same server. Mixed batches change numerics, which
+  is what these two tests measure. Both were rerun on an idle server, with no running or waiting requests before or
+  after each run, and replaced. The reruns keep every qualitative result; only the values above 2,048 tokens moved.
 
 ## Time to first token: frontend vs engine (chosen config)
 
@@ -512,6 +516,27 @@ idle: its access log shows no other client during the run
 - The chat-text path adds about 1.4 µs per token in the frontend (chat template and tokenizer), about 6% at long
   prompts.
 - An earlier run of this script overlapped another client's benchmark. It was discarded.
+- **The cost is the tokenizer itself.** `/tokenize` on the same text takes 47 ms at 32K and 188 ms at 128K
+  ([tok_time.py](scripts/cg/tok_time.py) → [tok-time-vllm-py-cg8192-mtp3.log](results/cg/tok-time-vllm-py-cg8192-mtp3.log)),
+  whether it is sent as a raw prompt or as a chat message. The chat template and the multimodal (vision) path add
+  nothing measurable.
+- The frontend re-tokenizes the whole prompt on every request, including prefix-cache hits. A turn in a 128K-token
+  conversation therefore pays about 190 ms before the engine starts.
+
+With text prompts, the llm-inference-bench client measures the same thing.
+`llm_decode_bench.py` 0.6.2 ran with `--prefill-only --standalone-prefill --prefill-duration 10` from the bench client
+over the LAN, on an idle server
+([prefill.json](results/runs/llmbench-prefill-vllm-py-cg8192-mtp3/prefill.json)):
+
+| Context | Prompt tokens | TTFT s | Client tok/s | Samples |
+|---|---:|---:|---:|---:|
+| 8K | 8,200 | 0.21 | 38,739 | 20 |
+| 32K | 32,161 | 0.76 | 42,550 | 10 |
+| 64K | 64,125 | 1.50 | 42,714 | 7 |
+| 128K | 128,061 | 3.05 | 41,943 | 3 |
+
+The Rust frontend (`vllm-rust-mp-mtp3`) was not measured this way, so this cost has not been compared across
+frontends.
 
 ## Needle retrieval (chosen config)
 
