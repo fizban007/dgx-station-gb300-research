@@ -101,28 +101,34 @@ class TrtLayer:
         return out
 
     def grace_out(self, xq, xs, topk_ids, w, path: str = "auto") -> torch.Tensor:
+        """Grace bank from HBM: map this step's routed Grace experts to slots, then copy and compute them in rounds of
+        `slots` (R = ceil(min(T * top_k, n_c) / slots), fixed by T, so CUDA graphs capture it; no host sync). Big
+        prefill batches route to every Grace expert, so R rounds copy the whole bank, like the slab path.
+        path="slab" is the reference used by the stage check."""
         st = self.stager
         S = st.slots
         T = xq.shape[0]
         tmp = torch.zeros(T, xq.shape[1], dtype=torch.bfloat16, device=xq.device)
-        staged = path == "staged" or (path == "auto" and topk_ids.numel() <= S)
-        mapped = False
-        if (path == "auto" and not staged and T <= 64  # past ~64 tokens the check (1.4 ms/layer at 8K) never fits
-                and not torch.cuda.is_current_stream_capturing()):
-            # Eager prefill: short prompts (tool results) often route to <= S distinct Grace experts; copying just those
-            # beats sweeping the whole Grace bank through the slabs. One host sync, eager only.
-            st.map(topk_ids, self.cmap)
-            mapped = staged = int(st.nused) <= S
-        if staged:
-            emap = st.stage(topk_ids, self.cmap, self.src, mapped=mapped)
-            trt(xq, xs, map_ids(topk_ids, emap), w, st.w13, st.s13, st.w2, st.s2, num_experts=S, offset=0,
-                local=S, inter=self.inter, out=tmp)
+        if path == "slab":
+            cl = map_ids(topk_ids, self.cmap)
+            part = torch.empty_like(tmp)
+            for start in range(0, self.n_c, S):
+                st.stage_rows(start, min(S, self.n_c - start), self.src)
+                trt(xq, xs, cl, w, st.w13, st.s13, st.w2, st.s2, num_experts=self.n_c_pad, offset=start, local=S,
+                    inter=self.inter, out=part)
+                tmp.add_(part)
             return tmp
-        cl = map_ids(topk_ids, self.cmap)
+        emap = st.map(topk_ids, self.cmap)
+        ids = map_ids(topk_ids, emap)
+        R = (min(topk_ids.numel(), self.n_c) + S - 1) // S
+        if R == 1:
+            st.stage(topk_ids, self.cmap, self.src, mapped=True, base=0)
+            return trt(xq, xs, ids, w, st.w13, st.s13, st.w2, st.s2, num_experts=S, offset=0, local=S,
+                       inter=self.inter, out=tmp)
         part = torch.empty_like(tmp)
-        for start in range(0, self.n_c, S):
-            st.stage_rows(start, min(S, self.n_c - start), self.src)
-            trt(xq, xs, cl, w, st.w13, st.s13, st.w2, st.s2, num_experts=self.n_c_pad, offset=start, local=S,
+        for r in range(R):
+            st.stage(topk_ids, self.cmap, self.src, mapped=True, base=r * S)
+            trt(xq, xs, ids, w, st.w13, st.s13, st.w2, st.s2, num_experts=R * S, offset=r * S, local=S,
                 inter=self.inter, out=part)
             tmp.add_(part)
         return tmp

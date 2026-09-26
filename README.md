@@ -21,8 +21,9 @@ are marked as such.
 The GB300 spends under 1% of each forward pass waiting for the sidecar. The design, protocol and failure
 behaviour are in [docs/sidecar-peer-tier.md](docs/sidecar-peer-tier.md).
 
-In MiMo-V2.6-Pro, FlashInfer TRT-LLM banks reading every expert from HBM (v4) reach 46 tok/s decode and
-5.0K prefill at 11.5K. v4 is **unqualified**: no quality gate has been run on it yet.
+The later MiMo-V2.6-Pro versions are **unqualified**: no quality gate has been run on them yet. They add
+FlashInfer TRT-LLM expert banks that read from HBM, an FP8 KV cache, and DFlash k=3. They reach 4.6–5.0K tok/s
+prefill at 11.5K and up to 51 tok/s single-stream decode.
 
 ### Single-GPU serving
 
@@ -98,4 +99,4 @@ Start at [`llms.txt`](llms.txt). All quoted numbers are rows in [`data/results.j
 ## License
 
 Original material: Apache License 2.0 ([LICENSE](LICENSE)). Some files come from vLLM (Apache-2.0),
-J&M Recipes (MIT) and SGLang (Apache-2.0); see [NOTICE](NOTICE).
+J&M Recipes (MIT), FlashAttention (BSD-3-Clause) and SGLang (Apache-2.0); see [NOTICE](NOTICE).

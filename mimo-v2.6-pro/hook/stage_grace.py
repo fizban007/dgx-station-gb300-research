@@ -52,15 +52,17 @@ def _copy_seg(SRC, DST, N, NUSED, INV, pid, NPROG, CHUNK: tl.constexpr, BLOCK: t
 
 
 @triton.jit
-def _stage_copy(INV, NUSED_PTR, S13, D13, N13, S2, D2, N2, SS13, DS13, NS13, SS2, DS2, NS2,
+def _stage_copy(INV, NUSED_PTR, BASE, SLOTS, S13, D13, N13, S2, D2, N2, SS13, DS13, NS13, SS2, DS2, NS2,
                 CHUNK: tl.constexpr, BLOCK: tl.constexpr):
+    """Copy mapped slots [BASE, BASE + SLOTS) (those below NUSED) into staging slots [0, SLOTS)."""
     pid = tl.program_id(0)
     nprog = tl.num_programs(0)
-    nused = tl.load(NUSED_PTR)
-    _copy_seg(S13, D13, N13, nused, INV, pid, nprog, CHUNK, BLOCK)
-    _copy_seg(S2, D2, N2, nused, INV, pid, nprog, CHUNK, BLOCK)
-    _copy_seg(SS13, DS13, NS13, nused, INV, pid, nprog, CHUNK, BLOCK)
-    _copy_seg(SS2, DS2, NS2, nused, INV, pid, nprog, CHUNK, BLOCK)
+    nused = tl.minimum(tl.maximum(tl.load(NUSED_PTR) - BASE, 0), SLOTS)
+    inv = INV + BASE
+    _copy_seg(S13, D13, N13, nused, inv, pid, nprog, CHUNK, BLOCK)
+    _copy_seg(S2, D2, N2, nused, inv, pid, nprog, CHUNK, BLOCK)
+    _copy_seg(SS13, DS13, NS13, nused, inv, pid, nprog, CHUNK, BLOCK)
+    _copy_seg(SS2, DS2, NS2, nused, inv, pid, nprog, CHUNK, BLOCK)
 
 
 def _words(t: torch.Tensor) -> torch.Tensor:
@@ -96,7 +98,7 @@ class GraceStager:
         self.inv[:n].copy_(torch.arange(start, start + n, dtype=torch.int32, device=self.inv.device))
         self.nused.fill_(n)
         d = self._dst
-        _stage_copy[(self.nprog,)](self.inv, self.nused,
+        _stage_copy[(self.nprog,)](self.inv, self.nused, 0, self.slots,
                                    src[0], d[0], d[0].shape[1], src[1], d[1], d[1].shape[1],
                                    src[2], d[2], d[2].shape[1], src[3], d[3], d[3].shape[1],
                                    CHUNK=self.chunk, BLOCK=self.block)
@@ -107,13 +109,14 @@ class GraceStager:
                          BLOCK_E=triton.next_power_of_2(self.E), BLOCK_R=16)
         return self.emap
 
-    def stage(self, topk_ids: torch.Tensor, cmap: torch.Tensor, src: tuple, mapped: bool = False) -> torch.Tensor:
+    def stage(self, topk_ids: torch.Tensor, cmap: torch.Tensor, src: tuple, mapped: bool = False,
+              base: int = 0) -> torch.Tensor:
         """src = (w13, w2, s13, s2) of one layer's Grace bank, each viewed as int64 words [n, words]. Returns EMAP.
-        The caller guarantees NUSED <= slots (T * top_k <= slots, or checked after map())."""
+        Copies mapped slots [base, base + slots) into the staging slots (a round); slots past NUSED are skipped."""
         if not mapped:
             self.map(topk_ids, cmap)
         d = self._dst
-        _stage_copy[(self.nprog,)](self.inv, self.nused,
+        _stage_copy[(self.nprog,)](self.inv, self.nused, base, self.slots,
                                    src[0], d[0], d[0].shape[1], src[1], d[1], d[1].shape[1],
                                    src[2], d[2], d[2].shape[1], src[3], d[3], d[3].shape[1],
                                    CHUNK=self.chunk, BLOCK=self.block)

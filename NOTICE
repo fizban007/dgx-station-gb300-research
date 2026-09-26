@@ -22,6 +22,11 @@ is in licenses/J-M-Recipes-MIT.txt. These files are:
   - deepseek-v4.1-flash/upstream-v20/launch-v20.sh and launch-v20-prof.sh (reproduce the v20 recipe's launch)
   - bench/knee.sh (modified; knee.sh.diff)
 
+This repository includes a modified FlashAttention file (mimo-v2.6-pro/hook/overlay/fa4/interface.py; the CuTe
+DSL interface as vendored in vLLM's vllm_flash_attn, Copyright (c) 2025 Jay Shah, Ganesh Bikshandi, Ying Zhang,
+Vijay Thakkar, Pradeep Ramani, Tri Dao; BSD 3-Clause License, https://github.com/Dao-AILab/flash-attention).
+The license text is in licenses/flash-attention-BSD-3-Clause.txt. The change is in interface.diff next to it.
+
 This repository includes a modified SGLang file (qwen3.8-flash-next/patches/moe_hook.py; Copyright the SGLang
 contributors, Apache License 2.0, https://github.com/sgl-project/sglang).
 

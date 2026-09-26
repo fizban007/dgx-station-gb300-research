@@ -41,10 +41,33 @@ His recipe is [J-M-Recipes/recipes `mimo-v2.6-pro-vllm-uva-hotsplit`](https://gi
 | v2 | 2026-09-25 ~16:50 | Marlin, two banks | Marlin reads them through UVA | torch ops | [`rowmap-3tier-v2.json`](hook/rowmap-3tier-v2.json): 152.8 GiB hot, 90.2 GiB peer |
 | v3 | ~17:50 | Marlin | staged into HBM for batches with T·top_k ≤ 128 ([`stage_grace.py`](hook/stage_grace.py)) | fused, 3 kernels | v2 |
 | v4 | ~19:30 | FlashInfer TRT-LLM MXFP4×MXFP8, bank-local ids ([`trt_banks.py`](hook/trt_banks.py)) | staged (decode) or slab-copied (prefill) | fused | not recorded; see below |
+| v5 | ~20:26 | TRT-LLM, as v4, plus an FP8 KV cache | as v4 | fused | not recorded; see below |
+| v6 | ~21:01 | as v5, plus DFlash speculative decoding, k=3 (the checkpoint's 5-layer drafter) | as v4, `STAGE_SLOTS=256` | fused | v3 |
 
-The launcher's current default rowmap, [`rowmap-3tier-v3.json`](hook/rowmap-3tier-v3.json) (115 GiB hot,
-90.2 GiB peer), was written at 19:36, after the v4 TTFT run. The v4 run may have used v2 or an earlier copy of
-v3; the launch record does not say which.
+v6 is the launcher's default configuration, as [`up.sh`](up.sh) records it. The launcher's current default
+rowmap, [`rowmap-3tier-v3.json`](hook/rowmap-3tier-v3.json) (115 GiB hot, 90.2 GiB peer), was written at 19:36,
+after the v4 TTFT run. Neither the v4 nor the v5 run records which rowmap and staging size it used.
+[`stage_grace.py`](hook/stage_grace.py) and [`trt_banks.py`](hook/trt_banks.py) are published as they were at
+20:52: after v5 and before v6.
+
+### FP8 KV cache for MiMo (v5)
+
+MiMo mixes 192-dim K with 128-dim V ("DiffKV"). Three changes make an FP8 KV cache work:
+
+- The model file gives global-attention layers a cache config without the sliding window
+  ([`hook/mimo_v2.29468.diff`](hook/mimo_v2.29468.diff)).
+- The vLLM FlashAttention backend checks FA4 support with the real V head size
+  ([`hook/overlay/attn/flash_attn.diff`](hook/overlay/attn/flash_attn.diff)).
+- FA4's interface keeps `tile_n=128` for FP8 DiffKV split-KV decode
+  ([`hook/overlay/fa4/interface.diff`](hook/overlay/fa4/interface.diff)). According to the comment in that
+  change, the `tile_n=64` split-KV variant produced wrong results from 8K context, and illegal memory accesses
+  by about 60K.
+
+[`hook/tests/test_fa4_fp8_bigpool.py`](hook/tests/test_fa4_fp8_bigpool.py) checks FP8 decode against a BF16-cache
+reference. It covers both low block ids and blocks at the tail of a full-size pool, which is the repository's
+big-page-id rule. [`hook/tests/time_fa4_decode.py`](hook/tests/time_fa4_decode.py) times FP8 single-split
+against BF16 auto-split decode. Neither test's output was saved. The KV capacity gained by FP8 was not recorded
+either.
 
 ## Placement
 
@@ -73,6 +96,15 @@ at 1M context *(notes)*.
 | row bucket | 1 | 2 | 4 | 8 | 16 | 32 | 4,096 | 8,192 |
 |---|--:|--:|--:|--:|--:|--:|--:|--:|
 | mean µs | 91 | 110 | 124 | 128 | 147 | 287 | 2,783 | 5,460 |
+
+- The same table for the v6 boot, over 2.4 million calls
+  ([`peer_stats-dflash3-v6.json`](results/logs/peer_stats-dflash3-v6.json)). Most calls land in the 4-row
+  bucket, which fits DFlash k=3: each decode step verifies 4 tokens per stream.
+
+| row bucket | 1 | 2 | 4 | 8 | 16 | 32 | 64 | 4,096 | 8,192 |
+|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+| calls | 202,077 | 308,494 | 1,707,639 | 52,570 | 78,445 | 31,902 | 46,598 | 1,433 | 8,302 |
+| mean µs | 87 | 107 | 137 | 187 | 283 | 367 | 512 | 2,730 | 5,281 |
 
 ### How long the GB300 waits (v3)
 
@@ -136,7 +168,10 @@ bank calls FlashInfer's routed kernel directly, with bank-local ids and `-1` for
   send. Tests: [`hook/tests/test_stage_and_send.py`](hook/tests/test_stage_and_send.py),
   [`test_stage_overlap.py`](hook/tests/test_stage_overlap.py).
 - v4: only the microbenchmark cosines above, plus the TRT-bank vs one-call check in
-  [`hook/tests/test_trt_banks.py`](hook/tests/test_trt_banks.py). No end-to-end quality gate has been run.
+  [`hook/tests/test_trt_banks.py`](hook/tests/test_trt_banks.py).
+- v5 and v6: the FA4 FP8 tests above; their output was not saved.
+- No end-to-end quality gate (GSM8K or BFCL) has been run on v4, v5 or v6. `logs/gsm8k-trt-v4.log` on the
+  station is empty.
 
 <a id="knee-v2"></a>
 ## Knee v2 raw data

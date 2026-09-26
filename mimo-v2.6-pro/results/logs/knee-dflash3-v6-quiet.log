@@ -1,0 +1,6 @@
+[dflash3-v6-quiet] conc= 1:    32.2 agg tok/s   32.23 per-stream  (runs 31.9/32.5)
+[dflash3-v6-quiet] conc= 2:    38.9 agg tok/s   19.45 per-stream  (runs 39.8/38.0)
+[dflash3-v6-quiet] conc= 4:    48.3 agg tok/s   12.08 per-stream  (runs 48.0/48.6)
+[dflash3-v6-quiet] conc= 8:    66.4 agg tok/s    8.30 per-stream  (runs 66.6/66.2)
+[dflash3-v6-quiet] conc=12:    77.0 agg tok/s    6.42 per-stream  (runs 75.6/78.5)
+[dflash3-v6-quiet] conc=16:    87.6 agg tok/s    5.47 per-stream  (runs 87.1/88.0)

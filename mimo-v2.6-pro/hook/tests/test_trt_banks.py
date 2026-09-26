@@ -85,33 +85,28 @@ def compare(tag, got, ref):
 
 
 with set_current_vllm_config(VllmConfig()):
-    for T in (1, 4, 16):
+    # layers[64]: rounds R = 1 for T <= 8; layers[32]: R = 2 for T >= 4 (64 Grace experts), exercising the round path
+    for T in (1, 4, 16, 20, 300, 2048):
         x = (torch.randn(T, H, device=dev, generator=g) * 0.5).to(torch.bfloat16)
         topk = torch.stack([torch.randperm(E, device=dev, generator=g)[:K] for _ in range(T)]).int()
         wts = torch.softmax(torch.randn(T, K, device=dev, generator=g), -1)
         ref = reference(x, topk, wts)
-        compare(f"staged T={T:4d}", layers[64].forward(x, topk, wts, path="staged"), ref)
-        compare(f"slab   T={T:4d}", layers[32].forward(x, topk, wts, path="slab"), ref)
-    for T in (20, 300, 2048):
-        x = (torch.randn(T, H, device=dev, generator=g) * 0.5).to(torch.bfloat16)
-        topk = torch.stack([torch.randperm(E, device=dev, generator=g)[:K] for _ in range(T)]).int()
-        wts = torch.softmax(torch.randn(T, K, device=dev, generator=g), -1)
-        r = reference(x, topk, wts)
-        compare(f"slab   T={T:4d}", layers[32].forward(x, topk, wts, path="slab"), r)
-        compare(f"auto   T={T:4d}", layers[64].forward(x, topk, wts, path="auto"), r)
-    # graph capture of the staged decode path, replayed with new routing
+        compare(f"rounds S=64 T={T:4d}", layers[64].forward(x, topk, wts), ref)
+        compare(f"rounds S=32 T={T:4d}", layers[32].forward(x, topk, wts), ref)
+        compare(f"slab   S=32 T={T:4d}", layers[32].forward(x, topk, wts, path="slab"), ref)
+    # graph capture of the 2-round decode path, replayed with new routing
     T = 16
     x = (torch.randn(T, H, device=dev, generator=g) * 0.5).to(torch.bfloat16)
     topk = torch.stack([torch.randperm(E, device=dev, generator=g)[:K] for _ in range(T)]).int()
     wts = torch.softmax(torch.randn(T, K, device=dev, generator=g), -1)
-    layers[64].forward(x, topk, wts, path="staged"); torch.cuda.synchronize()
+    layers[32].forward(x, topk, wts); torch.cuda.synchronize()
     gr = torch.cuda.CUDAGraph()
     s = torch.cuda.Stream(dev)
     with torch.cuda.graph(gr, stream=s):
-        out = layers[64].forward(x, topk, wts, path="staged")
+        out = layers[32].forward(x, topk, wts)
     for trial in range(3):
         topk.copy_(torch.stack([torch.randperm(E, device=dev, generator=g)[:K] for _ in range(T)]).int())
         x.copy_((torch.randn(T, H, device=dev, generator=g) * 0.5).to(torch.bfloat16))
         gr.replay(); torch.cuda.synchronize()
-        compare(f"staged graph replay {trial}", out, reference(x, topk, wts))
+        compare(f"2-round graph replay {trial}", out, reference(x, topk, wts))
 print("TRT BANKS OK")

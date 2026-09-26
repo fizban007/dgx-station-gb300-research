@@ -12,7 +12,7 @@ MODEL = "MiMo-V2.6-Pro-RL"
 ENGINE = "vllm nightly-29468dde + hook/ overlays"
 AL = ("https://github.com/J-M-Recipes/recipes/tree/dffd01cc29fb8dfed9c2a52192ee7e02e753ba26/recipes/"
       "dgx-station-gb300/mimo-v2.6-pro-vllm-uva-hotsplit")
-QUAL = {"3tier-v2": True, "3tier-v3": False, "trt-v4": False}
+QUAL = {"3tier-v2": True, "3tier-v3": False, "trt-v4": False, "fp8-v5": False, "dflash3-v6": False}
 rows = []
 
 
@@ -30,7 +30,7 @@ def rel(p):
 
 
 # TTFT bench (Al-ENGR ttft_bench.py): one request per prompt size, 3 runs, medians
-for tag in ("3tier-v2", "3tier-v3", "trt-v4"):
+for tag in ("3tier-v2", "3tier-v3", "trt-v4", "fp8-v5", "dflash3-v6"):
     p = f"results/ttft-{tag}.json"
     for _, r in json.load(open(os.path.join(ROOT, p))).items():
         n = r["prompt_tokens"]
@@ -39,11 +39,15 @@ for tag in ("3tier-v2", "3tier-v3", "trt-v4"):
         row(tag, "ttft-bench", "decode_after_ttft_tok_s", r["decode_tok_s"], "tok/s", rel(p), 1, n)
 
 # Knee (Al-ENGR knee.sh): aggregate and per-stream tok/s, 192-token prose, 2 reps
-p = "results/logs/knee-3tier-v3.log"
-for m in re.finditer(r"conc=\s*(\d+):\s+([\d.]+) agg tok/s\s+([\d.]+) per-stream", open(os.path.join(ROOT, p)).read()):
-    c = int(m.group(1))
-    row("3tier-v3", "knee", "aggregate_tok_s", float(m.group(2)), "tok/s", rel(p), c)
-    row("3tier-v3", "knee", "per_user_tok_s", float(m.group(3)), "tok/s", rel(p), c)
+for tag, cfg, note in (("3tier-v3", "3tier-v3", ""), ("fp8-v5", "fp8-v5", ""), ("dflash3-v6", "dflash3-v6", ""),
+                       ("dflash3-v6-quiet", "dflash3-v6", "rerun tagged quiet")):
+    p = f"results/logs/knee-{tag}.log"
+    for m in re.finditer(r"conc=\s*(\d+):\s+([\d.]+) agg tok/s\s+([\d.]+) per-stream\s+\(runs ([\d.]+)/([\d.]+)\)",
+                         open(os.path.join(ROOT, p)).read()):
+        c = int(m.group(1))
+        n = f"{note}; runs {m.group(4)}/{m.group(5)}".lstrip("; ")
+        row(cfg, "knee", "aggregate_tok_s", float(m.group(2)), "tok/s", rel(p), c, notes=n)
+        row(cfg, "knee", "per_user_tok_s", float(m.group(3)), "tok/s", rel(p), c, notes=n)
 for c, v in ((1, 32.3), (4, 61.2), (8, 79.7), (16, 102.2)):
     row("3tier-v2", "knee", "aggregate_tok_s", v, "tok/s", None, c, notes="session notes; raw log not kept")
 
@@ -65,11 +69,11 @@ for suite in ("all", "simple_python", "multiple"):
     row("3tier-v2", "bfcl", f"accuracy_{suite}", b[suite]["acc"], "fraction", rel(p), 8,
         notes=f"BFCL dev, {b[suite]['ok']}/{b[suite]['n']}, Al-ENGR grader")
 
-# Sidecar per-bucket latency (v4 boot)
-p = "results/logs/peer_stats-trt-v4.json"
-for bucket, s in json.load(open(os.path.join(ROOT, p))).items():
-    row("trt-v4", "other", "sidecar_mean_us", s["mean_us"], "us", rel(p),
-        notes=f"RTX PRO 6000 b12x w4a8_mx, row bucket {bucket}, {s['calls']} calls, mean rows {s['mean_rows']}")
+# Sidecar per-bucket latency (v4 boot, v6 boot)
+for cfg, p in (("trt-v4", "results/logs/peer_stats-trt-v4.json"), ("dflash3-v6", "results/logs/peer_stats-dflash3-v6.json")):
+    for bucket, s in json.load(open(os.path.join(ROOT, p))).items():
+        row(cfg, "other", "sidecar_mean_us", s["mean_us"], "us", rel(p),
+            notes=f"RTX PRO 6000 b12x w4a8_mx, row bucket {bucket}, {s['calls']} calls, mean rows {s['mean_rows']}")
 
 # TRT-LLM vs Marlin microbenchmark (HBM, 96-expert bank, layer 5)
 p = "results/logs/trt-vs-marlin.log"

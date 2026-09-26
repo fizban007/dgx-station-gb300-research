@@ -1482,18 +1482,72 @@ mimo-v2.6-pro,MiMo-V2.6-Pro-RL,trt-v4,2026-09-25,vllm nightly-29468dde + hook/ o
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,trt-v4,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,prefill_tok_s,1,45745,5775.0,tok/s,False,mimo-v2.6-pro/results/ttft-trt-v4.json,
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,trt-v4,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,ttft_s,1,45745,7.92,s,False,mimo-v2.6-pro/results/ttft-trt-v4.json,
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,trt-v4,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,decode_after_ttft_tok_s,1,45745,45.1,tok/s,False,mimo-v2.6-pro/results/ttft-trt-v4.json,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,1,,32.0,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,1,,32.05,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,2,,45.0,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,2,,22.49,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,4,,60.6,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,4,,15.16,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,8,,78.5,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,8,,9.81,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,12,,74.8,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,12,,6.23,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,16,,98.2,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
-mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,16,,6.14,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,prefill_tok_s,1,2932,2826.0,tok/s,False,mimo-v2.6-pro/results/ttft-fp8-v5.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,ttft_s,1,2932,1.04,s,False,mimo-v2.6-pro/results/ttft-fp8-v5.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,decode_after_ttft_tok_s,1,2932,41.7,tok/s,False,mimo-v2.6-pro/results/ttft-fp8-v5.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,prefill_tok_s,1,11523,4961.0,tok/s,False,mimo-v2.6-pro/results/ttft-fp8-v5.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,ttft_s,1,11523,2.32,s,False,mimo-v2.6-pro/results/ttft-fp8-v5.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,decode_after_ttft_tok_s,1,11523,41.3,tok/s,False,mimo-v2.6-pro/results/ttft-fp8-v5.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,prefill_tok_s,1,45745,5933.0,tok/s,False,mimo-v2.6-pro/results/ttft-fp8-v5.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,ttft_s,1,45745,7.71,s,False,mimo-v2.6-pro/results/ttft-fp8-v5.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,decode_after_ttft_tok_s,1,45745,40.9,tok/s,False,mimo-v2.6-pro/results/ttft-fp8-v5.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,prefill_tok_s,1,2931,2625.0,tok/s,False,mimo-v2.6-pro/results/ttft-dflash3-v6.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,ttft_s,1,2931,1.12,s,False,mimo-v2.6-pro/results/ttft-dflash3-v6.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,decode_after_ttft_tok_s,1,2931,47.7,tok/s,False,mimo-v2.6-pro/results/ttft-dflash3-v6.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,prefill_tok_s,1,11523,4616.0,tok/s,False,mimo-v2.6-pro/results/ttft-dflash3-v6.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,ttft_s,1,11523,2.5,s,False,mimo-v2.6-pro/results/ttft-dflash3-v6.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,decode_after_ttft_tok_s,1,11523,51.0,tok/s,False,mimo-v2.6-pro/results/ttft-dflash3-v6.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,prefill_tok_s,1,45744,5500.0,tok/s,False,mimo-v2.6-pro/results/ttft-dflash3-v6.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,ttft_s,1,45744,8.32,s,False,mimo-v2.6-pro/results/ttft-dflash3-v6.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,ttft-bench,decode_after_ttft_tok_s,1,45744,46.0,tok/s,False,mimo-v2.6-pro/results/ttft-dflash3-v6.json,
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,1,,32.0,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 31.8/32.3
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,1,,32.05,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 31.8/32.3
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,2,,45.0,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 44.9/45.1
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,2,,22.49,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 44.9/45.1
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,4,,60.6,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 60.2/61.1
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,4,,15.16,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 60.2/61.1
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,8,,78.5,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 78.5/78.5
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,8,,9.81,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 78.5/78.5
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,12,,74.8,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 74.9/74.7
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,12,,6.23,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 74.9/74.7
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,16,,98.2,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 97.7/98.8
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v3,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,16,,6.14,tok/s,False,mimo-v2.6-pro/results/logs/knee-3tier-v3.log,runs 97.7/98.8
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,1,,23.4,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 32.2/14.6
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,1,,23.43,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 32.2/14.6
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,2,,43.5,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 43.1/43.8
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,2,,21.73,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 43.1/43.8
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,4,,56.0,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 54.7/57.3
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,4,,14.0,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 54.7/57.3
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,8,,70.6,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 70.5/70.7
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,8,,8.83,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 70.5/70.7
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,12,,61.8,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 61.5/62.0
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,12,,5.15,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 61.5/62.0
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,16,,90.4,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 90.6/90.2
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,fp8-v5,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,16,,5.65,tok/s,False,mimo-v2.6-pro/results/logs/knee-fp8-v5.log,runs 90.6/90.2
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,1,,30.2,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 29.9/30.4
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,1,,30.17,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 29.9/30.4
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,2,,36.7,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 34.4/38.9
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,2,,18.33,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 34.4/38.9
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,4,,48.2,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 49.6/46.8
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,4,,12.05,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 49.6/46.8
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,8,,65.0,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 64.7/65.3
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,8,,8.13,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 64.7/65.3
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,12,,77.2,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 77.1/77.4
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,12,,6.44,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 77.1/77.4
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,16,,85.5,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 86.6/84.4
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,16,,5.34,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6.log,runs 86.6/84.4
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,1,,32.2,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 31.9/32.5
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,1,,32.23,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 31.9/32.5
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,2,,38.9,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 39.8/38.0
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,2,,19.45,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 39.8/38.0
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,4,,48.3,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 48.0/48.6
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,4,,12.08,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 48.0/48.6
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,8,,66.4,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 66.6/66.2
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,8,,8.3,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 66.6/66.2
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,12,,77.0,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 75.6/78.5
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,12,,6.42,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 75.6/78.5
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,16,,87.6,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 87.1/88.0
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,per_user_tok_s,16,,5.47,tok/s,False,mimo-v2.6-pro/results/logs/knee-dflash3-v6-quiet.log,rerun tagged quiet; runs 87.1/88.0
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v2,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,1,,32.3,tok/s,True,,session notes; raw log not kept
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v2,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,4,,61.2,tok/s,True,,session notes; raw log not kept
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,3tier-v2,2026-09-25,vllm nightly-29468dde + hook/ overlays,knee,aggregate_tok_s,8,,79.7,tok/s,True,,session notes; raw log not kept
@@ -1534,6 +1588,19 @@ mimo-v2.6-pro,MiMo-V2.6-Pro-RL,trt-v4,2026-09-25,vllm nightly-29468dde + hook/ o
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,trt-v4,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,287.3,us,False,mimo-v2.6-pro/results/logs/peer_stats-trt-v4.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 32, 142 calls, mean rows 26.9"
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,trt-v4,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,2782.5,us,False,mimo-v2.6-pro/results/logs/peer_stats-trt-v4.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 4096, 28 calls, mean rows 3575.1"
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,trt-v4,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,5459.7,us,False,mimo-v2.6-pro/results/logs/peer_stats-trt-v4.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 8192, 1135 calls, mean rows 6352.9"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,87.3,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 1, 202077 calls, mean rows 1.0"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,106.6,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 2, 308494 calls, mean rows 2.0"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,136.5,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 4, 1707639 calls, mean rows 3.6"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,186.5,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 8, 52570 calls, mean rows 6.9"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,283.2,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 16, 78445 calls, mean rows 13.4"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,366.5,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 32, 31902 calls, mean rows 26.5"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,511.9,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 64, 46598 calls, mean rows 47.1"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,491.0,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 128, 515 calls, mean rows 93.0"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,604.3,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 256, 617 calls, mean rows 176.8"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,689.3,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 512, 426 calls, mean rows 331.9"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,1731.1,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 2048, 150 calls, mean rows 1879.7"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,2730.3,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 4096, 1433 calls, mean rows 2865.7"
+mimo-v2.6-pro,MiMo-V2.6-Pro-RL,dflash3-v6,2026-09-25,vllm nightly-29468dde + hook/ overlays,other,sidecar_mean_us,,,5280.5,us,False,mimo-v2.6-pro/results/logs/peer_stats-dflash3-v6.json,"RTX PRO 6000 b12x w4a8_mx, row bucket 8192, 8302 calls, mean rows 6208.7"
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,microbench,2026-09-25,vllm nightly-29468dde + hook/ overlays,kernel-microbench,marlin_us,,,61.5,us,,mimo-v2.6-pro/results/logs/trt-vs-marlin.log,"T=1 tokens, 96 experts in HBM"
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,microbench,2026-09-25,vllm nightly-29468dde + hook/ overlays,kernel-microbench,trtllm_us,,,36.4,us,,mimo-v2.6-pro/results/logs/trt-vs-marlin.log,"T=1 tokens, 96 experts in HBM"
 mimo-v2.6-pro,MiMo-V2.6-Pro-RL,microbench,2026-09-25,vllm nightly-29468dde + hook/ overlays,kernel-microbench,trtllm_speedup,,,1.69,x,,mimo-v2.6-pro/results/logs/trt-vs-marlin.log,"T=1 tokens, 96 experts in HBM"

@@ -37,6 +37,13 @@ ROWMAP_ENV=(-e HOTSPLIT_ROWMAP=/w/$ROWMAP)
 #   (tuning would read Grace-resident weights). MOE=marlin restores the Marlin banks.
 MOE_ARGS=(--moe-backend flashinfer_trtllm --no-enable-flashinfer-autotune)
 [ "${MOE:-trtllm}" = marlin ] && MOE_ARGS=(--moe-backend marlin)
+# SPEC=none | dflash<N>: the checkpoint's 5-layer DFlash drafter (<model>/dflash) with N speculative tokens.
+SPEC_ARGS=()
+case "${SPEC:-dflash3}" in
+  none) ;;
+  dflash*) SPEC_ARGS=(--speculative-config "{\"method\":\"dflash\",\"model\":\"/model/dflash\",\"num_speculative_tokens\":${SPEC#dflash}}") ;;
+  *) echo "bad SPEC=$SPEC" >&2; exit 2 ;;
+esac
 PROF_ARGS=()
 if [ "${PROF:-1}" = 1 ]; then
   PROF_ARGS=(--profiler-config "{\"profiler\":\"torch\",\"torch_profiler_dir\":\"/prof\",\"active_iterations\":${PROF_ITERS:-32}}")
@@ -59,13 +66,14 @@ docker run -d --name "$NAME" --gpus '"device=GPU-c146511a-0326-7ddc-4346-998d61a
   -v $HOOK/overlay/kv_cache_utils.29468.py:$V/v1/core/kv_cache_utils.py:ro \
   -v $HOOK/overlay/attn/flash_attn.py:$V/v1/attention/backends/flash_attn.py:ro \
   -v $HOOK/overlay/attn/flash_attn_diffkv.py:$V/v1/attention/backends/flash_attn_diffkv.py:ro \
+  -v $HOOK/overlay/fa4/interface.py:$V/vllm_flash_attn/cute/interface.py:ro \
   -v /usr/bin/numactl:/usr/local/bin/numactl:ro --entrypoint /usr/local/bin/numactl \
   -e CUDA_LAUNCH_BLOCKING=${CUDA_LAUNCH_BLOCKING:-0} -e VLLM_LOGGING_LEVEL=INFO -e VLLM_USE_DEEP_GEMM=0 -e VLLM_WEIGHT_OFFLOADING_DISABLE_PIN_MEMORY=1 \
   -e FLASH_ATTENTION_CUTE_DSL_CACHE_ENABLED=1 -e FLASH_ATTENTION_CUTE_DSL_CACHE_DIR=/root/.cache/fa-cute \
   -e HOTSPLIT_COUNTS=/w/expert_hist_mix.json -e HOTSPLIT_WEIGHTS=decode=1,prefill=0 "${ROWMAP_ENV[@]}" \
   -e HOTSPLIT_LIVE_COUNTS=/live/counts.json -e HOTSPLIT_LIVE_SECS=600 -e HOTSPLIT_MAX_TOKENS=$MNBT \
   -e HOTSPLIT_PEER_CHECK=${PEER_CHECK:-0} -e PEER_SHM=/dev/shm/vllm_peer_mimo -e PEER_MAX_ROWS=${PEER_MAX_ROWS:-8192} \
-  -e HOTSPLIT_FUSED_SEND=${FUSED_SEND:-1} -e HOTSPLIT_STAGE_SLOTS=${STAGE_SLOTS:-128} -e HOTSPLIT_STAGE_OVERLAP=${STAGE_OVERLAP:-0} \
+  -e HOTSPLIT_FUSED_SEND=${FUSED_SEND:-1} -e HOTSPLIT_STAGE_SLOTS=${STAGE_SLOTS:-256} -e HOTSPLIT_STAGE_OVERLAP=${STAGE_OVERLAP:-0} \
   -e HOTSPLIT_STAGE_PROGRAMS=${STAGE_PROGRAMS:-304} -e HOTSPLIT_STAGE_CHECK=${STAGE_CHECK:-0} \
   "$IMAGE" --membind=0 vllm serve \
   --model /model --served-model-name mimo26-pro --trust-remote-code --tensor-parallel-size 1 \
@@ -74,5 +82,5 @@ docker run -d --name "$NAME" --gpus '"device=GPU-c146511a-0326-7ddc-4346-998d61a
   --gpu-memory-utilization ${GPU_UTIL:-0.96} --enable-prefix-caching --generation-config vllm --kv-cache-dtype ${KVDTYPE:-fp8} \
   --compilation-config '{"cudagraph_mode":"FULL_DECODE_ONLY"}' \
   --tool-call-parser mimo --reasoning-parser mimo --enable-auto-tool-choice \
-  "${PROF_ARGS[@]}" ${EXTRA:-} --host 0.0.0.0 --port 30007
-echo "launched $NAME (moe=${MOE:-trtllm} rowmap=${ROWMAP} peer=${PEER:-1} check=${PEER_CHECK:-0} stage=${STAGE_SLOTS:-128} fused=${FUSED_SEND:-1} ctx=$CTX seqs=$SEQS mnbt=$MNBT)"
+  "${SPEC_ARGS[@]}" "${PROF_ARGS[@]}" ${EXTRA:-} --host 0.0.0.0 --port 30007
+echo "launched $NAME (spec=${SPEC:-dflash3} moe=${MOE:-trtllm} rowmap=${ROWMAP} peer=${PEER:-1} check=${PEER_CHECK:-0} stage=${STAGE_SLOTS:-256} fused=${FUSED_SEND:-1} ctx=$CTX seqs=$SEQS mnbt=$MNBT)"

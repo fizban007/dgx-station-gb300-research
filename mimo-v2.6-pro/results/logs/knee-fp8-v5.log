@@ -1,0 +1,6 @@
+[fp8-v5] conc= 1:    23.4 agg tok/s   23.43 per-stream  (runs 32.2/14.6)
+[fp8-v5] conc= 2:    43.5 agg tok/s   21.73 per-stream  (runs 43.1/43.8)
+[fp8-v5] conc= 4:    56.0 agg tok/s   14.00 per-stream  (runs 54.7/57.3)
+[fp8-v5] conc= 8:    70.6 agg tok/s    8.83 per-stream  (runs 70.5/70.7)
+[fp8-v5] conc=12:    61.8 agg tok/s    5.15 per-stream  (runs 61.5/62.0)
+[fp8-v5] conc=16:    90.4 agg tok/s    5.65 per-stream  (runs 90.6/90.2)
