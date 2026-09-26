@@ -31,5 +31,10 @@ and is proposed upstream as draft PR https://github.com/Dao-AILab/flash-attentio
 This repository includes a modified SGLang file (qwen3.8-flash-next/patches/moe_hook.py; Copyright the SGLang
 contributors, Apache License 2.0, https://github.com/sgl-project/sglang).
 
+mimo-v2.6-pro/results/logs/bfcl-3tier-v2-dev.jsonl records per-case results on the Berkeley Function Calling
+Leaderboard (BFCL v4 simple_python and multiple). It includes function-call arguments taken from BFCL test data
+(Copyright the Gorilla / BFCL authors, Apache License 2.0, https://github.com/ShishirPatil/gorilla). The
+BFCL datasets themselves are not included.
+
 Benchmarks were run with llm-inference-bench (https://github.com/local-inference-lab/llm-inference-bench) and
 b12x (https://github.com/local-inference-lab/b12x). Neither is vendored here.
