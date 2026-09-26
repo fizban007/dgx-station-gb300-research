@@ -100,6 +100,11 @@ mostly the admission wave) in these cells:
 - `ab-base-*` C32
 - `ab-rustmp-*` C8–C32
 - `vllm-py-cg8192-mtp3` C32–C64 and `cg8192-py-1` C32
+
+One outside chat request from the bench client (192.168.1.25) reached `vllm-py-cg8192-mtp3` at 23:02:28 EDT, during
+its C4 or C8 cell. Those cells match `cg8192-py-1` within 1.3%. The server's access log is
+[server-vllm-py-cg8192-mtp3.log](results/logs/server-vllm-py-cg8192-mtp3.log). The same client's benchmark also
+overlapped run 8 of the 128K loop check, which lowered that run's C1 decode rate; the loop status is unaffected.
 - the SGLang ReplaySSM variants at C64
 
 Raw files: `results/runs/qwen-<config>/decode/c<C>.json` (and `.log`). "MTP accept len" is the server-side mean
@@ -462,9 +467,10 @@ The C8–C32 gain comes from mixed steps. New prompts' prefill chunks join the r
 - **Teacher-forced prompt logprobs** on real text ([plp.py](scripts/cg/plp.py); [plp_offline.py](scripts/cg/plp_offline.py) →
   [plp-compare.log](results/cg/plp-compare.log)):
   - Servers: CG 1,024 is `diag-py-uni-cg1024-dev` ([plp-cg1024-a.json.gz](results/cg/plp-cg1024-a.json.gz)). CG 8,192
-    is `cg8192-py-1` ([plp-cg8192-a.json.gz](results/cg/plp-cg8192-a.json.gz)).
-  - Each prompt was a separate cold request after `/reset_prefix_cache` (both servers ran with
-    `VLLM_SERVER_DEV_MODE=1`).
+    is `cg8192-py-1` ([plp-cg8192-a.json.gz](results/cg/plp-cg8192-a.json.gz)) and `vllm-py-cg8192-mtp3`
+    ([plp-cg8192-b.json.gz](results/cg/plp-cg8192-b.json.gz)).
+  - Each prompt was a separate cold request: `/reset_prefix_cache` on the two dev-mode servers, and a unique
+    `cache_salt` per request on `vllm-py-cg8192-mtp3`, which has no dev endpoints.
   - **Graphs match eager bit for bit at the same step size.** The first 1,899 positions of the 3,000-token prompts
     are identical between CG 1,024 (eager 3,000-token step) and CG 8,192 (3,200-token graph): mean |Δ logprob|
     0.0000.
@@ -472,17 +478,40 @@ The C8–C32 gain comes from mixed steps. New prompts' prefill chunks join the r
     |Δ| 0.131–0.147 (NLL +0.0065 / +0.0075), because the step runs as a padded 2,048-token graph instead of an eager
     1,900-token step. Within CG 1,024 alone, the same positions move by 0.123–0.149 (NLL +0.0066 / +0.0091) when
     they are computed as part of a 3,000-token step. The NVFP4 activations amplify small GEMM-order differences.
-  - **Above 2,048 tokens,** whole-prompt differences between the configs (section A of the log: mean |Δ| 0.039–0.102,
-    NLL within ±0.008) are the same size as the run-to-run differences measured within each config (0.03–0.11; from
-    session notes). A logged rerun is pending.
-- **Run-to-run nondeterminism above the sparse-attention budget** ([nondet.py](scripts/cg/nondet.py); from session
-  notes, logs not kept; a logged rerun on `vllm-py-cg8192-mtp3` is pending):
-  - Three cold runs of the same prompt are identical up to 2,040 tokens on both `diag-py-uni-cg8192` and
-    `diag-py-uni-cg1024-dev`.
-  - From 2,100 tokens on, the top token stays the same, but the other top-5 logprobs differ by up to 1.06–1.81
-    (CG 8,192) and 0.81–1.13 (CG 1,024).
+  - **Two CG 8,192 servers agree exactly below the sparse-attention budget.** The 1,900-token prompts are identical
+    between `cg8192-py-1` and `vllm-py-cg8192-mtp3` (section B: mean |Δ| 0.0000).
+  - **Above 2,048 tokens,** whole-prompt differences between the configs (section A: mean |Δ| 0.039–0.102, NLL within
+    ±0.008) are the same size as the differences between the two CG 8,192 servers (section B: 0.038–0.105). Within the
+    CG 1,024 server, two passes differed by 0.033–0.107 (session notes).
+- **Run-to-run nondeterminism above the sparse-attention budget** ([nondet.py](scripts/cg/nondet.py) →
+  [nondet-vllm-py-cg8192-mtp3.log](results/cg/nondet-vllm-py-cg8192-mtp3.log)):
+  - Three cold runs of the same prompt on `vllm-py-cg8192-mtp3` are identical at 1,900 and 2,040 tokens.
+  - From 2,100 tokens on, the top token stays the same, but only 2–4 of the top 5 are shared across runs, and shared
+    entries differ by up to 0.31–2.75.
+  - Earlier servers showed the same pattern (session notes, logs not kept): identical up to 2,040 tokens, then
+    differences up to 1.06–1.81 (`diag-py-uni-cg8192`) and 0.81–1.13 (`diag-py-uni-cg1024-dev`).
   - This comes from the QSA sparse attention (`indexer_budget` 2,048), not from the graphs. Prefix-cache hits on
     prompts over ~3K tokens also change greedy continuations (session notes).
+
+## Time to first token: frontend vs engine (chosen config)
+
+[ttft_split.py](scripts/cg/ttft_split.py) sends one cold request per size: a chat request with real text, then the
+same tokens as token ids. It splits the server's own TTFT histogram delta into queue, engine prefill and the rest,
+which is input processing in the Python frontend. Each request uses a unique `cache_salt`. The server was otherwise
+idle: its access log shows no other client during the run
+([ttft-split-quiet.log](results/logs/ttft-split-quiet.log)).
+
+| Prompt tokens | Chat text: client TTFT ms | Engine prefill ms (text / ids) | Frontend processing ms (text / ids) | Client tok/s (text) |
+|---:|---:|---:|---:|---:|
+| 8,204 | 210 | 189 / 184 | 16 / 1 | 39,067 |
+| 32,780 | 762 | 703 / 704 | 47 / 3 | 43,018 |
+| 65,548 | 1,516 | 1,401 / 1,405 | 94 / 7 | 43,237 |
+| 131,084 | 3,081 | 2,851 / 2,853 | 188 / 13 | 42,546 |
+
+- Real text and random-looking token ids prefill at the same engine speed.
+- The chat-text path adds about 1.4 µs per token in the frontend (chat template and tokenizer), about 6% at long
+  prompts.
+- An earlier run of this script overlapped another client's benchmark. It was discarded.
 
 ## Needle retrieval (chosen config)
 
@@ -512,7 +541,7 @@ the launcher defaults (Rust / mp, MTP3), under CDMM:
 |---|---:|---:|---:|---|
 | `pp0` (vLLM, no penalty) | 16 | 0 | 192/200 | [pp-loop-test.log](results/logs/pp-loop-test.log), [pp-loop-test2.log](results/logs/pp-loop-test2.log) |
 | `pp0.5` (vLLM, presence_penalty 0.5) | 16 | 0 | 192/200 | [pp-loop-test2.log](results/logs/pp-loop-test2.log) |
-| `vllm-py-cg8192-mtp3` (chosen, no penalty) | 8 so far (4 of 8 runs; check still running) | 0 | 195/200 | [qual-final.log](results/logs/qual-final.log) |
+| `vllm-py-cg8192-mtp3` (chosen, no penalty) | 16 | 0 | 195/200 | [qual-final.log](results/logs/qual-final.log) |
 | `sglang-rs-fipre-mtp3` | 8 runs | 3 runs | 194/200 | from session notes; raw file not kept |
 | `sglang-trtllm-mtp3` (SGLang default) | not recorded | 0 | 194/200 | from session notes; raw file not kept |
 

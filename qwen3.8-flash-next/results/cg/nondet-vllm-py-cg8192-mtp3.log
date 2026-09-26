@@ -1,0 +1,6 @@
+ 1900 tokens: top1 [' tr', ' tr', ' tr'] logprob [-0.1847, -0.1847, -0.1847]; top-5 overlap 5/5, max |diff| on shared 0.0000
+ 2040 tokens: top1 [' options', ' options', ' options'] logprob [-0.0005, -0.0005, -0.0005]; top-5 overlap 5/5, max |diff| on shared 0.0000
+ 2100 tokens: top1 ['TR', 'TR', 'TR'] logprob [-0.004, -0.0011, -0.003]; top-5 overlap 2/5, max |diff| on shared 2.7470
+ 2500 tokens: top1 ['b', 'b', 'b'] logprob [-0.0, -0.0, -0.0]; top-5 overlap 2/5, max |diff| on shared 0.3125
+ 3000 tokens: top1 ['es', 'es', 'es'] logprob [-0.0002, -0.0006, -0.0002]; top-5 overlap 4/5, max |diff| on shared 1.6871
+ 3150 tokens: top1 ['   ', '   ', '   '] logprob [-0.001, -0.0007, -0.0005]; top-5 overlap 4/5, max |diff| on shared 0.9995

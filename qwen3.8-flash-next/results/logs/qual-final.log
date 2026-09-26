@@ -36,3 +36,12 @@ vllm-py-cg8192-mtp3 run3 C1/128K ok 317.2 tok/s
 vllm-py-cg8192-mtp3 run3 C8/128K ok 1511.4 tok/s
 vllm-py-cg8192-mtp3 run4 C1/128K ok 294.6 tok/s
 vllm-py-cg8192-mtp3 run4 C8/128K ok 1585.3 tok/s
+vllm-py-cg8192-mtp3 run5 C1/128K ok 293.5 tok/s
+vllm-py-cg8192-mtp3 run5 C8/128K ok 1555.7 tok/s
+vllm-py-cg8192-mtp3 run6 C1/128K ok 300.9 tok/s
+vllm-py-cg8192-mtp3 run6 C8/128K ok 1520.6 tok/s
+vllm-py-cg8192-mtp3 run7 C1/128K ok 292.1 tok/s
+vllm-py-cg8192-mtp3 run7 C8/128K ok 1559.9 tok/s
+vllm-py-cg8192-mtp3 run8 C1/128K ok 117.5 tok/s
+vllm-py-cg8192-mtp3 run8 C8/128K ok 1550.5 tok/s
+=== done 23:19:44

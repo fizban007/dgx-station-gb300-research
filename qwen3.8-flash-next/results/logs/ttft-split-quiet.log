@@ -1,0 +1,9 @@
+corpus 5145863 tokens
+chat-text      prompt    8204 tok: client wall     210 ms | server TTFT     204 = queue     0 + prefill    189 + other    16 ms
+completion-ids prompt    8192 tok: client wall     190 ms | server TTFT     186 = queue     0 + prefill    184 + other     1 ms
+chat-text      prompt   32780 tok: client wall     762 ms | server TTFT     751 = queue     0 + prefill    703 + other    47 ms
+completion-ids prompt   32768 tok: client wall     722 ms | server TTFT     707 = queue     0 + prefill    704 + other     3 ms
+chat-text      prompt   65548 tok: client wall    1516 ms | server TTFT    1494 = queue     0 + prefill   1401 + other    94 ms
+completion-ids prompt   65536 tok: client wall    1440 ms | server TTFT    1411 = queue     0 + prefill   1405 + other     7 ms
+chat-text      prompt  131084 tok: client wall    3081 ms | server TTFT    3039 = queue     0 + prefill   2851 + other   188 ms
+completion-ids prompt  131072 tok: client wall    2922 ms | server TTFT    2865 = queue     0 + prefill   2853 + other    13 ms

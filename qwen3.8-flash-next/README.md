@@ -10,7 +10,8 @@ graphs. Full tables, every run and all columns are in
 
 - **vLLM's slow short-prompt prefill came from a CUDA graph limit, and larger graph sizes fix it.**
   - vLLM captures CUDA graphs only up to 1,024 tokens, and prefix caching splits this model's prompts at 1,600-token
-    blocks. Every prefill step over 1,024 tokens ran without graphs and cost about 125 ms of kernel-launch overhead.
+    blocks. Every prefill step over 1,024 tokens ran without graphs and took about 125–130 ms, with the GPU busy for
+    less than half of it (the rest was kernel-launch overhead).
   - Capturing piecewise graphs up to 8,192 tokens (`CG=8192`) cut 8K cold-prefill TTFT from 258 to 188 ms
     (43,612.1 tok/s), ahead of the best SGLang variant (197 ms, 41,571.8 tok/s).
   - Against the best earlier vLLM run at each concurrency, catid decode rose 9–16% at C8–C64 (C8: 1,670.9 vs 1,529.1
@@ -57,8 +58,7 @@ graphs. Full tables, every run and all columns are in
 - **Kernels (auto):** MoE on `FLASHINFER_TRTLLM` for both the NVFP4 experts and the FP8 MTP layer. FlashInfer
   autotune is on (the default).
 - **Quality:** GSM8K-200, thinking off: 195/200. Needle retrieval passes at 10/50/90% depth in 114K- and 228K-token prompts
-  (6/6). The 128K thinking-loop check had 4 of 8 runs clean (0 of 8 cells flagged) when this was published; the
-  check was still running.
+  (6/6). The 128K thinking-loop check flagged 0 of 16 cells (8 runs × C1 and C8).
 - The Rust + `mp` config chosen earlier (`vllm-rust-mp-mtp3`) used
   [launch-qwen-upstream-2026-09-25.sh](scripts/launch-qwen-upstream-2026-09-25.sh) with `RUST_MP=1 MTP=3`.
 
@@ -176,6 +176,11 @@ the page and were not measured by us. Decode is aggregate tok/s with the same re
   ([pp-loop-test2.log](results/logs/pp-loop-test2.log)).
 - **128K thinking loops on SGLang:** SGLang ReplaySSM + FI GDN prefill looped in 3 of 8 runs at 128K, and default
   SGLang in none. (From session notes; raw file not kept.) The chosen vLLM config flagged 0 of 16 cells.
+- **Python frontend text processing:** for chat requests, the Python frontend's chat template and tokenizer add about
+  1.4 µs per prompt token to TTFT: 16 ms at 8K, 188 ms at 128K, about 6% of a long prompt's TTFT. The engine prefills
+  at 46–47K tok/s from 32K up; a client sending text sees about 43K
+  ([DETAILS.md](DETAILS.md#time-to-first-token-frontend-vs-engine-chosen-config)). Prompts sent as token ids skip most
+  of it. The Rust frontend was not measured this way.
 - **Sparse-attention nondeterminism:** above 2,048 prompt tokens (the QSA indexer budget), repeated cold runs of the
   same prompt give slightly different logprobs. The top token stays the same. This happens in every vLLM config we
   tested, and prefix-cache hits also change long greedy continuations

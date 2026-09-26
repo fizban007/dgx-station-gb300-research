@@ -9,6 +9,17 @@
    8192@30000: NLL 0.6303 vs 0.6260  mean|dlogprob| 0.0758  p99 1.256  max 7.299
       16384@0: NLL 0.7044 vs 0.7031  mean|dlogprob| 0.0847  p99 1.193  max 5.354
   16384@30000: NLL 0.7638 vs 0.7656  mean|dlogprob| 0.1020  p99 1.463  max 5.318
+== B: two CG=8192 runs on separate server instances (run-to-run noise floor)
+       1900@0: NLL 1.1677 vs 1.1677  mean|dlogprob| 0.0000  p99 0.000  max 0.000
+   1900@30000: NLL 0.7737 vs 0.7737  mean|dlogprob| 0.0000  p99 0.000  max 0.000
+       3000@0: NLL 1.0654 vs 1.0666  mean|dlogprob| 0.0377  p99 0.845  max 2.749
+   3000@30000: NLL 0.8152 vs 0.8097  mean|dlogprob| 0.0574  p99 1.303  max 4.344
+       6000@0: NLL 0.9262 vs 0.9210  mean|dlogprob| 0.0785  p99 1.239  max 3.779
+   6000@30000: NLL 0.6366 vs 0.6341  mean|dlogprob| 0.0711  p99 1.213  max 4.457
+       8192@0: NLL 0.8358 vs 0.8364  mean|dlogprob| 0.0808  p99 1.174  max 4.224
+   8192@30000: NLL 0.6260 vs 0.6305  mean|dlogprob| 0.0777  p99 1.363  max 4.192
+      16384@0: NLL 0.7031 vs 0.7020  mean|dlogprob| 0.0841  p99 1.236  max 5.237
+  16384@30000: NLL 0.7656 vs 0.7633  mean|dlogprob| 0.1052  p99 1.489  max 6.286
 == C: first 1,899 positions, same text, different step size
   offset 0:
     CG=1024  1900-token step (eager) vs 3000-token step (eager):     NLL 1.1602 vs 1.1668  mean|dlogprob| 0.1490  p99 1.607  max 3.694

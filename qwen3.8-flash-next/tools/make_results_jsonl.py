@@ -189,7 +189,8 @@ for line in open(PLP):
     m = re.search(r"^\s+(.*?):?\s+NLL ([\d.]+) vs ([\d.]+)\s+mean\|dlogprob\| ([\d.]+)\s+p99 ([\d.]+)", line)
     if m and section:
         what = m.group(1).strip().rstrip(":")
-        add("cg8192-vs-cg1024", "2026-09-25", "other", "mean_abs_dlogprob", 1, None, float(m.group(4)), "nats",
+        add("cg8192-vs-cg8192" if section.startswith("B:") else "cg8192-vs-cg1024", "2026-09-25", "other",
+            "mean_abs_dlogprob", 1, None, float(m.group(4)), "nats",
             rel(PLP), f"{section} | {what}: NLL {m.group(2)} vs {m.group(3)}, p99 {m.group(5)}", qualified=False)
 for f in sorted(glob.glob(os.path.join(ROOT, "results/cg/nondet-*.log"))):
     cfg = os.path.basename(f)[len("nondet-"):-len(".log")]
@@ -227,13 +228,28 @@ for config, vals in (("diag-py-uni-cg8192", (0.0, 0.0, 1.6208, 1.2500, 1.8122, 1
         add(config, "2026-09-25", "other", "rerun_max_abs_dlogprob", 1, n, v, "nats", None,
             "from session notes (nondet.py output not kept): 3 cold runs, first output token's top-5 logprobs, max "
             "|diff| on shared entries; indexer_budget is 2048")
-for config, vals in (("diag-py-uni-cg1024-dev", (0.0330, 0.0618, 0.0739, 0.0696, 0.0779, 0.0764, 0.0856, 0.1070)),
-                     ("cg8192-py-1", (0.0370, 0.0551, 0.0774, 0.0718, 0.0815, 0.0738, 0.0849, 0.1056))):
+for config, vals in (("diag-py-uni-cg1024-dev", (0.0330, 0.0618, 0.0739, 0.0696, 0.0779, 0.0764, 0.0856, 0.1070)),):
     for (n, off), v in zip(((3000, 0), (3000, 30000), (6000, 0), (6000, 30000), (8192, 0), (8192, 30000),
                             (16384, 0), (16384, 30000)), vals):
         add(config, "2026-09-25", "other", "mean_abs_dlogprob", 1, n, v, "nats", None,
             f"from session notes (plp.py compare output not kept): two cold passes of the {n}-token prompt at text "
             f"offset {off} on the same server; run-to-run noise floor")
+
+# TTFT split (ttft_split.py) on vllm-py-cg8192-mtp3, quiet server: server TTFT = queue + engine prefill + frontend
+SPLIT = os.path.join(ROOT, "results/logs/ttft-split-quiet.log")
+for line in open(SPLIT):
+    m = re.match(r"^(chat-text|completion-ids)\s+prompt\s+(\d+) tok: client wall\s+(\d+) ms \| server TTFT\s+(\d+) = "
+                 r"queue\s+(\d+) \+ prefill\s+(\d+) \+ other\s+(-?\d+) ms", line)
+    if m:
+        kind, n = m.group(1), int(m.group(2))
+        note = (f"{kind}: one cold request (unique cache_salt), C1, server otherwise idle; split from the server's "
+                "TTFT, queue and prefill histogram sums")
+        for metric, v in (("client_ttft_ms", m.group(3)), ("server_ttft_ms", m.group(4)), ("engine_prefill_ms", m.group(6)),
+                          ("frontend_processing_ms", m.group(7))):
+            add("vllm-py-cg8192-mtp3", "2026-09-25", "ttft-bench", metric, 1, n, int(v), "ms", rel(SPLIT), note)
+        if kind == "chat-text":
+            add("vllm-py-cg8192-mtp3", "2026-09-25", "ttft-bench", "client_prefill_tok_s", 1, n, n / (int(m.group(3)) / 1e3),
+                "tok/s", rel(SPLIT), note + "; prompt tokens / client TTFT")
 
 # catid's published Qwen3.8-Flash-Next page (1x DGX Station, TP1, SGLang). Not our measurement.
 CATID_URL = "https://github.com/catid/dgx_station_benchmarks/tree/main/qwen3.8-flash-next"
