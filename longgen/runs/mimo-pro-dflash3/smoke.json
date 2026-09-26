@@ -1,0 +1,31 @@
+{
+ "file": "runs/mimo-pro-dflash3/tetris.html",
+ "clicked": "START",
+ "before": {
+  "hud": "SCORE 0 LEVEL TIME 0:00 COMBO",
+  "canvas": 522
+ },
+ "samples": [
+  {
+   "hud": "SCORE 0 LEVEL TIME 0:00 COMBO",
+   "canvas": 6862
+  },
+  {
+   "hud": "SCORE 0 LEVEL TIME 0:00 COMBO SCORE 118 LEVEL TIME 0:00 PIECES",
+   "canvas": 7566
+  },
+  {
+   "hud": "SCORE 0 LEVEL TIME 0:00 COMBO SCORE 118 LEVEL TIME 0:00 PIECES",
+   "canvas": 7566
+  }
+ ],
+ "after": {
+  "hud": "SCORE 0 LEVEL TIME 0:00 COMBO SCORE 118 LEVEL TIME 0:00 PIECES",
+  "canvas": 7566
+ },
+ "canvas_changed": true,
+ "hud_changed": true,
+ "errors": [
+  "Cannot read properties of undefined (reading '0') @ at render (file:///data/pro.html:453:83)"
+ ]
+}

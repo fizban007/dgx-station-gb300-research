@@ -13,12 +13,18 @@ ENGINE = ("vLLM via mimo-v2.6-flash/launch-mimo.sh, DFlash k=7, one GB300 TP1; i
           "in the run files (most likely nightly 29468dde)")
 RUNS = {"mimo-dflash7-run1": "cap_on=all (earlier long-gen.py revision)",
         "mimo-dflash7-run2": "cap_on=content (earlier long-gen.py revision); baseline",
-        "mimo-dflash7-perpos": "cap_on=content; current long-gen.py with per-position counters"}
+        "mimo-dflash7-perpos": "cap_on=content; current long-gen.py with per-position counters",
+        "mimo-pro-dflash3": "cap_on=content; current long-gen.py; MiMo-V2.6-Pro v6 lane"}
+# Per-run model and engine where they differ from the MiMo-V2.6-Flash defaults above.
+RUN_MODEL = {"mimo-pro-dflash3": ("MiMo-V2.6-Pro-RL",
+             "vLLM nightly-29468dde + mimo-v2.6-pro hook, v6: HBM + RTX PRO 6000 sidecar + Grace, TRT-LLM banks, "
+             "FP8 KV, DFlash k=3")}
 rows = []
 
 
 def row(config, metric, value, unit, source, notes=None):
-    rows.append({"lane": LANE, "model": MODEL, "config": config, "date": DATE, "engine": ENGINE,
+    model, engine = RUN_MODEL.get(config, (MODEL, ENGINE))
+    rows.append({"lane": LANE, "model": model, "config": config, "date": DATE, "engine": engine,
                  "benchmark": "longgen", "metric": metric, "concurrency": 1, "context_tokens": None,
                  "value": value, "unit": unit, "qualified": False,
                  "source": os.path.relpath(source, ROOT), "notes": notes})
@@ -64,6 +70,15 @@ for run, desc in RUNS.items():
         row(run, "accepted_tokens_per_draft", p["accepted_per_draft"], "tokens", f, n(f"phase={name}"))
         for pos, v in enumerate(p["p_len_ge"], 1):
             row(run, "p_accept_len_ge", v, "fraction", f, n(f"phase={name}; position>={pos}"))
+
+# Headless-browser smoke test (tools/smoke_tetris.cjs), where it was run
+for run in RUNS:
+    f = f"{HERE}/runs/{run}/smoke.json"
+    if os.path.exists(f):
+        d = json.load(open(f))
+        row(run, "smoke_runtime_errors", len(d["errors"]), "count", f, "; ".join(d["errors"])[:300])
+        row(run, "smoke_canvas_changed", int(d["canvas_changed"]), "count", f,
+            "1 if the first canvas changed after START + 7 s of key presses")
 
 with open(f"{HERE}/results.jsonl", "w") as out:
     for r in rows:

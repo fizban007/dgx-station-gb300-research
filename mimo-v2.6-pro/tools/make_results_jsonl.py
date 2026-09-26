@@ -91,12 +91,22 @@ for part, ms in (("grace_bank", 9.47), ("dense", 5.78), ("hbm_bank", 3.34), ("gl
     row("3tier-v2", "other", f"c1_decode_ms_per_token_{part}", ms, "ms", None, 1,
         notes="torch profiler, session notes; trace not published")
 
+# KV-cache capacity and v6 needles: session notes / the lane's own notes (boot logs and needle output not kept)
+for cfg, kv, note in (("3tier-v2", 361000, "about 361K, BF16 KV"), ("3tier-v3", 323000, "about 323K, BF16 KV; staging costs 2.4 GiB"),
+                      ("trt-v4", 413542, "BF16 KV, rowmap v2"), ("fp8-v5", 2407731, "FP8 KV, rowmap v3"),
+                      ("dflash3-v6", 2044736, "FP8 KV plus the DFlash drafter cache, rowmap v3")):
+    row(cfg, "other", "kv_capacity_tokens", kv, "tokens", None, notes=f"{note}; max_model_len 1,048,576; session notes")
+for ctx in (11500, 86000, 357000):
+    row("dflash3-v6", "other", "needle_pass", 1, "count", None, 1, ctx,
+        notes="bench/needle.py, depth 50%, greedy, thinking off; pass per session notes, output not kept")
+
 # Al-ENGR receipts (external)
 for n, pf, dec in ((2952, 1064.0, 33.2), (11524, 1235.0, 33.0), (45828, 1244.0, 32.7)):
     row("external:al-engr-v24-1m", "ttft-bench", "prefill_tok_s", pf, "tok/s", AL + "/results/2026-09-22-hotsplit/receipts/ttft-v24-1m.json", 1, n, date="2026-09-22", engine="vllm nightly-d05da62e + hotsplit")
     row("external:al-engr-v24-1m", "ttft-bench", "decode_after_ttft_tok_s", dec, "tok/s", AL + "/results/2026-09-22-hotsplit/receipts/ttft-v24-1m.json", 1, n, date="2026-09-22", engine="vllm nightly-d05da62e + hotsplit")
 row("external:al-engr-v23", "ttft-bench", "prefill_tok_s", 1376, "tok/s", AL + "/README.md", 1, 11524, date="2026-09-24", engine="vllm nightly-d05da62e + hotsplit")
 row("external:al-engr-v23", "ttft-bench", "decode_after_ttft_tok_s", 37.4, "tok/s", AL + "/README.md", 1, 11524, date="2026-09-24", engine="vllm nightly-d05da62e + hotsplit")
+row("external:al-engr-v23", "other", "kv_capacity_tokens", 302368, "tokens", AL + "/README.md", date="2026-09-24", engine="vllm nightly-d05da62e + hotsplit", notes="262K context")
 row("external:al-engr-v23", "bfcl", "accuracy_all", 0.9383, "fraction", AL + "/README.md", date="2026-09-24", engine="vllm nightly-d05da62e + hotsplit")
 for c, agg in ((1, 30.666), (2, 40.223), (4, 50.530), (8, 63.682), (12, 57.922), (16, 62.994)):
     row("external:al-engr-v22-hot153", "knee", "aggregate_tok_s", agg, "tok/s", AL + "/results/2026-09-22-hotsplit/receipts/knee-v22-hot153.json", c, date="2026-09-22", engine="vllm nightly-d05da62e + hotsplit", notes="max-num-seqs 8")

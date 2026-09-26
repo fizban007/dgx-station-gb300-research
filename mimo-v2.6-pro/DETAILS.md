@@ -41,12 +41,17 @@ His recipe is [J-M-Recipes/recipes `mimo-v2.6-pro-vllm-uva-hotsplit`](https://gi
 | v2 | 2026-09-25 ~16:50 | Marlin, two banks | Marlin reads them through UVA | torch ops | [`rowmap-3tier-v2.json`](hook/rowmap-3tier-v2.json): 152.8 GiB hot, 90.2 GiB peer |
 | v3 | ~17:50 | Marlin | staged into HBM for batches with T·top_k ≤ 128 ([`stage_grace.py`](hook/stage_grace.py)) | fused, 3 kernels | v2 |
 | v4 | ~19:30 | FlashInfer TRT-LLM MXFP4×MXFP8, bank-local ids ([`trt_banks.py`](hook/trt_banks.py)) | staged (decode) or slab-copied (prefill) | fused | not recorded; see below |
-| v5 | ~20:26 | TRT-LLM, as v4, plus an FP8 KV cache | as v4 | fused | not recorded; see below |
+| v5 | ~20:26 | TRT-LLM, as v4, plus an FP8 KV cache | as v4, `STAGE_SLOTS=256` | fused | v3 |
 | v6 | ~21:01 | as v5, plus DFlash speculative decoding, k=3 (the checkpoint's 5-layer drafter) | as v4, `STAGE_SLOTS=256` | fused | v3 |
 
-v6 is the launcher's default configuration, as [`up.sh`](up.sh) records it. The launcher's current default
-rowmap, [`rowmap-3tier-v3.json`](hook/rowmap-3tier-v3.json) (115 GiB hot, 90.2 GiB peer), was written at 19:36,
-after the v4 TTFT run. Neither the v4 nor the v5 run records which rowmap and staging size it used.
+v6 is the launcher's default configuration, as [`up.sh`](up.sh) records it. The lane's session reported the
+other two: v5 is v6 with `SPEC=none`, and v4 used `MOE=trtllm`, `KVDTYPE=auto` (BF16) and
+[`rowmap-3tier-v2.json`](hook/rowmap-3tier-v2.json) (152.8 GiB hot). [`rowmap-3tier-v3.json`](hook/rowmap-3tier-v3.json)
+(115 GiB hot, 90.2 GiB peer) was written at 19:36, after the v4 run.
+
+KV-cache capacity, from the lane's session notes (boot logs not kept): 413,542 tokens for v4 (BF16), 2,407,731
+for v5 (FP8) and 2,044,736 for v6 (FP8 plus the DFlash drafter's cache). With a 1M-token context, v5 holds 2.3
+full-length requests.
 [`stage_grace.py`](hook/stage_grace.py) and [`trt_banks.py`](hook/trt_banks.py) are published as they were at
 20:52: after v5 and before v6.
 
@@ -61,7 +66,8 @@ MiMo mixes 192-dim K with 128-dim V ("DiffKV"). Three changes make an FP8 KV cac
 - FA4's interface keeps `tile_n=128` for FP8 DiffKV split-KV decode
   ([`hook/overlay/fa4/interface.diff`](hook/overlay/fa4/interface.diff)). According to the comment in that
   change, the `tile_n=64` split-KV variant produced wrong results from 8K context, and illegal memory accesses
-  by about 60K.
+  by about 60K. The same change is open as a draft upstream PR,
+  [Dao-AILab/flash-attention#2918](https://github.com/Dao-AILab/flash-attention/pull/2918).
 
 [`hook/tests/test_fa4_fp8_bigpool.py`](hook/tests/test_fa4_fp8_bigpool.py) checks FP8 decode against a BF16-cache
 reference. It covers both low block ids and blocks at the tail of a full-size pool, which is the repository's
@@ -170,6 +176,10 @@ bank calls FlashInfer's routed kernel directly, with bank-local ids and `-1` for
 - v4: only the microbenchmark cosines above, plus the TRT-bank vs one-call check in
   [`hook/tests/test_trt_banks.py`](hook/tests/test_trt_banks.py).
 - v5 and v6: the FA4 FP8 tests above; their output was not saved.
+- v6: needle retrieval passes at 11.5K, 86K and 357K prompt tokens ([`bench/needle.py`](bench/needle.py), depth 50%,
+  greedy, thinking off). This is from session notes; the output was not kept.
+- v6 long-coding run: 45.6 tok/s end to end for 91K tokens, but the game it wrote does not run
+  ([`../longgen/`](../longgen/README.md)).
 - No end-to-end quality gate (GSM8K or BFCL) has been run on v4, v5 or v6. `logs/gsm8k-trt-v4.log` on the
   station is empty.
 

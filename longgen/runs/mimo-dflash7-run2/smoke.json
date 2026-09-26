@@ -1,0 +1,32 @@
+{
+ "file": "runs/mimo-dflash7-run2/tetris.html",
+ "clicked": "Press to Start",
+ "before": {
+  "hud": "TIME 00:00 NEXT SCORE 0 COMBO SCORE 0 LEVEL TIME 00:00 PLAY",
+  "canvas": 2118
+ },
+ "samples": [
+  {
+   "hud": "TIME 00:00 NEXT SCORE 0 COMBO SCORE 0 LEVEL TIME 00:00 PLAY",
+   "canvas": 2118
+  },
+  {
+   "hud": "TIME 00:00 NEXT SCORE 0 COMBO SCORE 0 LEVEL TIME 00:00 PLAY",
+   "canvas": 2118
+  },
+  {
+   "hud": "TIME 00:00 NEXT SCORE 0 COMBO SCORE 0 LEVEL TIME 00:00 PLAY",
+   "canvas": 2118
+  }
+ ],
+ "after": {
+  "hud": "TIME 00:00 NEXT SCORE 0 COMBO SCORE 0 LEVEL TIME 00:00 PLAY",
+  "canvas": 2118
+ },
+ "canvas_changed": false,
+ "hud_changed": false,
+ "errors": [
+  "Unexpected token ',' @ ",
+  "startGame is not defined @ at onclick (file:///data/flash.html:110:47)"
+ ]
+}

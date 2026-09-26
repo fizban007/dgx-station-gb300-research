@@ -21,9 +21,9 @@ are marked as such.
 The GB300 spends under 1% of each forward pass waiting for the sidecar. The design, protocol and failure
 behaviour are in [docs/sidecar-peer-tier.md](docs/sidecar-peer-tier.md).
 
-The later MiMo-V2.6-Pro versions are **unqualified**: no quality gate has been run on them yet. They add
+The later MiMo-V2.6-Pro versions are **unqualified**: no GSM8K or BFCL gate has been run on them yet. They add
 FlashInfer TRT-LLM expert banks that read from HBM, an FP8 KV cache, and DFlash k=3. They reach 4.6–5.0K tok/s
-prefill at 11.5K and up to 51 tok/s single-stream decode.
+prefill at 11.5K, up to 51 tok/s single-stream decode, and 2.4M tokens of KV cache (from 413K).
 
 ### Single-GPU serving
 
@@ -34,8 +34,9 @@ prefill at 11.5K and up to 51 tok/s single-stream decode.
 
 - **Qwen3.8:** vLLM beat SGLang with the same MoE kernel from C8 up (C64: 4,631 vs 3,086–3,555) and at long
   prefill.
-- **MiMo-V2.6-Flash long coding session** ([longgen](longgen/)): 544 tok/s end to end over 62K generated
-  tokens, peaking at 854 tok/s.
+- **Long coding session** ([longgen](longgen/)): MiMo-V2.6-Flash ran 544 tok/s end to end over 62K generated
+  tokens, peaking at 854 tok/s. MiMo-V2.6-Pro on the sidecar lane ran 45.6 tok/s over 91K tokens. Neither game
+  runs as written.
 
 ### b12x on the GB300
 
