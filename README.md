@@ -32,8 +32,8 @@ prefill at 11.5K, up to 51 tok/s single-stream decode, and 2.4M tokens of KV cac
 | **MiMo-V2.6-Flash** ([lane](mimo-v2.6-flash/)) | vLLM nightly 29468dde, DFlash k=7, vllm#58207 KV grouping | 383 at C1, 1,386 at C8, 3,741 at C32, 5,686 at C64 | 43.9K at 8K, 26.7K at 128K | GSM8K-200 97.5% |
 | **Qwen3.8-Flash-Next NVFP4** ([lane](qwen3.8-flash-next/)) | vLLM nightly 7f1a5398, MTP3, FlashInfer TRT-LLM MoE, CUDA graphs to 8,192 tokens | 344 at C1, 2,592 at C16, 5,247 at C64 | 43.6K at 8K, 44.4K at 128K | GSM8K-200 97.5% |
 
-- **Qwen3.8:** vLLM's prefill steps over 1,024 tokens ran without CUDA graphs and cost ~125 ms each in launch
-  overhead. Capturing graphs up to 8,192 tokens cut 8K TTFT from 258 to 188 ms and raised decode at C8–C64. vLLM now
+- **Qwen3.8:** vLLM's prefill steps over 1,024 tokens ran without CUDA graphs. Each took about 125 ms, less than
+  half of it GPU work; the rest was launching ~2,200 kernels from Python. Capturing graphs up to 8,192 tokens cut 8K TTFT from 258 to 188 ms and raised decode at C8–C64. vLLM now
   beats SGLang with the same MoE kernel at every concurrency (C64: 5,247 vs 3,086–3,555).
 - **Long coding session** ([longgen](longgen/)): MiMo-V2.6-Flash ran 544 tok/s end to end over 62K generated
   tokens, peaking at 854 tok/s. MiMo-V2.6-Pro on the sidecar lane ran 45.6 tok/s over 91K tokens. Neither game
