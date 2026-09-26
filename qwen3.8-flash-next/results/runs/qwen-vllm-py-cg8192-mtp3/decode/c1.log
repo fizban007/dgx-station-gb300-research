@@ -1,0 +1,96 @@
+
+New version available: v0.6.2 (current: v0.4.29)
+Upgrade and restart? [Y/n]: Skipping update.
+
+╭──────────────────────────── NVIDIA P2P Override ─────────────────────────────╮
+│ Effective: no                                                                │
+│ Configured file: no (/etc/modprobe.d/nvidia-p2p-override.conf)               │
+│ Runtime: ForceP2P=; RMForceP2PType=; RMPcieP2PType=;                         │
+│ GrdmaPciTopoCheckOverride=; EnableResizableBar=0; DmaRemapPeerMmio=1         │
+│ Suggested modprobe line:                                                     │
+│ options nvidia                                                               │
+│ NVreg_RegistryDwords="ForceP2P=0x11;RMForceP2PType=1;RMPcieP2PType=2;GrdmaPc │
+│ iTopoCheckOverride=1;EnableResizableBar=1"                                   │
+│ Apply requires NVIDIA module reload or reboot after stopping GPU workloads.  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────── Configuration ────────────────────────────────╮
+│ LLM Inference Benchmark                                                      │
+│ Model: qwen38-flash-next @ 127.0.0.1:30006                                   │
+│ Decode concurrency: [1]                                                      │
+│ Decode contexts: ['8k']                                                      │
+│ Request-count: 5 measured + 1 warmup requests per cell | Max tokens: 1024    │
+│ Pre-decode warmup: C=1 max-runnable context for 3s                           │
+│ Prefill: skipped | Sustained decode: 1 cells                                 │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Engine: vLLM 0.30.1rc1.dev48+g7f1a5398e  Models: ['qwen38-flash-next']
+KV cache budget (vLLM metrics): 4,802,194 tokens (group-aware 
+kv_cache_size_tokens; 3389 blocks × 1600 = 5,422,400 ignored)
+Model context length: 262,144 tokens
+Prefill tests: skipped
+Calibrating padding text (run=rtrthjhfqyyv, up to 8k)...
+  8k: 50,480 chars (8,192 prompt tokens via /tokenize)
+  Token targeting: /tokenize exact
+Done.
+
+
+
+llm-decode-bench v0.4.29
+╭─────────────────────────────────── Decode ───────────────────────────────────╮
+│ Burst / E2E Decode                                                           │
+│ Burst / E2E-only mode from --request-count. Aggregate throughput is          │
+│ completed output tokens divided by profiling wall time.                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Aggregate tok/s  + TTFT/ITL
+╭────────────┬────────────╮
+│ ctx \ conc │          1 │
+├────────────┼────────────┤
+│ 8k         │ 344.0 72/3 │
+╰────────────┴────────────╯
+Burst / E2E-only mode: aggregate tok/s = completed output tokens / profiling 
+wall time, using OpenAI stream usage. Prometheus throughput is kept in JSON as 
+server_gen_throughput.
+Per-Request tok/s     
+╭────────────┬───────╮
+│ ctx \ conc │     1 │
+├────────────┼───────┤
+│ 8k         │ 344.0 │
+╰────────────┴───────╯
+Client request latency: 
+p50 / p90 ms            
+╭────────────┬─────────╮
+│ ctx \ conc │       1 │
+├────────────┼─────────┤
+│ 8k         │ 2.9k/3k │
+╰────────────┴─────────╯
+Aggregate cells show dim detail as TTFT ms / ITL ms for the same ctx/conc 
+coordinate. ITL is computed from observed generated tokens, including streams 
+stopped at the measurement boundary; a missing ITL means no stream produced at 
+least two measured output tokens. Per-request tok/s and request latency are 
+shown in separate per-cell matrices. Completion/sample counts and full 
+request-level distributions remain in JSON under request_samples.
+Request-count mode: aggregate tok/s = completed output tokens / profiling wall 
+time. Client ITL=(last_token_time-first_token_time)/(output_tokens-1), user 
+tok/s=1/ITL.
+
+╭────────────────────────────── Primary Summary ───────────────────────────────╮
+│ Primary matrices repeated last so the important numbers are visible without  │
+│ scrolling back through diagnostics.                                          │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Aggregate decode tok/s
+╭────────────┬───────╮
+│ ctx \ conc │     1 │
+├────────────┼───────┤
+│ 8k         │ 344.0 │
+╰────────────┴───────╯
+MTP-normalized decode steps/s
+(accept len)                 
+╭────────────┬──────────────╮
+│ ctx \ conc │            1 │
+├────────────┼──────────────┤
+│ 8k         │ 133.7 (2.57) │
+╰────────────┴──────────────╯
+steps/s = tok/s ÷ accept_len: engine forward passes per second, independent of 
+MTP acceptance, so runs with different acceptance are directly comparable. 
+(accept len) = tokens emitted per engine step.
+
+Results saved to c1.json

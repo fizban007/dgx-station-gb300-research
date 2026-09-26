@@ -10,8 +10,9 @@ median single stream.
 - **Hardware:** one DGX Station GB300 (host "gracie"), GPU `GPU-c146511a-0326-7ddc-4346-998d61a64b34`, TP1. Every
   server ran under `numactl --membind=0` (Grace memory). The RTX PRO 6000 in the same box was not used.
 - **Host memory mode:** runs before 09:09 EDT on 2026-09-25 used the driver's default NUMA mode. The host was then
-  rebooted into driver-managed coherent memory (CDMM). The A/B, TTFT and loop runs came after the reboot. (From
-  session notes and the host's boot record; raw file not kept.)
+  rebooted into driver-managed coherent memory (CDMM). The A/B, TTFT and loop runs came after the reboot, as did every
+  run from the evening of 2026-09-25 (the prefill diagnostics and the `CG=8192` configs). (From session notes and the
+  host's boot record; raw file not kept.)
 - **Checkpoint (all measured runs):** `nvidia/Qwen3.8-Flash-Next-NVFP4` (ModelOpt NVFP4 routed experts; the MTP
   layer's experts are FP8 block-128), mounted as `/models/Qwen3.8-Flash-Next-NVFP4-nvidia`. The local Hugging Face
   download metadata records commit `fc694b54fb0174e0913e6adf86691ef85a4ead47` (file not kept). Every server log
@@ -52,18 +53,29 @@ landed at 95.5–98.0%. Configs without their own gate are marked unqualified.
 | `ttft-rust-uni` | 09-25 11:10 | vLLM | Rust / uni | auto | 3 | env `VLLM_USE_RUST_FRONTEND=1` only | CDMM | unqualified |
 | `ttft-mp-only` | 09-25 10:43 | vLLM | Python / mp | auto | 3 | `--distributed-executor-backend mp` | CDMM | unqualified |
 | `ttft-api4` | 09-25 10:52 | vLLM | Python ×4 / uni | auto | 3 | `--api-server-count 4` | CDMM | unqualified |
+| `diag-rust-mp-cg1024` | 09-25 21:47 | vLLM | Rust / mp | auto → FLASHINFER_TRTLLM | 3 | prefill diagnostics; launcher of that afternoon plus explicit `--enable-prefix-caching` | CDMM | unqualified |
+| `diag-py-uni-cg1024` | 09-25 22:09 | vLLM | Python / uni | auto → FLASHINFER_TRTLLM | 3 | prefill diagnostics and torch profile (`--profiler-config`) | CDMM | unqualified |
+| `diag-py-uni-cg8192` | 09-25 22:17 | vLLM | Python / uni | auto → FLASHINFER_TRTLLM | 3 | CUDA graphs to 8,192 via `EXTRA="--compilation-config ..."`, `--profiler-config`, `VLLM_SERVER_DEV_MODE=1` | CDMM | unqualified |
+| `diag-py-uni-cg1024-dev` | 09-25 22:27 | vLLM | Python / uni | auto → FLASHINFER_TRTLLM | 3 | CUDA graphs to 1,024; correctness baseline; tool parser, `VLLM_SERVER_DEV_MODE=1` | CDMM | unqualified |
+| `cg8192-py-1` | 09-25 22:32 | vLLM | Python / uni | auto → FLASHINFER_TRTLLM | 3 | `CG=8192`, tool parser, `VLLM_SERVER_DEV_MODE=1`, vision off | CDMM | 48/50 |
+| `vllm-py-cg8192-mtp3` | 09-25 22:46 | vLLM | Python / uni | auto → FLASHINFER_TRTLLM | 3 | launcher defaults (`RUST_MP=0 CG=8192 VISION=video`, tool parser) | CDMM | 195/200 |
 | `smoke-<kernel>` | 09-25 08:15–08:50 | vLLM | Python / uni | `--moe-backend <kernel>` | 0 | – | NUMA | 48–49/50 |
 | `sglang-trtllm-mtp3` | 09-24 21:19 | SGLang | – | flashinfer_trtllm | NEXTN 3 | metrics off | NUMA | 194/200 |
 | `sglang-rs-mtp3` | 09-24 22:12 | SGLang | – | auto → flashinfer_trtllm | NEXTN 3 | `--enable-linear-replayssm-spec` | NUMA | 193/200 |
 | `sglang-rs-fipre-mtp3` | 09-24 22:23 | SGLang | – | auto → flashinfer_trtllm | NEXTN 3 | ReplaySSM + `--linear-attn-prefill-backend flashinfer` | NUMA | 194/200 |
 | `sglang-mega-rsfp-mtp3` | 09-25 07:09 | SGLang | – | flashinfer_megamoe | NEXTN 3 | ReplaySSM + FI GDN prefill + `--moe-a2a-backend flashinfer_megamoe --speculative-moe-runner-backend flashinfer_trtllm --speculative-moe-a2a-backend none`, [patched moe_hook.py](patches/moe_hook.diff) | NUMA | 193/200 |
 
-Common vLLM flags come from [launch-qwen-upstream.sh](scripts/launch-qwen-upstream.sh):
+Common vLLM flags come from [launch-qwen-upstream-2026-09-25.sh](scripts/launch-qwen-upstream-2026-09-25.sh), the
+launcher before the evening of 2026-09-25:
 
 - `--max-model-len 262144 --max-num-seqs 128 --max-num-batched-tokens 8192 --gpu-memory-utilization 0.90`
 - `--limit-mm-per-prompt '{"image":0,"video":0}' --reasoning-parser qwen3`
 - MTP adds `--speculative-config '{"method":"mtp","num_speculative_tokens":3}'`.
 - "Rust / mp" means the env `VLLM_USE_RUST_FRONTEND=1` plus `--distributed-executor-backend mp`.
+- The evening runs (`diag-*`, `cg8192-py-1`, `vllm-py-cg8192-mtp3`) add `--enable-prefix-caching`. The last two use
+  the current [launch-qwen-upstream.sh](scripts/launch-qwen-upstream.sh), which adds `CG`, `VISION` and the
+  `qwen3_xml` tool parser and defaults to `RUST_MP=0`. Prefix caching was already on in every earlier vLLM run (vLLM's
+  default; the server logs show `enable_prefix_caching=True`).
 - The 09-24 `vllm-trtllm-mtp3` run predates the `RUST_MP` switch. Its server's non-default arguments match
   `RUST_MP=0 MTP=3` (server log not kept).
 
@@ -87,12 +99,36 @@ mostly the admission wave) in these cells:
 - `vllm-rust-mp-mtp3` C8, C32, C64
 - `ab-base-*` C32
 - `ab-rustmp-*` C8–C32
+- `vllm-py-cg8192-mtp3` C32–C64 and `cg8192-py-1` C32
 - the SGLang ReplaySSM variants at C64
 
 Raw files: `results/runs/qwen-<config>/decode/c<C>.json` (and `.log`). "MTP accept len" is the server-side mean
 accepted length per MTP step.
 
-#### `vllm-rust-mp-mtp3` (chosen config, NUMA mode)
+#### `vllm-py-cg8192-mtp3` (chosen config, CDMM)
+
+| C | aggregate tok/s | per-user tok/s p50 | TTFT p50 ms | TTFT p90 ms | ITL p50 ms | MTP accept len |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 344.0 | 356.4 | 72 | 72 | 2.81 | 2.57 |
+| 2 | 605.5 | 313.7 | 95 | 133 | 3.19 | 2.57 |
+| 4 | 1,001.4 | 260.5 | 120 | 208 | 3.84 | 2.57 |
+| 8 | 1,670.9 | 220.4 | 104 | 289 | 4.54 | 2.58 |
+| 16 | 2,592.3 | 170.8 | 165 | 472 | 5.86 | 2.57 |
+| 32 | 3,785.5 | 124.5 | 197 | 823 | 8.03 | 2.57 |
+| 64 | 5,247.0 | 86.2 | 285 | 1,531 | 11.60 | 2.56 |
+
+#### `cg8192-py-1` (same graph setting, second server, CDMM)
+
+| C | aggregate tok/s | per-user tok/s p50 | TTFT p50 ms | TTFT p90 ms | ITL p50 ms | MTP accept len |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 344.0 | 355.5 | 80 | 80 | 2.81 | 2.54 |
+| 2 | 588.1 | 304.5 | 106 | 142 | 3.28 | 2.51 |
+| 4 | 989.1 | 256.9 | 105 | 239 | 3.89 | 2.55 |
+| 8 | 1,671.9 | 222.1 | 142 | 379 | 4.50 | 2.59 |
+| 16 | 2,591.7 | 169.6 | 175 | 559 | 5.90 | 2.56 |
+| 32 | 3,784.0 | 123.8 | 182 | 910 | 8.07 | 2.57 |
+
+#### `vllm-rust-mp-mtp3` (chosen before the graph fix, NUMA mode)
 
 | C | aggregate tok/s | per-user tok/s p50 | TTFT p50 ms | TTFT p90 ms | ITL p50 ms | MTP accept len |
 |---:|---:|---:|---:|---:|---:|---:|
@@ -187,6 +223,8 @@ prompt token counts matching the target. SGLang used its native `/generate` endp
 
 | Config | 8K tok/s | 32K tok/s | 64K tok/s | 128K tok/s | TTFT p50 8K / 32K / 64K / 128K (s) |
 |---|---:|---:|---:|---:|---|
+| `vllm-py-cg8192-mtp3` | 43,612.1 | 45,124.1 | 45,164.4 | 44,398.9 | 0.19 / 0.73 / 1.45 / 2.95 |
+| `diag-py-uni-cg8192` | 44,061.8 | 45,453.9 | 45,544.1 | 44,512.0 | 0.19 / 0.72 / 1.44 / 2.94 |
 | `vllm-rust-mp-mtp3` | 31,402.5 | 45,844.5 | 46,446.3 | 45,529.8 | 0.26 / 0.71 / 1.41 / 2.87 |
 | `vllm-trtllm-mtp3` | 31,528.4 | 44,846.6 | 45,393.6 | 44,574.5 | 0.26 / 0.73 / 1.44 / 2.94 |
 | `vllm-recipe-mtp3` | 30,382.3 | 44,186.3 | 44,730.0 | 43,773.5 | 0.27 / 0.74 / 1.47 / 2.99 |
@@ -327,6 +365,136 @@ C1 TTFT p50 by config:
 | Python + uni (`ab-base`) | 157, 150 | A/B |
 | Python ×4 API servers | 156, 157 | split test |
 
+## Prefill step cost and CUDA graph sizes (2026-09-25, evening)
+
+At 8K cold prefill, SGLang with ReplaySSM + FlashInfer GDN prefill (`sglang-rs-fipre-mtp3`, 41,571.8 tok/s) was ahead
+of every vLLM config (30,382.3–31,528.4). A prompt-length sweep found the cause, and a CUDA graph setting fixed it.
+All runs in this section used the CDMM host, MTP3 and prefix caching on (`--enable-prefix-caching`).
+
+### Symptom: first-token time moves in ~128 ms stairs
+
+`diag-rust-mp-cg1024` is the launcher as it stood on 2026-09-25: Rust frontend, `mp` executor, and vLLM's default
+CUDA graph sizes, which stop at 1,024 tokens. Cold C1 prefill, 1 warm-up plus 4 requests per point
+([prefill-sweep-rust-mp-pc.jsonl](results/logs/prefill-sweep-rust-mp-pc.jsonl)):
+
+| Prompt tokens | 512 | 1,024 | 2,048 | 4,096 | 6,144 | 8,192 | 12,288 | 16,384 | 32,768 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| TTFT p50 ms | 40 | 41 | 130 | 255 | 258 | 258 | 390 | 394 | 710 |
+
+A boundary probe on the same server ([prefill-boundary-rust-mp-pc.jsonl](results/logs/prefill-boundary-rust-mp-pc.jsonl)):
+
+| Prompt tokens | 1,000 | 1,100 | 1,599 | 1,601 | 3,199 | 3,201 | 4,799 | 4,801 | 6,399 | 6,401 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| TTFT p50 ms | 41 | 132 | 131 | 131 | 130 | 257 | 260 | 261 | 261 | 264 |
+
+- TTFT jumps at 1,024 tokens and again at 3,200. It is flat from 3,201 to 8,192 tokens, which compute alone cannot
+  explain.
+- The Python frontend with the uni executor (`diag-py-uni-cg1024`) shows the same stairs: 39 / 129 / 256 / 259 ms at
+  1,000 / 2,000 / 5,000 / 8,192 tokens
+  ([prefill-boundary-py-uni-pc.jsonl](results/logs/prefill-boundary-py-uni-pc.jsonl)). The frontend is not the cause.
+
+### Cause
+
+**1. Steps above 1,024 tokens run without CUDA graphs.** Each such step launches about 2,200 kernels from Python. The
+torch profiler on `diag-py-uni-cg1024` ([prof_prefill.py](scripts/cg/prof_prefill.py), then
+[prof_gaps.py](scripts/cg/prof_gaps.py) →
+[prefill-profile-cg1024-gaps.log](results/prof/prefill-profile-cg1024-gaps.log)) measured one prefill step per row:
+
+| Step tokens | GPU span ms | Kernels | GPU busy ms | GPU busy |
+|---:|---:|---:|---:|---:|
+| 1,000 (graph) | 98.6 | 2,272 | 28.9 | 29% |
+| 1,800 | 248.9 | 2,261 | 44.7 | 18% |
+| 2,000 | 260.7 | 2,271 | 43.1 | 17% |
+| 3,200 | 251.9 | 2,174 | 64.2 | 25% |
+
+The profiler roughly doubles CPU overhead. Unprofiled, a 1,025–8,192-token step costs about 125–130 ms (the stairs
+above), and the GPU needs well under half of that. The kernel table is in
+[prefill-profile-cg1024-summary.txt](results/prof/prefill-profile-cg1024-summary.txt).
+
+**2. Prefix caching splits prompts at 1,600-token blocks.**
+- The GDN layers force a 1,600-token KV block, because the attention page must be at least the Mamba state page.
+- With prefix caching, vLLM uses `mamba_cache_mode="align"`, where a chunk may only end where the SSM state can be
+  cached. With MTP on, the scheduler also backs off one block (`use_eagle_block_drop`).
+- So a prompt runs first to the last block boundary minus one block, then the rest. The profile's step annotations
+  show 5,000 tokens running as 3,200 + 1,800. By the same rule, 8,192 runs as 6,400 + 1,792 and 32,768 as five
+  steps.
+- We found no way around the split in this image, from reading its source. Its prefill-checkpoint path exists only
+  for Kimi-K3 KDA layers, and its ReplaySSM option is Mamba2-only and excludes speculative decode.
+
+### Fix: piecewise CUDA graphs up to 8,192 tokens
+
+`CG=8192`, the launcher default since 2026-09-25 ([launch-qwen-upstream.sh](scripts/launch-qwen-upstream.sh)), passes
+`--compilation-config` with vLLM's default capture sizes up to 1,024 plus 1,280, 1,600, 1,792, 2,048, 2,560, 3,200,
+3,584, 4,096, 4,800, 5,120, 6,144, 6,400, 7,168, 8,000 and 8,192. The multiples of 1,600 match the split. Every
+prefill step now replays a graph.
+
+- **Memory:** graph capture rose from 1.55 to 5.66 GiB, and KV fell from 4,986,403 to 4,847,538 tokens (−2.8%).
+  (From session notes; those server logs were not kept.)
+
+Cold C1 prefill, TTFT p50 in ms. The CG 1,024 column is `diag-rust-mp-cg1024` or `diag-py-uni-cg1024`; the CG
+8,192 column is `diag-py-uni-cg8192` ([prefill-cg8192-py-uni.jsonl](results/logs/prefill-cg8192-py-uni.jsonl)):
+
+| Prompt tokens | 1,000 | 2,000 | 3,300 | 5,000 | 8,192 | 12,288 | 16,384 | 32,768 | 65,536 | 131,072 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| CG 1,024 | 39–41 | 129–130 | 259 | 256–262 | 258–259 | 390 | 394 | 710 | – | – |
+| CG 8,192 | 42 | 52 | 93 | 129 | 186 | 288 | 365 | 721 | 1,439 | 2,939 |
+
+From 32K up, prefill is compute-bound at about 45K tok/s either way.
+
+**Decode:** the catid recipe on `cg8192-py-1` (CG 8,192, Python + uni, GSM8K-50 48/50) against the A/B's Python +
+uni arms (CG 1,024):
+
+| C | `ab-base-1` / `-2` aggregate tok/s | `cg8192-py-1` aggregate tok/s | `ab-base-1` / `-2` TTFT p50 ms | `cg8192-py-1` TTFT p50 ms |
+|---:|---:|---:|---:|---:|
+| 1 | 332.4 / 332.9 | 344.0 | 157 / 150 | 80 |
+| 2 | 579.6 / 571.7 | 588.1 | 181 / 181 | 106 |
+| 4 | 943.4 / 943.8 | 989.1 | 315 / 177 | 105 |
+| 8 | 1,529.1 / 1,488.2 | 1,671.9 | 323 / 190 | 142 |
+| 16 | 2,203.3 / 2,235.2 | 2,591.7 | 394 / 334 | 175 |
+| 32 | 3,170.8 / 3,253.5 | 3,784.0 | 359 / 350 | 182 |
+
+The C8–C32 gain comes from mixed steps. New prompts' prefill chunks join the running decodes and push a step past
+1,024 tokens; without graphs, that step stalled every stream for about 125 ms.
+
+### Correctness
+
+- **Quality gates:** GSM8K-50 48/50 (`cg8192-py-1`) and GSM8K-200 195/200 (`vllm-py-cg8192-mtp3`).
+- **Teacher-forced prompt logprobs** on real text ([plp.py](scripts/cg/plp.py); [plp_offline.py](scripts/cg/plp_offline.py) →
+  [plp-compare.log](results/cg/plp-compare.log)):
+  - Servers: CG 1,024 is `diag-py-uni-cg1024-dev` ([plp-cg1024-a.json.gz](results/cg/plp-cg1024-a.json.gz)). CG 8,192
+    is `cg8192-py-1` ([plp-cg8192-a.json.gz](results/cg/plp-cg8192-a.json.gz)).
+  - Each prompt was a separate cold request after `/reset_prefix_cache` (both servers ran with
+    `VLLM_SERVER_DEV_MODE=1`).
+  - **Graphs match eager bit for bit at the same step size.** The first 1,899 positions of the 3,000-token prompts
+    are identical between CG 1,024 (eager 3,000-token step) and CG 8,192 (3,200-token graph): mean |Δ logprob|
+    0.0000.
+  - **Changing the step size shifts the numbers, in any config.** 1,900-token prompts differ between configs by mean
+    |Δ| 0.131–0.147 (NLL +0.0065 / +0.0075), because the step runs as a padded 2,048-token graph instead of an eager
+    1,900-token step. Within CG 1,024 alone, the same positions move by 0.123–0.149 (NLL +0.0066 / +0.0091) when
+    they are computed as part of a 3,000-token step. The NVFP4 activations amplify small GEMM-order differences.
+  - **Above 2,048 tokens,** whole-prompt differences between the configs (section A of the log: mean |Δ| 0.039–0.102,
+    NLL within ±0.008) are the same size as the run-to-run differences measured within each config (0.03–0.11; from
+    session notes). A logged rerun is pending.
+- **Run-to-run nondeterminism above the sparse-attention budget** ([nondet.py](scripts/cg/nondet.py); from session
+  notes, logs not kept; a logged rerun on `vllm-py-cg8192-mtp3` is pending):
+  - Three cold runs of the same prompt are identical up to 2,040 tokens on both `diag-py-uni-cg8192` and
+    `diag-py-uni-cg1024-dev`.
+  - From 2,100 tokens on, the top token stays the same, but the other top-5 logprobs differ by up to 1.06–1.81
+    (CG 8,192) and 0.81–1.13 (CG 1,024).
+  - This comes from the QSA sparse attention (`indexer_budget` 2,048), not from the graphs. Prefix-cache hits on
+    prompts over ~3K tokens also change greedy continuations (session notes).
+
+## Needle retrieval (chosen config)
+
+[needle_test.py](scripts/needle_test.py), run by [qual-final.sh](scripts/qual-final.sh) on `vllm-py-cg8192-mtp3`. A
+passphrase sits at 10%, 50% and 90% depth in deterministic filler, with thinking off and temperature 0
+([qual-final.log](results/logs/qual-final.log)).
+
+| Target tokens | Prompt tokens | 10% | 50% | 90% |
+|---:|---:|---|---|---|
+| 125,000 | 113,942 | PASS | PASS | PASS |
+| 250,000 | 227,674 | PASS | PASS | PASS |
+
 ## 128K thinking-loop check
 
 [pp-loop-test.sh](scripts/pp-loop-test.sh) and [pp-loop-test2.sh](scripts/pp-loop-test2.sh) ran on one server with
@@ -344,6 +512,7 @@ the launcher defaults (Rust / mp, MTP3), under CDMM:
 |---|---:|---:|---:|---|
 | `pp0` (vLLM, no penalty) | 16 | 0 | 192/200 | [pp-loop-test.log](results/logs/pp-loop-test.log), [pp-loop-test2.log](results/logs/pp-loop-test2.log) |
 | `pp0.5` (vLLM, presence_penalty 0.5) | 16 | 0 | 192/200 | [pp-loop-test2.log](results/logs/pp-loop-test2.log) |
+| `vllm-py-cg8192-mtp3` (chosen, no penalty) | 8 so far (4 of 8 runs; check still running) | 0 | 195/200 | [qual-final.log](results/logs/qual-final.log) |
 | `sglang-rs-fipre-mtp3` | 8 runs | 3 runs | 194/200 | from session notes; raw file not kept |
 | `sglang-trtllm-mtp3` (SGLang default) | not recorded | 0 | 194/200 | from session notes; raw file not kept |
 
@@ -353,6 +522,7 @@ Raw files: `results/gsm8k/gsm8k-qwen-<config>.json` (per-question booleans inclu
 
 | Config | Correct | Accuracy |
 |---|---:|---:|
+| `vllm-py-cg8192-mtp3` | 195/200 | 97.5% |
 | `vllm-trtllm-mtp3` | 194/200 | 97.0% |
 | `vllm-rust-mp-mtp3` | 193/200 | 96.5% |
 | `vllm-recipe-mtp3` | 191/200 | 95.5% |
@@ -364,6 +534,7 @@ Raw files: `results/gsm8k/gsm8k-qwen-<config>.json` (per-question booleans inclu
 | `sglang-mega-rsfp-mtp3` | 193/200 | 96.5% |
 | `ab-base-1` | 48/50 | 96.0% |
 | `ab-rustmp-1` | 49/50 | 98.0% |
+| `cg8192-py-1` | 48/50 | 96.0% |
 | `smoke-flashinfer_trtllm` | 48/50 | 96.0% |
 | `smoke-flashinfer_cutedsl` | 49/50 | 98.0% |
 | `smoke-flashinfer_cutlass` | 48/50 | 96.0% |
@@ -397,9 +568,10 @@ On 2026-09-24:
 
 ## Scripts without results in this lane
 
-- [needle_test.py](scripts/needle_test.py) and [offload_test.py](scripts/offload_test.py): long-context retrieval and
-  CPU KV-offload checks. Their defaults (`MODEL_NAME=Qwen3.8-27B`, `PORT=5000`) match separate Qwen3.8-27B work on
-  another host. No result files for either exist here, so no needle or offload numbers are reported.
+- [offload_test.py](scripts/offload_test.py): a CPU KV-offload check. Its defaults (`MODEL_NAME=Qwen3.8-27B`,
+  `PORT=5000`) match separate Qwen3.8-27B work on another host. No result file exists here, so no offload numbers are
+  reported. [needle_test.py](scripts/needle_test.py) has the same defaults; [qual-final.sh](scripts/qual-final.sh)
+  overrides them for the needle results above.
 - [launch-qwen-fork.sh](scripts/launch-qwen-fork.sh): see failed runs.
 
 ## Differences from catid's Qwen3.8 page
@@ -424,6 +596,9 @@ The scripts are verbatim snapshots and keep their original absolute paths:
 | Path in the scripts | Where it is here |
 |---|---|
 | `/home/jasonc/research/qwen38` | this lane: [scripts/](scripts/), [patches/](patches/), `results/logs`, `results/runs/{smoke,ttft}-*` |
+| `/home/jasonc/research/qwen38/cg` | [scripts/cg/](scripts/cg/) (tools) and [results/cg/](results/cg/) (data; `plp-*.json` gzipped here) |
+| `/home/jasonc/research/qwen38/vllm-cache/prof` | [results/prof/](results/prof/) (summary table and gap log only) |
+| `/home/jasonc/spark_vllm/qwen38-loop-*` (on the bench client) | not included; the tally lines are in the driver logs |
 | `/home/jasonc/ds41f-exp/bench_decode.sh` | [../bench/](../bench/) |
 | `/home/jasonc/ds41f-exp/bench_prefill.py` | not included: catid's unlicensed file, [linked](https://github.com/catid/dgx_station_benchmarks/blob/ff8a496e5e027bbc462f81643361ef5516072a68/deepseek-v4.1-flash/recipes/bench_prefill.py) |
 | `/home/jasonc/ds41f-exp/runs/qwen-*` | `results/runs/qwen-*` |
@@ -446,3 +621,8 @@ The scripts are verbatim snapshots and keep their original absolute paths:
 - `patches/moe_hook.py.orig`, replaced by [moe_hook.diff](patches/moe_hook.diff).
 - `verify-cdmm.sh`, which belongs to the host memory-mode notes.
 - Caches: `jit-cache/`, `vllm-cache/`, `sglang-cache/`.
+- The torch profiler traces of `diag-py-uni-cg1024` (8.4 MB GPU trace, 0.24 MB frontend trace): over the size limit.
+  The summary table and the gap log derived from them are included.
+- Server logs of the `diag-*` and `cg8192-py-1` servers: the containers were removed before the logs were saved.
+- `cg/README.md`, the station note the launcher's `CG` comment points to. Its content is the "Prefill step cost and
+  CUDA graph sizes" section above.

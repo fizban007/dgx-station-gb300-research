@@ -1,0 +1,5 @@
+step (tokens)                            GPU span ms  kernels  busy ms  busy %  idle gaps ms
+execute_context_1(1800)_generation_0(0)        248.9     2261     44.7     18%         204.9
+execute_context_1(3200)_generation_0(0)        251.9     2174     64.2     25%         188.4
+execute_context_1(2000)_generation_0(0)        260.7     2271     43.1     17%         218.2
+execute_context_1(1000)_generation_0(0)         98.6     2272     28.9     29%          71.1

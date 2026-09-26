@@ -1,0 +1,38 @@
+=== suite 23:00:30
+qwen-vllm-py-cg8192-mtp3: GSM8K 195/200 = 97.5%
+C1 rc=0
+C2 rc=0
+C4 rc=0
+C8 rc=0
+C16 rc=0
+C32 rc=0
+C64 rc=0
+decode                                  1      344.0      356.4       72ms    2.81ms    2.57    0
+decode                                  2      605.5      313.7       95ms    3.19ms    2.57    0
+decode                                  4    1,001.4      260.5      120ms    3.84ms    2.57    0
+decode                                  8    1,670.9      220.4      104ms    4.54ms    2.58    0
+decode                                 16    2,592.3      170.8      165ms    5.86ms    2.57    0
+decode                                 32    3,785.5      124.5      197ms    8.03ms    2.57    0
+decode                                 64    5,247.0       86.2      285ms   11.60ms    2.56    0
+   8192    1    4     0.75    43612.1     0.188     0.188     0.189   43616.9    83    379            32768   0
+  32768    1    4     2.90    45124.1     0.726     0.726     0.727   45125.5    95   1008           131072   0
+  65536    1    4     5.80    45164.4     1.451     1.451     1.453   45165.2    88   1017           262144   0
+ 131072    1    4    11.81    44398.9     2.952     2.952     2.954   44399.3    80   1015           524288   0
+=== needles 23:07:17
+vllm-py-cg8192-mtp3-125000 depth=10% prompt_tokens=113942 time=3s PASS reply='violet-anchor-5817'
+vllm-py-cg8192-mtp3-125000 depth=50% prompt_tokens=113942 time=3s PASS reply='violet-anchor-5817'
+vllm-py-cg8192-mtp3-125000 depth=90% prompt_tokens=113942 time=2s PASS reply='violet-anchor-5817'
+vllm-py-cg8192-mtp3-125000 needle 3/3
+vllm-py-cg8192-mtp3-250000 depth=10% prompt_tokens=227674 time=5s PASS reply='violet-anchor-5817'
+vllm-py-cg8192-mtp3-250000 depth=50% prompt_tokens=227674 time=4s PASS reply='violet-anchor-5817'
+vllm-py-cg8192-mtp3-250000 depth=90% prompt_tokens=227674 time=3s PASS reply='violet-anchor-5817'
+vllm-py-cg8192-mtp3-250000 needle 3/3
+=== 128K loop check 23:07:38
+vllm-py-cg8192-mtp3 run1 C1/128K ok 296.6 tok/s
+vllm-py-cg8192-mtp3 run1 C8/128K ok 1518.1 tok/s
+vllm-py-cg8192-mtp3 run2 C1/128K ok 277.1 tok/s
+vllm-py-cg8192-mtp3 run2 C8/128K ok 1524.5 tok/s
+vllm-py-cg8192-mtp3 run3 C1/128K ok 317.2 tok/s
+vllm-py-cg8192-mtp3 run3 C8/128K ok 1511.4 tok/s
+vllm-py-cg8192-mtp3 run4 C1/128K ok 294.6 tok/s
+vllm-py-cg8192-mtp3 run4 C8/128K ok 1585.3 tok/s

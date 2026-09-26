@@ -1,0 +1,37 @@
+== A: CG=1024 run vs CG=8192 run (whole prompt; each prompt its own cold request)
+       1900@0: NLL 1.1602 vs 1.1677  mean|dlogprob| 0.1470  p99 1.581  max 3.384
+   1900@30000: NLL 0.7672 vs 0.7737  mean|dlogprob| 0.1311  p99 1.695  max 4.134
+       3000@0: NLL 1.0699 vs 1.0654  mean|dlogprob| 0.0388  p99 0.835  max 2.580
+   3000@30000: NLL 0.8132 vs 0.8152  mean|dlogprob| 0.0610  p99 1.304  max 5.045
+       6000@0: NLL 0.9224 vs 0.9262  mean|dlogprob| 0.0787  p99 1.209  max 4.780
+   6000@30000: NLL 0.6345 vs 0.6366  mean|dlogprob| 0.0688  p99 1.271  max 4.320
+       8192@0: NLL 0.8429 vs 0.8358  mean|dlogprob| 0.0804  p99 1.200  max 4.433
+   8192@30000: NLL 0.6303 vs 0.6260  mean|dlogprob| 0.0758  p99 1.256  max 7.299
+      16384@0: NLL 0.7044 vs 0.7031  mean|dlogprob| 0.0847  p99 1.193  max 5.354
+  16384@30000: NLL 0.7638 vs 0.7656  mean|dlogprob| 0.1020  p99 1.463  max 5.318
+== C: first 1,899 positions, same text, different step size
+  offset 0:
+    CG=1024  1900-token step (eager) vs 3000-token step (eager):     NLL 1.1602 vs 1.1668  mean|dlogprob| 0.1490  p99 1.607  max 3.694
+    CG=8192  1900-token step (graph 2048) vs 3000-token step (graph 3200): NLL 1.1677 vs 1.1668  mean|dlogprob| 0.1499  p99 1.568  max 4.231
+    3000-token step, CG=1024 (eager) vs CG=8192 (graph 3200):        NLL 1.1668 vs 1.1668  mean|dlogprob| 0.0000  p99 0.000  max 0.000
+    1900-token step, CG=1024 (eager) vs CG=8192 (graph 2048):        NLL 1.1602 vs 1.1677  mean|dlogprob| 0.1470  p99 1.581  max 3.384
+  offset 30000:
+    CG=1024  1900-token step (eager) vs 3000-token step (eager):     NLL 0.7672 vs 0.7763  mean|dlogprob| 0.1228  p99 1.417  max 3.281
+    CG=8192  1900-token step (graph 2048) vs 3000-token step (graph 3200): NLL 0.7737 vs 0.7763  mean|dlogprob| 0.1257  p99 1.516  max 3.321
+    3000-token step, CG=1024 (eager) vs CG=8192 (graph 3200):        NLL 0.7763 vs 0.7763  mean|dlogprob| 0.0000  p99 0.000  max 0.000
+    1900-token step, CG=1024 (eager) vs CG=8192 (graph 2048):        NLL 0.7672 vs 0.7737  mean|dlogprob| 0.1311  p99 1.695  max 4.134
+== D: greedy 32-token continuations, CG=1024 vs CG=8192 (cold)
+         900@0: identical tokens 32/32, max |dlogprob| before divergence 0.0000
+     900@20000: identical tokens 32/32, max |dlogprob| before divergence 0.0000
+        2000@0: identical tokens 32/32, max |dlogprob| before divergence 0.0000
+    2000@20000: identical tokens 32/32, max |dlogprob| before divergence 0.0000
+        3300@0: identical tokens 32/32, max |dlogprob| before divergence 0.4065
+    3300@20000: identical tokens 32/32, max |dlogprob| before divergence 0.0078
+        5000@0: identical tokens  4/32, max |dlogprob| before divergence 0.1144
+    5000@20000: identical tokens  6/32, max |dlogprob| before divergence 0.1644
+        8192@0: identical tokens 32/32, max |dlogprob| before divergence 0.2317
+    8192@20000: identical tokens 32/32, max |dlogprob| before divergence 0.2892
+       12000@0: identical tokens 20/32, max |dlogprob| before divergence 0.5195
+   12000@20000: identical tokens 32/32, max |dlogprob| before divergence 0.1583
+       16384@0: identical tokens 32/32, max |dlogprob| before divergence 0.7544
+   16384@20000: identical tokens 32/32, max |dlogprob| before divergence 0.0120
