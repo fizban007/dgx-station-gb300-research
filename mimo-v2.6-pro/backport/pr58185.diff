@@ -1,0 +1,142 @@
+diff --git a/tests/basic_correctness/test_cpu_offload.py b/tests/basic_correctness/test_cpu_offload.py
+index a63f1189aaae..7aaa076d9c8f 100644
+--- a/tests/basic_correctness/test_cpu_offload.py
++++ b/tests/basic_correctness/test_cpu_offload.py
+@@ -41,6 +41,18 @@ def test_cpu_offload(disable_pin_memory, disable_uva):
+     )
+ 
+ 
++def test_cpu_offload_uva_caching_pin():
++    # Opt-in: UVA offload pinned through the CachingHostAllocator instead of
++    # the default exact-size cudaHostAlloc. Outputs must match either way.
++    compare_two_settings(
++        model="hmellor/tiny-random-LlamaForCausalLM",
++        arg1=[],
++        arg2=["--cpu-offload-gb", "1"],
++        env1=None,
++        env2={"VLLM_WEIGHT_OFFLOADING_UVA_CACHING_PIN": "1"},
++    )
++
++
+ @pytest.mark.parametrize(
+     ("offload_kwargs", "offloader_type"),
+     [
+diff --git a/vllm/envs.py b/vllm/envs.py
+index 30b3de8d64e6..0d6a4fabf570 100755
+--- a/vllm/envs.py
++++ b/vllm/envs.py
+@@ -304,6 +304,7 @@
+     VLLM_DEBUG_MFU_METRICS: bool = False
+     VLLM_WEIGHT_OFFLOADING_DISABLE_PIN_MEMORY: bool = False
+     VLLM_WEIGHT_OFFLOADING_DISABLE_UVA: bool = False
++    VLLM_WEIGHT_OFFLOADING_UVA_CACHING_PIN: bool = False
+     VLLM_KV_OFFLOAD_MAX_BATCH_DESCRIPTORS: int = 0
+     VLLM_WSL2_ENABLE_PIN_MEMORY: bool = False
+     VLLM_DISABLE_LOG_LOGO: bool = False
+@@ -2079,7 +2080,10 @@ def _resolve_rust_cli_path() -> str | None:
+     "VLLM_DEBUG_MFU_METRICS": lambda: bool(
+         int(os.getenv("VLLM_DEBUG_MFU_METRICS", "0"))
+     ),
+-    # Disable using pytorch's pin memory for CPU offloading.
++    # Disable using pytorch's pin memory for CPU offloading. Applies to the
++    # non-UVA offload path (see VLLM_WEIGHT_OFFLOADING_DISABLE_UVA) and to
++    # VLLM_WEIGHT_OFFLOADING_UVA_CACHING_PIN. The UVA path allocates
++    # exact-size pinned host memory by default, so this has no effect there.
+     "VLLM_WEIGHT_OFFLOADING_DISABLE_PIN_MEMORY": lambda: bool(
+         int(os.getenv("VLLM_WEIGHT_OFFLOADING_DISABLE_PIN_MEMORY", "0"))
+     ),
+@@ -2087,6 +2091,14 @@ def _resolve_rust_cli_path() -> str | None:
+     "VLLM_WEIGHT_OFFLOADING_DISABLE_UVA": lambda: bool(
+         int(os.getenv("VLLM_WEIGHT_OFFLOADING_DISABLE_UVA", "0"))
+     ),
++    # On the UVA offload path, pin weights with Tensor.pin_memory() (PyTorch's
++    # CachingHostAllocator) instead of an exact-size cudaHostAlloc. The caching
++    # allocator rounds each allocation up to a power of two, so host memory
++    # use can exceed --cpu-offload-gb by up to ~2x; in exchange, decode was
++    # measured ~2-3% faster on one GB300 + Grace system. Opt-in.
++    "VLLM_WEIGHT_OFFLOADING_UVA_CACHING_PIN": lambda: bool(
++        int(os.getenv("VLLM_WEIGHT_OFFLOADING_UVA_CACHING_PIN", "0"))
++    ),
+     # Max descriptors per CPU-KV-offload batch-memcpy call. 0 = platform default
+     # (ROCm chunks at 8192, since hipMemcpyBatchAsync faults above that on
+     # rocm 7.14/7.15 when batch copy is optimized; CUDA uncapped). Set >0 to override.
+diff --git a/vllm/model_executor/model_loader/utils.py b/vllm/model_executor/model_loader/utils.py
+index 465703f75983..43536ad0df11 100644
+--- a/vllm/model_executor/model_loader/utils.py
++++ b/vllm/model_executor/model_loader/utils.py
+@@ -234,12 +234,18 @@ def device_loading_context(module: torch.nn.Module, target_device: torch.device)
+                 ).copy_(p.data)
+ 
+             # parameter is UVA offloaded, but was replaced with a new device tensor
+-            # re-offload it to CPU using UVA
++            # re-offload it to CPU using UVA. By default do not pin here: the
++            # CUDA view helper allocates exact-size pinned memory for an
++            # unpinned input, while ``pin_memory=True`` would round the
++            # allocation up to a power of two (see UVAOffloader.wrap_modules).
+             if name in uva_offloaded_parameters and not getattr(
+                 p, "_vllm_is_uva_offloaded", False
+             ):
+                 cpu_data = torch.empty_like(
+-                    p.data, device="cpu", pin_memory=use_pin_memory
++                    p.data,
++                    device="cpu",
++                    pin_memory=use_pin_memory
++                    and envs.VLLM_WEIGHT_OFFLOADING_UVA_CACHING_PIN,
+                 ).copy_(p.data)
+                 p.data = get_accelerator_view_from_cpu_tensor(cpu_data)
+                 p._vllm_is_uva_offloaded = True
+diff --git a/vllm/model_executor/offloader/base.py b/vllm/model_executor/offloader/base.py
+index 2780ecdd08e2..b7179a132da2 100644
+--- a/vllm/model_executor/offloader/base.py
++++ b/vllm/model_executor/offloader/base.py
+@@ -26,6 +26,9 @@ def should_pin_memory() -> bool:
+     Combines the platform capability check with the user override env var.
+     On unified-memory systems (e.g. GH200) pinned memory eats into GPU
+     memory, so users can disable it via VLLM_WEIGHT_OFFLOADING_DISABLE_PIN_MEMORY.
++    The UVA offload path only consults this when
++    VLLM_WEIGHT_OFFLOADING_UVA_CACHING_PIN is set; by default it allocates
++    exact-size pinned memory itself.
+     """
+     return (
+         is_pin_memory_available() and not envs.VLLM_WEIGHT_OFFLOADING_DISABLE_PIN_MEMORY
+diff --git a/vllm/model_executor/offloader/uva.py b/vllm/model_executor/offloader/uva.py
+index 5b76d2a9a1f0..a1eb2c2106f2 100644
+--- a/vllm/model_executor/offloader/uva.py
++++ b/vllm/model_executor/offloader/uva.py
+@@ -52,6 +52,12 @@ def __init__(
+         self.uva_offloading = (
+             is_uva_available() and not envs.VLLM_WEIGHT_OFFLOADING_DISABLE_UVA
+         )
++        # Opt-in: pin UVA weights through the CachingHostAllocator (the
++        # pre-exact-size behavior). Faster decode on some systems, but host
++        # memory is rounded up to a power of two per tensor.
++        self.uva_caching_pin = (
++            self.pin_memory and envs.VLLM_WEIGHT_OFFLOADING_UVA_CACHING_PIN
++        )
+ 
+     def wrap_modules(
+         self,
+@@ -112,12 +118,21 @@ def _maybe_offload_to_cpu(self, module: nn.Module, prefix: str = "") -> nn.Modul
+                     continue
+ 
+             cpu_data = p.data.to(device="cpu")
+-            if self.pin_memory:
+-                cpu_data = cpu_data.pin_memory()
+ 
+             if not self.uva_offloading:
++                if self.pin_memory:
++                    cpu_data = cpu_data.pin_memory()
+                 p.data = cpu_data
+             else:
++                # Do not pin through ``Tensor.pin_memory()`` here. It goes
++                # through the CachingHostAllocator, which rounds every
++                # allocation up to a power of two: a 4.5 GiB expert tensor
++                # occupies 8 GiB of host memory. ``get_cuda_view_from_cpu_tensor``
++                # allocates exact-size mapped pinned memory (``cudaHostAlloc``)
++                # for an unpinned input, so the view is pinned either way and
++                # the host footprint matches the offloaded bytes.
++                if self.uva_caching_pin:
++                    cpu_data = cpu_data.pin_memory()
+                 p.data = get_accelerator_view_from_cpu_tensor(cpu_data)
+                 p._vllm_is_uva_offloaded = True
+ 

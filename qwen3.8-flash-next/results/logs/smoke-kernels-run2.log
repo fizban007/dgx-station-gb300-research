@@ -1,0 +1,21 @@
+=== flashinfer_cutlass  08:35:06
+Using 'FLASHINFER_CUTLASS' NvFp4 MoE backend out of potentia
+sanity: 391
+qwen-smoke-flashinfer_cutlass: GSM8K 48/50 = 96.0%
+decode C  1      147.6 tok/s  ITL p50   6.62 ms  errors 0
+decode C 16     1563.5 tok/s  ITL p50  10.01 ms  errors 0
+decode C 64     5230.8 tok/s  ITL p50  11.87 ms  errors 0
+decode C128     8039.5 tok/s  ITL p50  15.24 ms  errors 0
+prefill   8192    30573.3 tok/s
+prefill  65536    37536.9 tok/s
+=== cutlass  08:42:45
+Using 'VLLM_CUTLASS' NvFp4 MoE backend out of potential back
+sanity: 391
+qwen-smoke-cutlass: GSM8K 48/50 = 96.0%
+decode C  1      104.1 tok/s  ITL p50   9.49 ms  errors 0
+decode C 16     1352.3 tok/s  ITL p50  11.49 ms  errors 0
+decode C 64     4579.5 tok/s  ITL p50  13.58 ms  errors 0
+decode C128     7133.5 tok/s  ITL p50  17.31 ms  errors 0
+prefill   8192    26039.0 tok/s
+prefill  65536    32036.7 tok/s
+=== done 08:50:12

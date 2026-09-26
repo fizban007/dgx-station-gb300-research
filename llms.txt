@@ -1,0 +1,34 @@
+# DGX Station GB300 serving research
+
+> Measured LLM serving results from one NVIDIA DGX Station GB300 (SM 10.3, ~250 GiB HBM, Grace LPDDR5X over NVLink-C2C) plus an RTX PRO 6000 Blackwell Max-Q (SM 12.0, 96 GB, PCIe) in the same host, 2026-09-23..25. Models: DeepSeek-V4.1-Flash, MiMo-V2.6-Pro, MiMo-V2.6-Flash, Qwen3.8-Flash-Next. The main technique is an expert "sidecar": MoE experts that do not fit in GB300 HBM live on, and are computed by, the RTX PRO 6000; the GB300 exchanges only the affected token rows through pinned host memory inside CUDA graphs.
+
+How to use this repository as an agent:
+- Every quoted number is one row in data/results.jsonl (or data/results.csv). Rows have a fixed schema (data/README.md), and each row cites the raw file it came from (`source`). Filter on `lane`, `config`, `benchmark` and `metric`.
+- `qualified: false` means the configuration never passed a quality gate. `source: null` means the value came from session notes, and the raw output was not kept. Rows whose `config` starts with `external:` are third-party published numbers.
+- catid's DeepSeek-V4.1 numbers are from two DGX Stations; do not compare them with single-GPU numbers as equals. b12x conclusions apply only to the model and quantization mix measured.
+- Scripts are verbatim snapshots with station-specific absolute paths (/home/jasonc/research/<lane> = <lane dir> in this repo) and GPU UUIDs.
+
+## Data
+
+- [All results, JSONL](data/results.jsonl): one measurement per row, every lane
+- [All results, CSV](data/results.csv): the same rows
+- [Schema and benchmark definitions](data/README.md)
+
+## Lanes
+
+- [DeepSeek-V4.1-Flash](deepseek-v4.1-flash/README.md): Al-ENGR v20 reproduced, overnight b12x residency experiments, the b12x-on-GB300 findings, and M3
+- [DeepSeek-V4.1-Flash M3: MegaMoE + RTX PRO 6000 sidecar](deepseek-v4.1-flash/m3/README.md) ([details](deepseek-v4.1-flash/m3/DETAILS.md))
+- [MiMo-V2.6-Pro: HBM + RTX PRO 6000 sidecar + Grace](mimo-v2.6-pro/README.md) ([details](mimo-v2.6-pro/DETAILS.md))
+- [MiMo-V2.6-Flash: vLLM + DFlash](mimo-v2.6-flash/README.md) ([details](mimo-v2.6-flash/DETAILS.md))
+- [Qwen3.8-Flash-Next NVFP4: vLLM vs SGLang, MoE kernels, MTP](qwen3.8-flash-next/README.md) ([details](qwen3.8-flash-next/DETAILS.md))
+- [Long-coding generation test](longgen/README.md)
+
+## Design and environment
+
+- [Sidecar (peer tier) design and protocol](docs/sidecar-peer-tier.md)
+- [Station hardware, memory mode, host gotchas](docs/station.md)
+- [Benchmark harness](bench/README.md)
+
+## Optional
+
+- [NOTICE: third-party files and licenses](NOTICE)

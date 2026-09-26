@@ -1,0 +1,8 @@
+target=http://127.0.0.1:30000 points=4 warmup=1 flush_cache=True timeout=1800s seed=1234 output=/home/jasonc/ds41f-exp/runs/A-fi-tuned/prefill/prefill.jsonl label='A-fi-tuned'
+server: (no /get_model_info or /get_server_info)
+    isl conc    n   wall_s  agg_tok/s ttft_mean  ttft_p50  ttft_p99 req_tok/s util%      W metrics_prompt_d err
+  16384    1    4    13.23     4952.7     3.308     3.313     3.319    4952.8    43    371            65536   0
+  32768    1    4    27.06     4844.4     6.764     6.752     6.904    4845.4    43    370           131072   0
+  65536    1    4    57.61     4550.3    14.402    14.395    14.434    4550.3    44    369           262144   0
+ 131072    1    4   123.78     4235.7    30.945    30.943    30.962    4235.7    47    374           524288   0
+done.

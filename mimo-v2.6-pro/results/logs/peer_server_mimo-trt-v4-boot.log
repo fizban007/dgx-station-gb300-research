@@ -1,0 +1,18 @@
+layer 1: 95 peer experts prepared, 27.0 GiB allocated, 107s
+layer 20: 95 peer experts prepared, 30.5 GiB allocated, 109s
+layer 10: 76 peer experts prepared, 47.6 GiB allocated, 135s
+layer 30: 63 peer experts prepared, 59.2 GiB allocated, 185s
+layer 50: 58 peer experts prepared, 68.2 GiB allocated, 190s
+layer 40: 57 peer experts prepared, 70.3 GiB allocated, 191s
+layer 60: 54 peer experts prepared, 78.5 GiB allocated, 196s
+layer 69: 42 peer experts prepared, 92.7 GiB allocated, 224s
+prepared 69 layers (4829 experts) in 243s; 93.1 GiB allocated
+captured 966 graphs; 93.1 GiB allocated, 0.7 GiB free
+selftest layer 1 rows 3: cos 0.99999 rel 0.0063
+selftest layer 1 rows 100: cos 1.00012 rel 0.0105
+selftest layer 35 rows 3: cos 0.99970 rel 0.0248
+selftest layer 35 rows 100: cos 0.99968 rel 0.0251
+selftest layer 69 rows 3: cos 0.99984 rel 0.0186
+selftest layer 69 rows 100: cos 0.99988 rel 0.0173
+serving
+served 2000 peer layer calls, mean 2030.4 us, mean rows 2248.7

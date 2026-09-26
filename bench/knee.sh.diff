@@ -1,0 +1,24 @@
+--- a/recipes/dgx-station-gb300/deepseek-v4.1-flash-vllm-uva-dspark/scripts/knee.sh (J-M-Recipes/recipes@dffd01cc)
++++ b/bench/knee.sh
+@@ -3,11 +3,11 @@
+ set -euo pipefail
+ TAG="${1:-off60}"
+ python3 - "$TAG" <<'PY'
+-import json,time,urllib.request,concurrent.futures as cf,sys,statistics
++import os,json,time,urllib.request,concurrent.futures as cf,sys,statistics
+ tag=sys.argv[1]
+-B="http://127.0.0.1:30006/v1/chat/completions"
++B="http://127.0.0.1:"+os.environ.get("PORT","30006")+"/v1/chat/completions"
+ def one(i,n=192):
+-    body={"model":"dsv41-flash-uva","messages":[{"role":"user","content":f"Write a detailed paragraph about the number {i}, its history and uses. No lists."}],"max_tokens":n,"temperature":0,"chat_template_kwargs":{"thinking":False},"ignore_eos":True}
++    body={"model":os.environ.get("MODEL_NAME","dsv41-flash-uva"),"messages":[{"role":"user","content":f"Write a detailed paragraph about the number {i}, its history and uses. No lists."}],"max_tokens":n,"temperature":0,"chat_template_kwargs":{"thinking":False},"ignore_eos":True}
+     r=json.load(urllib.request.urlopen(urllib.request.Request(B,data=json.dumps(body).encode(),headers={"Content-Type":"application/json"}),timeout=900))
+     return r["usage"]["completion_tokens"]
+ one(999,16)  # warm
+@@ -21,5 +21,5 @@
+     agg=statistics.mean(runs)
+     out.append((c,agg,agg/c))
+     print(f"[{tag}] conc={c:2d}: {agg:7.1f} agg tok/s  {agg/c:6.2f} per-stream  (runs {runs[0]:.1f}/{runs[1]:.1f})",flush=True)
+-json.dump({"tag":tag,"rows":out,"ts":time.strftime("%Y-%m-%dT%H:%M:%S")},open(f"/home/milo/dsv41/knee-{tag}.json","w"))
++json.dump({"tag":tag,"rows":out,"ts":time.strftime("%Y-%m-%dT%H:%M:%S")},open(f"/home/jasonc/research/upstream/logs/knee-{tag}.json","w"))
+ PY

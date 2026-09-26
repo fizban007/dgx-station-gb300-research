@@ -1,0 +1,31 @@
+=== flashinfer_trtllm  08:15:59
+Using 'FLASHINFER_TRTLLM' NvFp4 MoE backend out of potential
+sanity: 391
+qwen-smoke-flashinfer_trtllm: GSM8K 48/50 = 96.0%
+decode C  1      203.1 tok/s  ITL p50   4.82 ms  errors 0
+decode C 16     2238.6 tok/s  ITL p50   6.97 ms  errors 0
+decode C 64     6022.4 tok/s  ITL p50  10.16 ms  errors 0
+decode C128     8966.6 tok/s  ITL p50  13.74 ms  errors 0
+prefill   8192    32056.2 tok/s
+prefill  65536    43876.0 tok/s
+=== flashinfer_cutedsl  08:22:21
+Using 'FLASHINFER_CUTEDSL' NvFp4 MoE backend out of potentia
+sanity: 391
+qwen-smoke-flashinfer_cutedsl: GSM8K 49/50 = 98.0%
+decode C  1      180.4 tok/s  ITL p50   5.39 ms  errors 0
+decode C 16     1778.1 tok/s  ITL p50   8.77 ms  errors 0
+decode C 64     4620.3 tok/s  ITL p50  13.29 ms  errors 0
+decode C128     7042.0 tok/s  ITL p50  17.59 ms  errors 0
+prefill   8192    26448.2 tok/s
+prefill  65536    41357.0 tok/s
+=== flashinfer_cutlass  08:29:34
+flashinfer_cutlass: server exited
+(EngineCore pid=361) ValueError: Free memory on device cuda:0 (205.97/249.5 GiB) on startup is less than desired GPU memory utilization (0.9, 224.55 GiB). Decrease GPU memory utilization or reduce GPU memory used by other processes.
+(APIServer pid=1)     raise RuntimeError(
+(APIServer pid=1) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+=== cutlass  08:30:16
+cutlass: server exited
+(EngineCore pid=361) ValueError: Free memory on device cuda:0 (205.97/249.5 GiB) on startup is less than desired GPU memory utilization (0.9, 224.55 GiB). Decrease GPU memory utilization or reduce GPU memory used by other processes.
+(APIServer pid=1)     raise RuntimeError(
+(APIServer pid=1) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+=== done 08:30:51

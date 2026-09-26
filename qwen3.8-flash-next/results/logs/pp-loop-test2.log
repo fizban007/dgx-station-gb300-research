@@ -1,0 +1,32 @@
+pp0 run3 C1/128K ok 283.0 tok/s
+pp0 run3 C8/128K ok 1529.6 tok/s
+pp0 run4 C1/128K ok 287.0 tok/s
+pp0 run4 C8/128K ok 1564.7 tok/s
+pp0 run5 C1/128K ok 292.0 tok/s
+pp0 run5 C8/128K ok 1540.9 tok/s
+pp0 run6 C1/128K ok 279.5 tok/s
+pp0 run6 C8/128K ok 1538.1 tok/s
+pp0 run7 C1/128K ok 283.1 tok/s
+pp0 run7 C8/128K ok 1539.1 tok/s
+pp0 run8 C1/128K ok 275.4 tok/s
+pp0 run8 C8/128K ok 1546.3 tok/s
+=== presence_penalty 0.5 via proxy  10:27:00  {"object":"list","data":[{"id":"qwen38-flash-next","object":
+qwen-pp0.5: GSM8K 192/200 = 96.0%
+pp0.5 run1 C1/128K ok 283.5 tok/s
+pp0.5 run1 C8/128K ok 1475.6 tok/s
+pp0.5 run2 C1/128K ok 278.8 tok/s
+pp0.5 run2 C8/128K ok 1491.1 tok/s
+pp0.5 run3 C1/128K ok 298.1 tok/s
+pp0.5 run3 C8/128K ok 1498.5 tok/s
+pp0.5 run4 C1/128K ok 282.4 tok/s
+pp0.5 run4 C8/128K ok 1498.1 tok/s
+pp0.5 run5 C1/128K ok 280.7 tok/s
+pp0.5 run5 C8/128K ok 1485.2 tok/s
+pp0.5 run6 C1/128K ok 278.4 tok/s
+pp0.5 run6 C8/128K ok 1451.9 tok/s
+pp0.5 run7 C1/128K ok 291.9 tok/s
+pp0.5 run7 C8/128K ok 1480.4 tok/s
+pp0.5 run8 C1/128K ok 281.6 tok/s
+pp0.5 run8 C8/128K ok 1459.8 tok/s
+proxy stats: {"penalty": 0.5, "injected": 321, "passthrough": 0}
+=== done 10:39:35

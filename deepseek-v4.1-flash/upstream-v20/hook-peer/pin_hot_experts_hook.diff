@@ -1,0 +1,61 @@
+--- a/recipes/dgx-station-gb300/deepseek-v4.1-flash-vllm-uva-dspark/results/2026-09-17-e2b-pin-hot-experts-v15/hook/pin_hot_experts_hook.py (J-M-Recipes/recipes@dffd01cc)
++++ b/deepseek-v4.1-flash/upstream-v20/hook-peer/pin_hot_experts_hook.py
+@@ -616,6 +616,31 @@
+     )
+ 
+ 
++_PEER_TIER = None
++_PEER_MIN_TOKENS = int(os.environ.get("PIN_PEER_MIN_TOKENS", "1"))
++
++
++def _peer_tier(device):
++    """Experimental peer tier, enabled by PIN_PEER=1 (sidecar must be serving)."""
++    global _PEER_TIER
++    if os.environ.get("PIN_PEER") != "1":
++        return None
++    if _PEER_TIER is None:
++        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
++        from peer_tier import PeerTier
++        _PEER_TIER = PeerTier(device)
++        _LOG(f"peer tier on: max_tokens={_PEER_TIER.max_tokens}")
++    return _PEER_TIER
++
++
++def _maybe_slice_n(t, n):
++    if t is None:
++        return None
++    if t.ndim == 1 and t.shape[0] == E:
++        return t[:n]
++    return t
++
++
+ def invoke_f4_from_state(
+     st: PinState,
+     output,
+@@ -638,6 +663,26 @@
+     T = ids.shape[0]
+     hidden = output.shape[-1]
+     hot_ids, cold_ids = split_ids(ids, st.row_map)
++    peer = _peer_tier(output.device)
++    if (peer is not None and _PEER_MIN_TOKENS <= T <= peer.max_tokens
++            and x_scale is not None):
++        # Experimental: cold rows are resident on, and computed by, the peer GPU.
++        perm = torch.where(hot_ids >= 0, hot_ids,
++                           torch.where(cold_ids >= 0, cold_ids + st.n_hot, -1)).to(torch.int32)
++
++        def hot_call():
++            call_routed(
++                ids=hot_ids, w1=st.hot["w1"], s1=st.hot["s1"], b1=st.hot.get("b1"),
++                a1=_maybe_slice_n(gemm1_alpha, st.n_hot), beta1=_maybe_slice_n(gemm1_beta, st.n_hot),
++                clamp1=_maybe_slice_n(gemm1_clamp, st.n_hot), w2=st.hot["w2"], s2=st.hot["s2"],
++                b2=st.hot.get("b2"), n_exp=st.n_hot, x_quant=x_quant, x_scale=x_scale,
++                wts=topk_weights, topk=topk, activation_type=activation_type, tune_max=tune_max,
++                do_finalize=True, output=output, intermediate_size=intermediate_size,
++            )
++
++        peer.run(output, x_quant, x_scale, perm, topk_weights, cold_start=st.n_hot,
++                 layer=st.idx, hot_call=hot_call)
++        return output
+ 
+     def _maybe_slice(t, n):
+         if t is None:

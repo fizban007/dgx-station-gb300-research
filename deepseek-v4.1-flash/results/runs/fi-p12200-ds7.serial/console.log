@@ -1,0 +1,177 @@
+INFO 09-23 23:57:07 [__init__.py:112] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+(APIServer pid=510484) INFO 09-23 23:57:07 [api_utils.py:347] 
+(APIServer pid=510484) INFO 09-23 23:57:07 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=510484) INFO 09-23 23:57:07 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.1.dev21505+ge77be2251.d20260924
+(APIServer pid=510484) INFO 09-23 23:57:07 [api_utils.py:347]   █▄█▀ █     █     █     █  model   /home/jasonc/models/DeepSeek-V4.1-Flash
+(APIServer pid=510484) INFO 09-23 23:57:07 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=510484) INFO 09-23 23:57:07 [api_utils.py:347] 
+(APIServer pid=510484) INFO 09-23 23:57:07 [api_utils.py:286] non-default args: {'model_tag': '/home/jasonc/models/DeepSeek-V4.1-Flash', 'host': '127.0.0.1', 'port': 30000, 'model': '/home/jasonc/models/DeepSeek-V4.1-Flash', 'tokenizer_mode': 'deepseek_v41', 'dtype': 'bfloat16', 'max_model_len': 262144, 'served_model_name': ['DeepSeek-V4.1-Flash'], 'generation_config': 'vllm', 'load_format': 'safetensors', 'attention_backend': 'B12X', 'block_size': 256, 'kv_cache_memory_bytes': 4294967296, 'enable_prefix_caching': True, 'language_model_only': True, 'max_num_batched_tokens': 8192, 'max_num_seqs': 64, 'max_cudagraph_capture_size': 256, 'moe_backend': 'flashinfer_trtllm', 'linear_backend': 'b12x', 'speculative_config': {'method': 'dspark', 'num_speculative_tokens': 7, 'attention_backend': 'B12X', 'draft_sample_method': 'greedy', 'rejection_sample_method': 'standard', 'enable_adaptive_verification': True}, 'compilation_config': {'mode': None, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': None, 'splitting_ops': None, 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': None, 'compile_ranges_endpoints': None, 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': None, 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': None, 'pass_config': {}, 'max_cudagraph_capture_size': None, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': None, 'static_all_moe_layers': []}, 'engram_config': EngramConfig(cpu_offload=False, embedding_across_dp=False, dp_shared_memory=False, table_memory='disk', disk_resident_scales=False, projection_tp=False), 'expert_residency_config': ExpertResidencyConfig(profile_path=None, workload='default', profile_directory=None, hbm_reserve_gb=12.0, grace_gb=None, grace_reserve_gb=16.0, min_hot_experts=None, max_hot_experts=None, shared_workspace=False, kernel='flashinfer', hot_experts=305), 'kernel_config': KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=[], fused_add_rms_norm=[], gelu_and_mul_sparse=[]), enable_flashinfer_autotune=False, enable_b12x_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)}
+(APIServer pid=510484) WARNING 09-23 23:57:07 [envs.py:2399] Unknown vLLM environment variable detected: VLLM_EXP_RESIDENCY_PROFILE
+(APIServer pid=510484) INFO 09-23 23:57:07 [config.py:852] Detected quantization_config.scale_fmt=ue8m0; enabling UE8M0 for DeepGEMM.
+(APIServer pid=510484) INFO 09-23 23:57:07 [model.py:693] Resolved architecture: DeepseekV41ForCausalLM
+(APIServer pid=510484) INFO 09-23 23:57:07 [model.py:2054] Using max model len 262144
+(APIServer pid=510484) INFO 09-23 23:57:08 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(APIServer pid=510484) INFO 09-23 23:57:08 [model.py:901] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(APIServer pid=510484) INFO 09-23 23:57:08 [model.py:693] Resolved architecture: DeepseekV41ForCausalLM
+(APIServer pid=510484) INFO 09-23 23:57:08 [model.py:2054] Using max model len 1048576
+(APIServer pid=510484) INFO 09-23 23:57:16 [speculative.py:1807] Overriding draft model max model len from 1048576 to 262144
+(APIServer pid=510484) INFO 09-23 23:57:16 [scheduler.py:385] Chunked prefill is enabled with max_num_batched_tokens=8192.
+(APIServer pid=510484) INFO 09-23 23:57:16 [vllm.py:1434] Resolved Engram configuration: EngramConfig(cpu_offload=False, embedding_across_dp=False, dp_shared_memory=False, table_memory='disk', disk_resident_scales=False, projection_tp=False)
+(APIServer pid=510484) INFO 09-23 23:57:16 [vllm.py:928] Auto-enabling VLLM_USE_BREAKABLE_CUDAGRAPH=1. Set VLLM_USE_BREAKABLE_CUDAGRAPH=0 to opt out.
+(APIServer pid=510484) INFO 09-23 23:57:16 [kernel.py:430] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=510484) INFO 09-23 23:57:16 [compilation.py:336] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=510582) INFO 09-23 23:57:22 [__init__.py:112] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+(EngineCore pid=510582) INFO 09-23 23:57:22 [core.py:123] Initializing a V1 LLM engine (v0.1.dev21505+ge77be2251.d20260924) with config: model='/home/jasonc/models/DeepSeek-V4.1-Flash', speculative_config=SpeculativeConfig(method='dspark', model='/home/jasonc/models/DeepSeek-V4.1-Flash', num_spec_tokens=7), tokenizer='/home/jasonc/models/DeepSeek-V4.1-Flash', skip_tokenizer_init=False, tokenizer_mode=deepseek_v41, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=262144, download_dir=None, load_format=safetensors, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=deepseek_v41_fp8, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=DeepSeek-V4.1-Flash, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all', '+quant_fp8', '+quant_fp8'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 256, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=False, enable_b12x_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='flashinfer_trtllm', sparse_indexer_topk_backend='auto', linear_backend='b12x', linear_backend_per_quant=None)
+(EngineCore pid=510582) INFO 09-23 23:57:23 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(EngineCore pid=510582) INFO 09-23 23:57:23 [parallel_state.py:1859] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_cb608a4f2304478b80628d555c459bda backend=nccl
+(EngineCore pid=510582) INFO 09-23 23:57:23 [parallel_state.py:2299] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank 0, EPLB rank N/A
+(EngineCore pid=510582) INFO 09-23 23:57:23 [gpu_worker.py:472] Using V2 Model Runner
+(EngineCore pid=510582) INFO 09-23 23:57:24 [model_runner.py:412] Loading model from scratch...
+(EngineCore pid=510582) INFO 09-23 23:57:25 [mxfp4.py:458] Using 'FLASHINFER_TRTLLM_MXFP4_MXFP8' Mxfp4 MoE backend.
+(EngineCore pid=510582) WARNING 09-23 23:57:27 [compilation.py:1361] Op 'quant_fp8' not present in model, enabling with '+quant_fp8' has no effect
+(EngineCore pid=510582) INFO 09-23 23:57:28 [weight_utils.py:1058] Filesystem type for checkpoints: XFS. Checkpoint size: 286.12 GiB. Available RAM: 408.95 GiB.
+(EngineCore pid=510582) INFO 09-23 23:57:28 [weight_utils.py:1081] Auto-prefetch is disabled because the filesystem (XFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=510582) Loading safetensors checkpoint shards:   0% Completed | 0/46 [00:00<?, ?it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:   4% Completed | 2/46 [00:00<00:03, 11.65it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:   9% Completed | 4/46 [00:01<00:23,  1.81it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  11% Completed | 5/46 [00:02<00:26,  1.57it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  13% Completed | 6/46 [00:03<00:28,  1.41it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  15% Completed | 7/46 [00:04<00:29,  1.32it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  17% Completed | 8/46 [00:05<00:29,  1.28it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  20% Completed | 9/46 [00:06<00:30,  1.23it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  22% Completed | 10/46 [00:07<00:30,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  24% Completed | 11/46 [00:07<00:29,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  26% Completed | 12/46 [00:08<00:28,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  28% Completed | 13/46 [00:09<00:27,  1.18it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  30% Completed | 14/46 [00:10<00:27,  1.18it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  33% Completed | 15/46 [00:11<00:26,  1.18it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  35% Completed | 16/46 [00:12<00:25,  1.18it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  37% Completed | 17/46 [00:13<00:24,  1.18it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  39% Completed | 18/46 [00:13<00:23,  1.20it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  41% Completed | 19/46 [00:14<00:22,  1.20it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  43% Completed | 20/46 [00:15<00:21,  1.20it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  46% Completed | 21/46 [00:16<00:21,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  48% Completed | 22/46 [00:17<00:20,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  50% Completed | 23/46 [00:18<00:19,  1.20it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  52% Completed | 24/46 [00:18<00:18,  1.20it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  54% Completed | 25/46 [00:19<00:17,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  57% Completed | 26/46 [00:20<00:16,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  59% Completed | 27/46 [00:21<00:15,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  61% Completed | 28/46 [00:22<00:15,  1.20it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  63% Completed | 29/46 [00:23<00:14,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  65% Completed | 30/46 [00:23<00:13,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  67% Completed | 31/46 [00:24<00:12,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  70% Completed | 32/46 [00:25<00:11,  1.18it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  72% Completed | 33/46 [00:26<00:11,  1.17it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  74% Completed | 34/46 [00:27<00:10,  1.18it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  76% Completed | 35/46 [00:28<00:09,  1.17it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  78% Completed | 36/46 [00:29<00:08,  1.16it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  80% Completed | 37/46 [00:29<00:07,  1.17it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  83% Completed | 38/46 [00:30<00:06,  1.18it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  85% Completed | 39/46 [00:31<00:05,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  87% Completed | 40/46 [00:32<00:05,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  89% Completed | 41/46 [00:33<00:04,  1.19it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  91% Completed | 42/46 [00:34<00:03,  1.17it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  93% Completed | 43/46 [00:34<00:01,  1.57it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  96% Completed | 44/46 [00:34<00:01,  1.95it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  98% Completed | 45/46 [00:34<00:00,  2.36it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards: 100% Completed | 46/46 [00:34<00:00,  2.78it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards: 100% Completed | 46/46 [00:34<00:00,  1.32it/s]
+(EngineCore pid=510582) 
+(EngineCore pid=510582) INFO 09-23 23:58:03 [default_loader.py:510] Loading weights took 35.80 seconds
+(EngineCore pid=510582) INFO 09-23 23:58:04 [mxfp4.py:2002] Using MoEPrepareAndFinalizeNoDPEPModular
+(EngineCore pid=510582) INFO 09-23 23:58:04 [mxfp4.py:2003] Using TrtLlmMxfp4ResidencyExperts
+[rank0]:[W923 23:58:16.193640903 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 25165824, total: 267898585088).
+[rank0]:[W923 23:58:26.951243107 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 12058624, total: 267898585088).
+[rank0]:[W923 23:58:39.344820750 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 27197440, total: 267898585088).
+[rank0]:[W923 23:58:43.494527842 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 25034752, total: 267898585088).
+[rank0]:[W923 23:58:44.364995739 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 15532032, total: 267898585088).
+(EngineCore pid=510582) INFO 09-23 23:58:45 [eagle3_utils.py:27] Using Eagle3 auxiliary layers from config: (37, 38, 39)
+(EngineCore pid=510582) INFO 09-23 23:58:45 [vllm.py:1434] Resolved Engram configuration: EngramConfig(cpu_offload=False, embedding_across_dp=False, dp_shared_memory=False, table_memory='disk', disk_resident_scales=False, projection_tp=False)
+(EngineCore pid=510582) INFO 09-23 23:58:45 [kernel.py:430] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=510582) INFO 09-23 23:58:45 [compilation.py:336] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=510582) INFO 09-23 23:58:46 [weight_utils.py:704] Safetensors index filter selected 3/48 checkpoint shards.
+(EngineCore pid=510582) INFO 09-23 23:58:46 [weight_utils.py:1058] Filesystem type for checkpoints: XFS. Checkpoint size: 7.39 GiB. Available RAM: 385.08 GiB.
+(EngineCore pid=510582) Loading safetensors checkpoint shards:   0% Completed | 0/3 [00:00<?, ?it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  33% Completed | 1/3 [00:00<00:00,  3.76it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards:  67% Completed | 2/3 [00:00<00:00,  3.90it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards: 100% Completed | 3/3 [00:00<00:00,  3.88it/s]
+(EngineCore pid=510582) Loading safetensors checkpoint shards: 100% Completed | 3/3 [00:00<00:00,  3.87it/s]
+(EngineCore pid=510582) 
+(EngineCore pid=510582) INFO 09-23 23:58:46 [dspark.py:709] DSpark draft model loaded: 97 params
+(EngineCore pid=510582) INFO 09-23 23:58:46 [default_loader.py:510] Loading weights took 0.78 seconds
+[rank0]:[W923 23:58:47.829759647 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 10027008, total: 267898585088).
+(EngineCore pid=510582) INFO 09-23 23:58:47 [model_runner.py:444] Model loading took 231.71 GiB memory and 83.786985 seconds
+(EngineCore pid=510582) INFO 09-23 23:58:48 [topk_topp_sampler.py:80] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=510582) INFO 09-23 23:58:48 [utils.py:405] Using BLHNC KV cache layout.
+(EngineCore pid=510582) INFO 09-23 23:58:52 [b12x_prepare.py:594] b12x weights preparation uses 0 compiler workers
+b12x planning sequence.embedding: 0/5313 ready, candidates 0/1 prepared, 0 measured, 0 cached, 0 compilations, 0:02
+b12x planning norm.mhc: 0/5313 ready, candidates 0/467 prepared, 0 measured, 0 cached, 0 compilations, 0:02
+b12x planning norm.mhc: 0/5313 ready, candidates 0/2843 prepared, 0 measured, 0 cached, 0 compilations, 0:12
+b12x planning norm.mhc: 0/5313 ready, candidates 0/5219 prepared, 0 measured, 0 cached, 0 compilations, 0:23
+b12x planning gemm.bf16_gemv: 0/5313 ready, candidates 0/6 prepared, 0 measured, 0 cached, 0 compilations, 0:33
+b12x planning norm.mhc: 0/5313 ready, candidates 0/2005 prepared, 0 measured, 0 cached, 0 compilations, 0:43
+b12x planning norm.mhc: 0/5313 ready, candidates 0/5219 prepared, 0 measured, 0 cached, 0 compilations, 0:53
+b12x planning norm.mhc: 0/5313 ready, candidates 0/865 prepared, 0 measured, 0 cached, 0 compilations, 1:03
+b12x planning gemm.bf16_vocab_projection: 0/5313 ready, candidates 0/1 prepared, 0 measured, 0 cached, 0 compilations, 1:04
+b12x planning gemm.wo_projection: 0/5313 ready, candidates 0/1 prepared, 0 measured, 0 cached, 0 compilations, 1:04
+b12x selecting sequence.embedding: 0/5313 ready, candidates 0/1 prepared, 0 measured, 0 cached, 0 compilations, 1:04
+b12x priming sequence.embedding: 0/5313 ready, candidates 0/1 prepared, 0 measured, 0 cached, 0 compilations, 1:04
+b12x autotuning norm.mhc: 2/5313 ready, candidates 5/5 prepared, rank 0 batch 1, round 1/3, 0 measured, 0 cached, 0 compilations, 1:05
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 1:06
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 1:24
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 1:34
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 1:44
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 1:55
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 2:05
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 2:15
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 2:25
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 2:35
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 2:46
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 2:56
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 3:07
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 3:17
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 3:27
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 3:37
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 3:47
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 3:57
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 4:08
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 4:18
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 4:28
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 4:38
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 4:48
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 0/467 prepared, 5 measured, 0 cached, 0 compilations, 4:58
+b12x preparing candidates norm.mhc: 3/5313 ready, candidates 149/467 prepared, rank 0 batch 5, 133 measured, 0 cached, 0 compilations, 5:08
+b12x autotuning norm.mhc: 9/5313 ready, candidates 467/467 prepared, rank 0 batch 15, round 0/3, 1397 measured, 0 cached, 0 compilations, 5:18
+b12x autotuning norm.mhc: 18/5313 ready, candidates 224/467 prepared, rank 0 batch 7, round 0/3, 2557 measured, 0 cached, 0 compilations, 5:28
+b12x preparing candidates norm.mhc: 27/5313 ready, candidates 0/467 prepared, 3781 measured, 0 cached, 0 compilations, 5:39
+b12x preparing candidates norm.mhc: 33/5313 ready, candidates 306/467 prepared, rank 0 batch 10, 5013 measured, 0 cached, 0 compilations, 5:49
+b12x autotuning norm.mhc: 42/5313 ready, candidates 32/467 prepared, rank 0 batch 1, round 0/3, 6141 measured, 0 cached, 0 compilations, 5:59
+b12x preparing candidates norm.mhc: 48/5313 ready, candidates 400/467 prepared, rank 0 batch 13, 7469 measured, 0 cached, 0 compilations, 6:09
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 6:19
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 6:29
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 6:39
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 6:50
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 7:00
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 7:11
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 7:21
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 7:31
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 7:41
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 7:51
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 8:01
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 8:12
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 8:22
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 8:32
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 8:42
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 8:53
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 9:03
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 9:13
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 9:23
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 9:33
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 9:43
+b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 9:54
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 10:05
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 10:16
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 10:26
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 10:36
+(EngineCore pid=510582) b12x preparing candidates norm.mhc: 51/5313 ready, candidates 0/1153 prepared, 7557 measured, 0 cached, 0 compilations, 10:46

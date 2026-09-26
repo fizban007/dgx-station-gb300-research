@@ -1,0 +1,107 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                   execute_context_0(0)_generation_1(1)         0.00%       0.000us         0.00%       0.000us       0.000us     390.494ms       145.88%     390.494ms      15.019ms            26  
+                  execute_context_1(12)_generation_0(0)         0.00%       0.000us         0.00%       0.000us       0.000us     131.735ms        49.21%     131.735ms       3.213ms            41  
+kernel_cutlass_kernel_b12xgemmblockscaled_sm103Dense...         0.00%       0.000us         0.00%       0.000us       0.000us      61.321ms        22.91%      61.321ms      17.520us          3500  
+bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x32x...         0.00%       0.000us         0.00%       0.000us       0.000us      40.069ms        14.97%      40.069ms      77.056us           520  
+bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x32x256...         0.00%       0.000us         0.00%       0.000us       0.000us      20.415ms         7.63%      20.415ms      39.260us           520  
+bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x32x...         0.00%       0.000us         0.00%       0.000us       0.000us      19.215ms         7.18%      19.215ms     480.371us            40  
+kernel_cutlass_kernel_b12xgemmbf16_gemv_kernelSmallN...         0.00%       0.000us         0.00%       0.000us       0.000us      11.188ms         4.18%      11.188ms      57.372us           195  
+                            b12x::bf16_vocab_projection         0.57%       2.052ms         0.68%       2.420ms     172.847us      10.509ms         3.93%      10.509ms     750.613us            14  
+void moe::dev::finalize::finalizeKernel<moe::dev::fi...         0.00%       0.000us         0.00%       0.000us       0.000us      10.371ms         3.87%      10.371ms       9.260us          1120  
+bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x32x256...         0.00%       0.000us         0.00%       0.000us       0.000us       9.398ms         3.51%       9.398ms     234.944us            40  
+kernel_cutlass_kernel_extra_pertok_b12xattention_sha...         0.00%       0.000us         0.00%       0.000us       0.000us       8.616ms         3.22%       8.616ms      17.442us           494  
+bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x16x...         0.00%       0.000us         0.00%       0.000us       0.000us       8.383ms         3.13%       8.383ms      16.122us           520  
+kernel_cutlass_kernel_b12xnormmhc_kernelsMHCFinalize...         0.00%       0.000us         0.00%       0.000us       0.000us       7.586ms         2.83%       7.586ms       6.773us          1120  
+bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x16x256...         0.00%       0.000us         0.00%       0.000us       0.000us       5.509ms         2.06%       5.509ms      10.594us           520  
+kernel_cutlass_kernel_b12xnormmhc_kernelsMHCPostPreP...         0.00%       0.000us         0.00%       0.000us       0.000us       4.520ms         1.69%       4.520ms       4.036us          1120  
+kernel_cutlass_kernel_b12xnormhyperconnection_cute_G...         0.00%       0.000us         0.00%       0.000us       0.000us       3.745ms         1.40%       3.745ms       3.147us          1190  
+void moe::dev::routing::routingCustom::routingIndice...         0.00%       0.000us         0.00%       0.000us       0.000us       3.458ms         1.29%       3.458ms       3.325us          1040  
+kernel_cutlass_kernel_b12xattentioncompressed_sparse...         0.00%       0.000us         0.00%       0.000us       0.000us       2.996ms         1.12%       2.996ms       2.230us          1344  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us       2.930ms         1.09%       2.930ms       1.730us          1694  
+kernel_cutlass_kernel_b12xgemmbf16_gemv_kernelSmallN...         0.00%       0.000us         0.00%       0.000us       0.000us       2.873ms         1.07%       2.873ms       4.461us           644  
+                                      _dsv4_topk_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       2.514ms         0.94%       2.514ms       4.490us           560  
+bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x8x5...         0.00%       0.000us         0.00%       0.000us       0.000us       2.502ms         0.93%       2.502ms      62.548us            40  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       2.360ms         0.88%       2.360ms       4.112us           574  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       2.356ms         0.88%       2.356ms       1.039us          2268  
+kernel_cutlass_kernel_b12xattentioncompressed_sparse...         0.00%       0.000us         0.00%       0.000us       0.000us       2.328ms         0.87%       2.328ms       2.079us          1120  
+kernel_cutlass_kernel_b12xgemmwo_projection_quant_cu...         0.00%       0.000us         0.00%       0.000us       0.000us       1.904ms         0.71%       1.904ms       3.401us           560  
+kernel_cutlass_kernel_b12xgemmwo_projection_quant_cu...         0.00%       0.000us         0.00%       0.000us       0.000us       1.903ms         0.71%       1.903ms       3.398us           560  
+void at::native::vectorized_elementwise_kernel<8, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.782ms         0.67%       1.782ms       1.591us          1120  
+void at::native::vectorized_elementwise_kernel<8, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.722ms         0.64%       1.722ms       1.538us          1120  
+void at::native::indexFuncSmallIndex<long, long, uns...         0.00%       0.000us         0.00%       0.000us       0.000us       1.693ms         0.63%       1.693ms       3.255us           520  
+kernel_cutlass_kernel_b12x_libquantmxfp8_rows_MXFP8R...         0.00%       0.000us         0.00%       0.000us       0.000us       1.679ms         0.63%       1.679ms       1.499us          1120  
+void vllm::act_and_mul_kernel<c10::BFloat16, __nv_bf...         0.00%       0.000us         0.00%       0.000us       0.000us       1.543ms         0.58%       1.543ms       2.755us           560  
+kernel_cutlass_kernel_b12xattention_sharedmlamergeSp...         0.00%       0.000us         0.00%       0.000us       0.000us       1.510ms         0.56%       1.510ms       2.904us           520  
+kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.431ms         0.53%       1.431ms      11.357us           126  
+bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x8x256_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.367ms         0.51%       1.367ms      34.180us            40  
+                                                 _chunk         0.00%       0.000us         0.00%       0.000us       0.000us       1.242ms         0.46%       1.242ms       2.218us           560  
+                                                 _pages         0.00%       0.000us         0.00%       0.000us       0.000us       1.202ms         0.45%       1.202ms       1.866us           644  
+                              b12x::compressed_mla_warp        12.22%      43.639ms        14.68%      52.420ms       1.311ms       1.116ms         0.42%       1.220ms      30.493us            40  
+kernel_cutlass_kernel_b12x_libquantmxfp8_rows_MXFP8R...         0.00%       0.000us         0.00%       0.000us       0.000us       1.083ms         0.40%       1.083ms       1.933us           560  
+kernel_cutlass_kernel_b12xattention_sharedmlakv_cach...         0.00%       0.000us         0.00%       0.000us       0.000us     989.094us         0.37%     989.094us       1.766us           560  
+void at::native::vectorized_elementwise_kernel<8, at...         0.00%       0.000us         0.00%       0.000us       0.000us     962.213us         0.36%     962.213us       1.718us           560  
+kernel_cutlass_kernel_b12x_libquantmxfp8_rows_MXFP8R...         0.00%       0.000us         0.00%       0.000us       0.000us     938.372us         0.35%     938.372us       1.396us           672  
+kernel_cutlass_kernel_dual_b12xattention_sharedmlapr...         0.00%       0.000us         0.00%       0.000us       0.000us     907.689us         0.34%     907.689us      23.887us            38  
+kernel_cutlass_kernel_flashinferquantizationkernelsm...         0.00%       0.000us         0.00%       0.000us       0.000us     888.229us         0.33%     888.229us       1.586us           560  
+                                       cuLaunchKernelEx         1.75%       6.235ms         1.75%       6.235ms       7.061us     869.252us         0.32%     869.252us       0.984us           883  
+void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us     821.284us         0.31%     821.284us       1.467us           560  
+kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us     799.014us         0.30%     799.014us       7.134us           112  
+                                   cudaEventSynchronize        33.33%     118.987ms        33.33%     118.987ms       2.833ms     754.756us         0.28%     754.756us      17.970us            42  
+kernel_cutlass_kernel_b12xattentionsparse_mla_sm103S...         0.00%       0.000us         0.00%       0.000us       0.000us     732.963us         0.27%     732.963us       1.410us           520  
+                                                _tokens         0.00%       0.000us         0.00%       0.000us       0.000us     601.637us         0.22%     601.637us       2.262us           266  
+                                              _requests         0.00%       0.000us         0.00%       0.000us       0.000us     402.049us         0.15%     402.049us       1.511us           266  
+void moe::dev::routing::routingCustom::routingIndice...         0.00%       0.000us         0.00%       0.000us       0.000us     360.900us         0.13%     360.900us       4.511us            80  
+                                            aten::copy_         0.53%       1.898ms         1.24%       4.413ms      19.356us     307.041us         0.11%     307.041us       1.347us           228  
+kernel_cutlass_kernel_b12xnormhyperconnection_cute_E...         0.00%       0.000us         0.00%       0.000us       0.000us     299.041us         0.11%     299.041us      10.680us            28  
+kernel_cutlass_kernel_b12xattentionmla_compress_cute...         0.00%       0.000us         0.00%       0.000us       0.000us     284.547us         0.11%     284.547us       6.775us            42  
+kernel_cutlass_kernel_b12xattentiondsa_indexertiled_...         0.00%       0.000us         0.00%       0.000us       0.000us     273.539us         0.10%     273.539us       2.171us           126  
+                                            aten::fill_         0.59%       2.116ms         1.23%       4.396ms      18.867us     272.385us         0.10%     273.953us       1.176us           233  
+kernel_cutlass_kernel_b12xsequenceembedding_kernel_E...         0.00%       0.000us         0.00%       0.000us       0.000us     270.083us         0.10%     270.083us      19.292us            14  
+kernel_cutlass_kernel_pertok_b12xattention_sharedmla...         0.00%       0.000us         0.00%       0.000us       0.000us     269.634us         0.10%     269.634us      10.371us            26  
+kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us     254.465us         0.10%     254.465us       1.515us           168  
+                                   _save_partial_states         0.00%       0.000us         0.00%       0.000us       0.000us     231.617us         0.09%     231.617us       5.515us            42  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     224.418us         0.08%     224.418us       2.805us            80  
+kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us     205.827us         0.08%     205.827us       1.634us           126  
+                                      b12x::engram_hash         1.76%       6.269ms         1.93%       6.891ms     246.096us     186.337us         0.07%     186.337us       6.655us            28  
+                                            aten::index         0.27%     966.851us         0.47%       1.667ms      39.685us     180.032us         0.07%     180.032us       4.286us            42  
+kernel_cutlass_kernel_b12xattentioncompressed_sparse...         0.00%       0.000us         0.00%       0.000us       0.000us     156.674us         0.06%     156.674us       1.399us           112  
+                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     113.216us         0.04%     113.216us       1.415us            80  
+                         Memcpy HtoD (Pinned -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     107.072us         0.04%     107.072us       1.785us            60  
+kernel_cutlass_commit_b12xattentionmla_compress_cute...         0.00%       0.000us         0.00%       0.000us       0.000us      99.297us         0.04%      99.297us       2.364us            42  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      95.680us         0.04%      95.680us       6.834us            14  
+                                    b12x::engram_lookup         1.02%       3.639ms         1.12%       3.988ms     142.432us      93.793us         0.04%      93.793us       3.350us            28  
+                                                _lookup         0.00%       0.000us         0.00%       0.000us       0.000us      93.793us         0.04%      93.793us       3.350us            28  
+kernel_cutlass_kernel_b12xnormmhc_kernelsMHCPostPreP...         0.00%       0.000us         0.00%       0.000us       0.000us      93.089us         0.03%      93.089us       3.325us            28  
+kernel_cutlass_kernel_b12xattention_sharedmlakv_cach...         0.00%       0.000us         0.00%       0.000us       0.000us      84.448us         0.03%      84.448us       1.508us            56  
+                                    _load_partial_state         0.00%       0.000us         0.00%       0.000us       0.000us      82.976us         0.03%      82.976us       1.976us            42  
+kernel_cutlass_kernel_b12xattentionmla_compress_cute...         0.00%       0.000us         0.00%       0.000us       0.000us      80.032us         0.03%      80.032us       5.717us            14  
+                         Memcpy DtoH (Device -> Pinned)         0.00%       0.000us         0.00%       0.000us       0.000us      78.977us         0.03%      78.977us       1.410us            56  
+                                                  _hash         0.00%       0.000us         0.00%       0.000us       0.000us      76.832us         0.03%      76.832us       2.744us            28  
+                          _compute_slot_mappings_kernel         0.00%       0.000us         0.00%       0.000us       0.000us      76.544us         0.03%      76.544us       5.467us            14  
+void at::native::indexFuncLargeIndex<long, long, uns...         0.00%       0.000us         0.00%       0.000us       0.000us      70.528us         0.03%      70.528us       1.763us            40  
+                            b12x::bf16_gemv_small_n_out         0.32%       1.155ms         0.38%       1.367ms     195.265us      64.576us         0.02%      72.672us      10.382us             7  
+                                              _compress         0.00%       0.000us         0.00%       0.000us       0.000us      62.273us         0.02%      62.273us       2.224us            28  
+                                  _gumbel_sample_kernel         0.00%       0.000us         0.00%       0.000us       0.000us      61.376us         0.02%      61.376us       4.384us            14  
+                                           aten::argmax         0.09%     322.307us         0.13%     464.899us      33.207us      56.321us         0.02%      56.321us       4.023us            14  
+void at::native::reduce_kernel<512, 1, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us      56.321us         0.02%      56.321us       4.023us            14  
+                            _gather_block_tables_kernel         0.00%       0.000us         0.00%       0.000us       0.000us      52.257us         0.02%      52.257us       3.733us            14  
+kernel_cutlass_kernel_b12x_libquantmxfp8_rows_MXFP8R...         0.00%       0.000us         0.00%       0.000us       0.000us      49.251us         0.02%      49.251us       1.759us            28  
+kernel_cutlass_kernel_b12xnormmhc_kernelsMHCPostPreP...         0.00%       0.000us         0.00%       0.000us       0.000us      47.872us         0.02%      47.872us       3.419us            14  
+void at::native::vectorized_elementwise_kernel<8, at...         0.00%       0.000us         0.00%       0.000us       0.000us      47.489us         0.02%      47.489us       1.696us            28  
+                                    _request_ids_kernel         0.00%       0.000us         0.00%       0.000us       0.000us      47.232us         0.02%      47.232us       1.687us            28  
+void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      44.640us         0.02%      44.640us       3.189us            14  
+void at::native::vectorized_elementwise_kernel<8, at...         0.00%       0.000us         0.00%       0.000us       0.000us      41.824us         0.02%      41.824us       1.494us            28  
+                                    _post_update_kernel         0.00%       0.000us         0.00%       0.000us       0.000us      38.656us         0.01%      38.656us       2.761us            14  
+                                           aten::gather         0.08%     285.635us         0.12%     427.075us      30.505us      37.600us         0.01%      37.600us       2.686us            14  
+void at::native::_scatter_gather_elementwise_kernel<...         0.00%       0.000us         0.00%       0.000us       0.000us      37.600us         0.01%      37.600us       2.686us            14  
+                   _get_num_sampled_and_rejected_kernel         0.00%       0.000us         0.00%       0.000us       0.000us      33.376us         0.01%      33.376us       2.384us            14  
+               _combine_sampled_and_draft_tokens_kernel         0.00%       0.000us         0.00%       0.000us       0.000us      31.968us         0.01%      31.968us       2.283us            14  
+                                      _decoder_requests         0.00%       0.000us         0.00%       0.000us       0.000us      31.936us         0.01%      31.936us       2.281us            14  
+                                      _prepare_metadata         0.00%       0.000us         0.00%       0.000us       0.000us      31.360us         0.01%      31.360us       2.240us            14  
+                                    cudaLaunchKernelExC         1.05%       3.757ms         1.05%       3.757ms      13.090us      31.329us         0.01%      31.329us       0.109us           287  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 357.032ms
+Self CUDA time total: 267.680ms
+

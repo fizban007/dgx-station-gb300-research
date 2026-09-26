@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Tetris - PS4 Edition</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#060614;overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;color:#fff;user-select:none;-webkit-user-select:none;touch-action:none}
+#app{width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(160deg,#0a0a2a 0%,#12124a 40%,#0e0e38 70%,#0a0a1e 100%);position:relative}
+#app::before{content:'';position:absolute;inset:-30%;background:radial-gradient(ellipse at 25% 45%,rgba(0,112,209,.12) 0%,transparent 55%),radial-gradient(ellipse at 75% 25%,rgba(138,43,226,.08) 0%,transparent 50%),radial-gradient(ellipse at 50% 85%,rgba(0,255,160,.05) 0%,transparent 50%);animation:bp 12s ease-in-out infinite;pointer-events:none}
+@keyframes bp{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.08) rotate(2deg)}}
+#container{display:flex;gap:18px;z-index:2;position:relative;align-items:flex-start}
+.panel{background:rgba(255,255,255,.04);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;transition:border-color .3s,box-shadow .3s}
+.panel:hover{border-color:rgba(0,112,209,.4);box-shadow:0 0 24px rgba(0,112,209,.15)}
+.lbl{font-size:10px;font-weight:700;letter-spacing:3px;color:#3f9ff5;margin-bottom:6px;text-transform:uppercase}
+#left{display:flex;flex-direction:column;gap:14px;min-width:155px}
+#right{display:flex;flex-direction:column;gap:14px;min-width:155px}
+#holdcv,#nextcv{display:block;margin:0 auto}
+.stat{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.stat:last-child{border:none}
+.stat-l{color:rgba(255,255,255,.4);font-size:9px;letter-spacing:1.5px}
+.stat-v{font-weight:700;font-family:'Courier New',monospace;font-size:14px}
+.lbar{width:100%;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-top:4px}
+.lbar-fill{height:100%;background:linear-gradient(90deg,#3f9ff5,#00f0d0);border-radius:2px;transition:width .5s}
+#board-wrap{position:relative}
+#board{display:block;border:2px solid rgba(0,112,209,.25);border-radius:6px;box-shadow:0 0 40px rgba(0,112,209,.08),inset 0 0 50px rgba(0,0,0,.6);background:rgba(0,0,0,.45)}
+.score-big{font-size:34px;font-weight:900;font-family:'Courier New',monospace;text-align:center;background:linear-gradient(180deg,#fff 30%,#3f9ff5 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.score-lbl{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.35);text-align:center;margin-top:2px}
+.combo-box{text-align:center;padding:7px;background:rgba(255,200,0,.06);border:1px solid rgba(255,200,0,.15);border-radius:9px;transition:all .3s}
+.combo-box.on{background:rgba(255,200,0,.15);box-shadow:0 0 14px rgba(255,200,0,.2);border-color:rgba(255,200,0,.4)}
+.combo-n{font-size:22px;font-weight:900;color:#ffc800}
+.combo-t{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:2px}
+.b2b{display:none;text-align:center;padding:4px;background:rgba(255,50,50,.08);border:1px solid rgba(255,50,50,.3);border-radius:7px;font-size:9px;font-weight:700;letter-spacing:2.5px;color:#ff6b6b}
+.b2b.on{display:block;animation:bp2 .8s ease-in-out infinite}
+@keyframes bp2{0%,100%{box-shadow:0 0 5px rgba(255,50,50,.2)}50%{box-shadow:0 0 15px rgba(255,50,50,.5)}}
+.ov{position:fixed;inset:0;background:rgba(4,4,16,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:100;transition:opacity .4s;opacity:1}
+.ov.off{opacity:0;pointer-events:none}
+.ov h1{font-size:72px;font-weight:900;letter-spacing:14px;background:linear-gradient(180deg,#fff 0%,#3f9ff5 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:4px}
+.ov h1 span{display:block;font-size:13px;letter-spacing:7px;background:linear-gradient(90deg,#3f9ff5,#00f0d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:6px}
+.ov h2{font-size:46px;font-weight:900;letter-spacing:7px;margin-bottom:18px}
+.btn{padding:14px 48px;font-size:15px;font-weight:700;letter-spacing:3px;border:2px solid #3f9ff5;background:transparent;color:#fff;border-radius:9px;cursor:pointer;transition:all .3s;text-transform:uppercase;position:relative;overflow:hidden;outline:none}
+.btn:hover{background:rgba(0,112,209,.6);box-shadow:0 0 30px rgba(0,112,209,.4);transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn2{padding:11px 36px;font-size:13px;margin-top:14px;border-color:rgba(255,255,255,.3)}
+.btn2:hover{background:rgba(255,255,255,.15);box-shadow:0 0 20px rgba(255,255,255,.1)}
+.fstats{display:grid;grid-template-columns:repeat(2,auto);gap:16px;padding:20px 36px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;margin-bottom:28px}
+.fs{text-align:center}
+.fs .fl{font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.4);display:block;margin-bottom:3px}
+.fs .fv{font-size:26px;font-weight:900;font-family:'Courier New',monospace;color:#fff}
+.hints{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:32px;max-width:520px}
+.hint{display:flex;align-items:center;gap:7px;font-size:11px;color:rgba(255,255,255,.5)}
+.key{display:inline-block;padding:2px 7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:4px;font-size:10px;font-family:'Courier New',monospace;min-width:22px;text-align:center}
+#toast{position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);z-index:50;pointer-events:none;text-align:center}
+.toast-i{font-size:30px;font-weight:900;letter-spacing:4px;animation:ta 1.4s ease-out forwards;text-shadow:0 0 25px currentColor;white-space:nowrap}
+@keyframes ta{0%{opacity:0;transform:scale(.4)}15%{opacity:1;transform:scale(1.15)}35%{transform:scale(1)}85%{opacity:1}100%{opacity:0;transform:scale(1) translateY(-35px)}}
+#mctrl{display:none;position:fixed;bottom:8px;left:50%;transform:translateX(-50%);z-index:60;gap:6px;padding:8px;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);border-radius:16px;border:1px solid rgba(255,255,255,.08)}
+#mctrl button{width:52px;height:52px;border:2px solid rgba(0,112,209,.4);background:rgba(0,112,209,.12);color:#fff;font-size:20px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;transition:all .08s;outline:none}
+#mctrl button:active{background:rgba(0,112,209,.5);transform:scale(.93);box-shadow:0 0 12px rgba(0,112,209,.4)}
+#audbtn,#pausebtn{position:fixed;top:14px;z-index:150;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;backdrop-filter:blur(8px);outline:none}
+#audbtn{right:14px}
+#pausebtn{left:14px}
+#audbtn:hover,#pausebtn:hover{background:rgba(0,112,209,.3);border-color:#3f9ff5}
+@media(max-width:760px){
+  #container{flex-direction:column;gap:8px;align-items:center}
+  #left,#right{flex-direction:row;min-width:auto;flex-wrap:wrap;justify-content:center;gap:8px}
+  #left{order:-1}
+  #right{order:2}
+  .panel{padding:9px}
+  #mctrl{display:flex}
+  .ov h1{font-size:44px;letter-spacing:8px}
+  .ov h2{font-size:32px}
+  .hints{display:none}
+}
+@media(max-width:430px){
+  .ov h1{font-size:34px}
+  #mctrl button{width:44px;height:44px;font-size:17px}
+}
+</style>
+</head>
+<body>
+<button id="audbtn" onclick="toggleAudio()">🔊</button>
+<button id="pausebtn" onclick="togglePause()">⏸</button>
+<div id="app">
+<div id="container">
+  <div id="left">
+    <div class="panel"><div class="lbl">Hold</div><canvas id="holdcv"></canvas></div>
+    <div class="panel">
+      <div class="lbl">Stats</div>
+      <div class="stat"><span class="stat-l">LEVEL</span><span class="stat-v" id="sLvl">1</span></div>
+      <div class="lbar"><div class="lbar-fill" id="lFill"></div></div>
+      <div class="stat"><span class="stat-l">LINES</span><span class="stat-v" id="sLn">0</span></div>
+      <div class="stat"><span class="stat-l">TIME</span><span class="stat-v" id="sTm">00:00</span></div>
+    </div>
+  </div>
+  <div id="board-wrap">
+    <canvas id="board"></canvas>
+    <div id="toast"></div>
+  </div>
+  <div id="right">
+    <div class="panel"><div class="lbl">Next</div><canvas id="nextcv"></canvas></div>
+    <div class="panel"><div class="score-big" id="sSc">0</div><div class="score-lbl">SCORE</div></div>
+    <div class="panel combo-box" id="cbx"><div class="combo-n" id="sCb">0</div><div class="combo-t">COMBO</div></div>
+    <div class="b2b" id="b2b">B2B</div>
+  </div>
+</div>
+</div>
+<div id="ov1" class="ov"><div><h1>TETRIS<span>PS4 EDITION</span></h1>
+<div class="hints"><div class="hint"><span class="key">←</span><span class="key">→</span> Move</div><div class="hint"><span class="key">↑</span><span class="key">X</span> Rotate CW</div><div class="hint"><span class="key">Z</span> Rotate CCW</div><div class="hint"><span class="key">↓</span> Soft Drop</div><div class="hint"><span class="key">Space</span> Hard Drop</div><div class="hint"><span class="key">C</span> Hold</div><div class="hint"><span class="key">P</span> Pause</div></div>
+<br><button class="btn" onclick="startGame()">Press to Start</button></div></div>
+<div id="ov2" class="ov off"><div><h2>PAUSED</h2><button class="btn" onclick="resumeGame()">Resume</button><br><button class="btn btn2" onclick="restartGame()">Restart</button></div></div>
+<div id="ov3" class="ov off"><div><h2 style="color:#ff5555">Game Over</h2>
+<div class="fstats"><div class="fs"><span class="fl">FINAL SCORE</span><span class="fv" id="fSc">0</span></div><div class="fs"><span class="fl">LEVEL</span><span class="fv" id="fLv">1</span></div><div class="fs"><span class="fl">LINES</span><span class="fv" id="fLn">0</span></div><div class="fs"><span class="fl">TIME</span><span class="fv" id="fTm">00:00</span></div></div>
+<button class="btn" onclick="restartGame()">Play Again</button></div></div>
+<div id="mctrl">
+<button ontouchstart="mc('hold')">H</button>
+<button ontouchstart="mc('left')">◀</button>
+<button ontouchstart="mc('down')" ontouchend="me('down')">▼</button>
+<button ontouchstart="mc('ccw')">⟲</button>
+<button ontouchstart="mc('cw')">⟳</button>
+<button ontouchstart="mc('right')">▶</button>
+<button ontouchstart="mc('hd')">⤓</button>
+</div>
+<script>
+// ══════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════
+const COLS=10,ROWS=20;
+const DAS=160,ARR=35,LOCK_DELAY=500,MAX_RES=15;
+const SPEEDS=[800,716,633,550,466,383,300,217,133,100,100,83,83,83,67,50,50,50,50,33,33,33,33,33,33,33,33,33,33,17];
+let CELL=30,PVC=18;
+
+// ══════════════════════════════════════════
+//  PIECE DEFINITIONS (SRS)
+// ══════════════════════════════════════════
+const PC={
+I:{rot:[
+[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
+[[0,0,1,0],[0,0,1,0],[0,0,1,0],[0,0,1,0]],
+[[0,0,0,0],[0,0,0,0],[1,1,1,1],[0,0,0,0]],
+[[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]],
+col:'#00e8ff',sx:3,sy:0},
+O:{rot:[
+[[1,1],[1,1]],[[1,1],[1,1]],[[1,1],[1,1]],[[1,1],[1,1]]],
+col:'#ffe800',sx:4,sy:0},
+T:{rot:[
+[[0,1,0],[1,1,1],[0,0,0]],
+[[0,1,0],[0,1,1],[0,1,0]],
+[[0,0,0],[1,1,1],[0,1,0]],
+[[0,1,0],[1,1,0],[0,1,0]]],
+col:'#c850ff',sx:3,sy:0},
+S:{rot:[
+[[0,1,1],[1,1,0],[0,0,0]],
+[[0,1,0],[0,1,1],[0,0,1]],
+[[0,0,0],[0,1,1],[1,1,0]],
+[[1,0,0],[1,1,0],[0,1,0]]],
+col:'#00e864',sx:3,sy:0},
+Z:{rot:[
+[[1,1,0],[0,1,1],[0,0,0]],
+[[0,0,1],[0,1,1],[0,1,0]],
+[[0,0,0],[1,1,0],[0,1,1]],
+[[0,1,0],[1,1,0],[1,0,0]]],
+col:'#ff4060',sx:3,sy:0},
+J:{rot:[
+[[1,0,0],[1,1,1],[0,0,0]],
+[[0,1,1],[0,1,0],[0,1,0]],
+[[0,0,0],[1,1,1],[0,0,1]],
+[[0,1,0],[0,1,0],[1,1,0]]],
+col:'#4080ff',sx:3,sy:0},
+L:{rot:[
+[[0,0,1],[1,1,1],[0,0,0]],
+[[0,1,0],[0,1,0],[0,1,1]],
+[[0,0,0],[1,1,1],[1,0,0]],
+[[1,1,0],[0,1,0],[0,1,0]]],
+col:'#ff9020',sx:3,sy:0}
+};
+
+// ══════════════════════════════════════════
+//  SRS WALL KICKS (screen coords, y down)
+// ══════════════════════════════════════════
+const K3={'0>1':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],'1>2':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],
+'2>3':[[0,0],[1,0],[1,-1],[0,2],[1,2]],'3>0':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
+'1>0':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],'2>1':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
+'3>2':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],'0>3':[[0,0],[1,0],[1,-1],[0,2],[1,2]]};
+const KI={'0>1':[[0,0],[-2,0],[1,0],[-2,1],[1,-2]],'1>2':[[0,0],[-1,0],[2,0],[-1,-2],[2,1]],
+'2>3':[[0,0],[2,0],[-1,0],[2,-1],[-1,2]],'3>0':[[0,0],[1,0],[-2,0],[1,2],[-2,-1]],
+'1>0':[[0,0],[2,0],[-1,0],[2,-1],[-1,2]],'2>1':[[0,0],[1,0],[-2,0],[1,2],[-2,-1]],
+'3>2':[[0,0],[-2,0],[1,0],[-2,1],[1,-2]],'0>3':[[0,0],[-1,0],[2,0],[-1,-2],[2,1]]};
+
+function getKicks(type,fr,to){
+if(type==='O')return[[0,0]];
+const k=type==='I'?KI:K3;
+return k[`${fr}>${to}`]||[[0,0]];
+}
+
+// ══════════════════════════════════════════
+//  AUDIO ENGINE
+// ══════════════════════════════════════════
+let ac=null,aMuted=false,musOn=false,musIv=null;
+function initAudio(){if(ac)return;ac=new(window.AudioContext||window.webkitAudioContext)()}
+function tone(f,d,t='square',v=.2){if(!ac||aMuted)return;try{const o=ac.createOscillator(),g=ac.createGain();o.type=t;o.frequency.value=f;g.gain.value=v;g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}catch(e){}}
+function noise(d,v=.1){if(!ac||aMuted)return;try{const len=ac.sampleRate*d,buf=ac.createBuffer(1,len,ac.sampleRate),dta=buf.getChannelData(0);for(let i=0;i<len;i++)dta[i]=(Math.random()*2-1);const s=ac.createBufferSource(),g=ac.createGain();s.buffer=buf;g.gain.value=v;g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);s.connect(g);g.connect(ac.destination);s.start()}catch(e){}}
+const sfx={
+move:()=>tone(180,.04,'square',.12),
+rot:()=>tone(320,.06,'square',.15),
+lock:()=>{tone(110,.05,'square',.18);noise(.03,.08)},
+hd:()=>{tone(65,.14,'sawtooth',.25);noise(.07,.12)},
+hold:()=>tone(450,.08,'triangle',.15),
+lc:(n)=>{for(let i=0;i<n+3;i++)setTimeout(()=>tone(400+i*120,.09,'sine',.22),i*55)},
+tetris:()=>{[523,659,784,1047,1319].forEach((f,i)=>setTimeout(()=>tone(f,.18,'sine',.25),i*70))},
+tspin:()=>{[600,750,900].forEach((f,i)=>setTimeout(()=>tone(f,.12,'triangle',.2),i*50))},
+go:()=>{[400,350,300,250,180,120].forEach((f,i)=>setTimeout(()=>tone(f,.3,'sawtooth',.15),i*140))},
+lvl:()=>{[523,659,784].forEach((f,i)=>setTimeout(()=>tone(f,.15,'triangle',.2),i*80))}
+};
+function startMusic(){if(musOn)return;musOn=true;let b=0;const bn=[82.41,0,98,0,73.42,0,65.41,0,65.41,0,73.42,0,82.41,0,98,0];const mn=[329.63,392,0,493.88,0,392,329.63,0,261.63,329.63,0,392.00,0,329.63,261.63,0];
+musIv=setInterval(()=>{if(!musOn||aMuted||G.pause||G.over)return;const bb=bn[b%bn.length],mm=mn[b%mn.length];if(bb)tone(bb,.14,'sawtooth',.06);if(mm)tone(mm,.1,'triangle',.05);if(b%4===0)noise(.025,.04);b++},148)}
+function stopMusic(){musOn=false;if(musIv){clearInterval(musIv);musIv=null}}
+
+// ══════════════════════════════════════════
+//  PARTICLES
+// ══════════════════════════════════════════
+let parts=[];
+function spawnLineParts(rows){for(const r of rows){for(let x=0;x<COLS;x++){const c=board[r][x]||'#fff';for(let i=0;i<6;i++)parts.push({x:x*CELL+CELL/2,y:r*CELL+CELL/2,vx:(Math.random()-.5)*7,vy:(Math.random()-.5)*5-3,c,l:1,d:.012+Math.random()*.02,s:2+Math.random()*4})}}}
+function spawnDropParts(row,type){const c=PC[type].col;for(let x=0;x<COLS;x++){if(board[row][x])for(let i=0;i<3;i++)parts.push({x:x*CELL+CELL/2,y:row*CELL+CELL/2,vx:(Math.random()-.5)*3,vy:-Math.random()*2,c:board[row][x]||c,l:.8,d:.02,s:2+Math.random()*3})}}
+function updParts(dt){const f=dt/16.67;for(let i=parts.length-1;i>=0;i--){const p=parts[i];p.x+=p.vx*f;p.y+=p.vy*f;p.vy+=.12*f;p.l-=p.d*f;if(p.l<=0)parts.splice(i,1)}}
+function drawParts(ctx){ctx.globalCompositeOperation='lighter';for(const p of parts){ctx.globalAlpha=p.l;ctx.fillStyle=p.c;ctx.shadowColor=p.c;ctx.shadowBlur=p.s*2.5;ctx.beginPath();ctx.arc(p.x,p.y,p.s*Math.max(0,p.l),0,Math.PI*2);ctx.fill()}ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;ctx.shadowBlur=0}
+
+// ══════════════════════════════════════════
+//  GAME STATE
+// ══════════════════════════════════════════
+let board=[],cur=null,holdT=null,canHold=true,queue=[],bag=[];
+let G={score:0,lvl:1,lines:0,combo:-1,b2b:false,over:false,pause:false,started:false,
+clearing:false,clRows:[],clTimer:0,tspin:false,gtime:0,dropT:0,lockT:0,lockR:0,lastRot:false,
+shake:0,shakeX:0,shakeY:0};
+let dasT=0,arrT=0,lHeld=false,rHeld=false,dHeld=false;
+
+// ══════════════════════════════════════════
+//  CANVAS SETUP
+// ══════════════════════════════════════════
+const boardCv=document.getElementById('board'),bctx=boardCv.getContext('2d');
+const holdCv=document.getElementById('holdcv'),hctx=holdCv.getContext('2d');
+const nextCv=document.getElementById('nextcv'),nctx=nextCv.getContext('2d');
+
+function resize(){
+const vw=window.innerWidth,vh=window.innerHeight,mob=vw<760;
+if(mob){const bw=vw*.94,bh=vh*.58;CELL=Math.floor(Math.min(bw/COLS,bh/ROWS))}
+else{const av=vw-370,vh2=vh-60;CELL=Math.floor(Math.min(av/COLS,vh2/ROWS));CELL=Math.min(CELL,44)}
+CELL=Math.max(CELL,14);PVC=Math.floor(CELL*.58);
+const dpr=window.devicePixelRatio||1;
+boardCv.width=COLS*CELL*dpr;boardCv.height=ROWS*CELL*dpr;
+boardCv.style.width=COLS*CELL+'px';boardCv.style.height=ROWS*CELL+'px';
+bctx.setTransform(dpr,0,0,dpr,0,0);
+const hw=PVC*5,hh=PVC*5;
+holdCv.width=hw*dpr;holdCv.height=hh*dpr;
+holdCv.style.width=hw+'px';holdCv.style.height=hh+'px';
+hctx.setTransform(dpr,0,0,dpr,0,0);
+const nw=PVC*5,nh=PVC*17;
+nextCv.width=nw*dpr;nextCv.height=nh*dpr;
+nextCv.style.width=nw+'px';nextCv.style.height=nh+'px';
+nctx.setTransform(dpr,0,0,dpr,0,0);
+if(G.started)render();
+}
+window.addEventListener('resize',resize);
+
+// ══════════════════════════════════════════
+//  GAME LOGIC
+// ══════════════════════════════════════════
+function fillBag(){const p=['I','O','T','S','Z','J','L'];for(let i=p.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[p[i],p[j]]=[p[j],p[i]]}bag.push(...p)}
+function valid(type,x,y,rot){const cells=PC[type].rot[rot];for(let r=0;r<cells.length;r++)for(let c=0;c<cells[r].length;c++)if(cells[r][c]){const bx=x+c,by=y+r;if(bx<0||bx>=COLS||by<0||by>=ROWS)return false;if(board[by][bx]!==null)return false}return true}
+function ghostY(){let y=cur.y;while(valid(cur.type,cur.x,y+1,cur.rotation))y++;return y}
+function tryMove(dx,dy){if(!cur||G.over||G.pause||G.clearing)return false;if(valid(cur.type,cur.x+dx,cur.y+dy,cur.rotation)){cur.x+=dx;cur.y+=dy;G.lastRot=false;if(dx)sfx.move();return true}return false}
+function rotate(dir){if(!cur||G.over||G.pause||G.clearing||cur.type==='O')return false;
+const fr=cur.rotation,to=((fr+dir)+4)%4;
+const kicks=getKicks(cur.type,fr,to);
+for(const[kx,ky]of kicks){if(valid(cur.type,cur.x+kx,cur.y+ky,to)){cur.x+=kx;cur.y+=ky;cur.rotation=to;G.lastRot=true;G.lockT=0;G.lockR=Math.min(G.lockR+1,MAX_RES);sfx.rot();return true}}
+return false}
+function hardDrop(){if(!cur||G.over||G.pause||G.clearing)return;const g=ghostY();const d=g-cur.y;G.score+=d*2;cur.y=g;G.lastRot=false;sfx.hd();G.shake=6;lockPiece()}
+function softDrop(){if(!cur||G.over||G.pause||G.clearing)return;if(valid(cur.type,cur.x,cur.y+1,cur.rotation)){cur.y++;G.score++;G.dropT=0;G.lastRot=false}}
+function checkTSpin(){if(!cur||cur.type!=='T'||!G.lastRot)return false;
+const corners=[[cur.x,cur.y],[cur.x+2,cur.y],[cur.x,cur.y+2],[cur.x+2,cur.y+2]];
+let blocked=0;for(const[cx,cy]of corners){if(cx<0||cx>=COLS||cy<0||cy>=ROWS)blocked++;else if(board[cy][cx]!==null)blocked++}
+return blocked>=3}
+function checkLines(){const full=[];for(let r=0;r<ROWS;r++)if(board[r].every(c=>c!==null))full.push(r);return full}
+function addPiece(){const cells=PC[cur.type].rot[cur.rotation];for(let r=0;r<cells.length;r++)for(let c=0;c<cells[r].length;c++)if(cells[r][c]){const by=cur.y+r,bx=cur.x+c;if(by>=0&&by<ROWS)board[by][bx]=PC[cur.type].col}}
+function lockPiece(){addPiece();sfx.lock();G.lastRot=false;const ts=checkTSpin();const full=checkLines();
+if(full.length>0){G.clearing=true;G.clRows=full;G.clTimer=0;G.tspin=ts;G.shake=full.length*3+2;spawnLineParts(full);sfx.lc(full.length);if(full.length===4&&!ts)sfx.tetris();if(ts)sfx.tspin()}
+else{if(ts){G.score+=400*G.lvl;toast('T-SPIN','#c850ff')}G.combo=-1;canHold=true;spawn()}}
+function finishClear(){
+const num=G.clRows.length,ts=G.tspin;
+let base=0,name='',diff=false;
+if(ts){if(num===0){base=400;name='T-SPIN'}else if(num===1){base=800;name='T-SPIN SINGLE';diff=true}else if(num===2){base=1200;name='T-SPIN DOUBLE';diff=true}else if(num===3){base=1600;name='T-SPIN TRIPLE';diff=true}}
+else{if(num===1){base=100;name='SINGLE'}else if(num===2){base=300;name='DOUBLE'}else if(num===3){base=500;name='TRIPLE'}else if(num===4){base=800;name='TETRIS!';diff=true}}
+let pts=base*G.lvl;
+if(diff&&G.b2b){pts=Math.floor(pts*1.5);name+=' B2B!'}
+G.b2b=diff;document.getElementById('b2b').className=diff?'b2b on':'b2b';
+if(num>0){G.combo++;if(G.combo>0)pts+=50*G.combo*G.lvl}
+G.score+=pts;G.lines+=num;
+const nl=Math.floor(G.lines/10)+1;if(nl>G.lvl){G.lvl=nl;sfx.lvl();toast('LEVEL UP!','#3f9ff5')}
+if(name)toast(name,diff?'#ff6040':'#00f0d0');
+const set=new Set(G.clRows);const nb=[];
+for(let r=0;r<ROWS;r++)if(!set.has(r))nb.push(board[r]);
+for(let i=0;i<G.clRows.length;i++)nb.unshift(Array(COLS).fill(null));
+board=nb;
+G.clearing=false;G.clRows=[];G.tspin=false;canHold=true;spawn()}
+function spawn(type){
+if(!type){type=queue.shift();while(queue.length<5){if(!bag.length)fillBag();queue.push(bag.shift())}}
+const p=PC[type];cur={type,x:p.sx,y:p.sy,rotation:0};
+if(!valid(cur.type,cur.x,cur.y,cur.rotation)){gameOver();return}
+G.dropT=0;G.lockT=0;G.lockR=0;G.lastRot=false;renderPreviews()}
+function doHold(){if(!canHold||G.over||G.pause||G.clearing||!cur)return;const ct=cur.type;if(holdT){spawn(holdT);holdT=ct}else{holdT=ct;spawn()}canHold=false;sfx.hold();renderPreviews()}
+
+// ══════════════════════════════════════════
+//  DRAWING HELPERS
+// ══════════════════════════════════════════
+function adjustB(hex,amt){const n=parseInt(hex.slice(1),16);const r=Math.min(255,Math.max(0,(n>>16)+amt)),g=Math.min(255,Math.max(0,((n>>8)&255)+amt)),b=Math.min(255,Math.max(0,(n&255)+amt));return`rgb(${r},${g},${b})`}
+function drawBlk(ctx,px,py,s,col,ghost=false){
+if(ghost){ctx.globalAlpha=.22;ctx.strokeStyle=col;ctx.lineWidth=2;ctx.setLineDash([3,3]);ctx.strokeRect(px+2,py+2,s-4,s-4);ctx.setLineDash([]);ctx.globalAlpha=1;return}
+const m=1,iw=s-m*2;
+const gr=ctx.createLinearGradient(px,py,px,py+s);gr.addColorStop(0,adjustB(col,45));gr.addColorStop(.35,col);gr.addColorStop(1,adjustB(col,-35));
+ctx.fillStyle=gr;ctx.fillRect(px+m,py+m,iw,iw);
+ctx.fillStyle='rgba(255,255,255,.22)';ctx.fillRect(px+m+2,py+m+2,iw-4,iw*.22);
+ctx.strokeStyle=adjustB(col,-55);ctx.lineWidth=1;ctx.strokeRect(px+m+.5,py+m+.5,iw-1,iw-1);
+ctx.fillStyle='rgba(255,255,255,.1)';ctx.fillRect(px+m+1,py+m+1,iw-2,2)}
+function drawGrid(ctx){ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=.5;for(let x=1;x<COLS;x++){ctx.beginPath();ctx.moveTo(x*CELL,0);ctx.lineTo(x*CELL,ROWS*CELL);ctx.stroke()}for(let y=1;y<ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*CELL);ctx.lineTo(COLS*CELL,y*CELL);ctx.stroke()}}
+function drawCells(ctx,type,px,py,rot,ghost){const cells=PC[type].rot[rot],col=PC[type].col;for(let r=0;r<cells.length;r++)for(let c=0;c<cells[r].length;c++)if(cells[r][c]){const x=(px+c)*CELL,y=(py+r)*CELL;drawBlk(ctx,x,y,CELL,col,ghost)}}
+function pieceBounds(type){const cells=PC[type].rot[0];let mnx=99,mxx=-9,mny=99,mxy=-9;for(let r=0;r<cells.length;r++)for(let c=0;c<cells[r].length;c++)if(cells[r][c]){mnx=Math.min(mnx,c);mxx=Math.max(mxx,c);mny=Math.min(mny,r);mxy=Math.max(mxy,r)}return{mnx,mxx,mny,mxy,w:mxx-mnx+1,h:mxy-mny+1}}
+function drawPreview(ctx,type,cx,cy,size){if(!type)return;const b=pieceBounds(type),cells=PC[type].rot[0],col=PC[type].col;const pw=b.w*size,ph=b.h*size;const ox=cx-pw/2,oy=cy-ph/2;for(let r=b.mny;r<=b.mxy;r++)for(let c=b.mnx;c<=b.mxx;c++)if(cells[r][c]){const x=ox+(c-b.mnx)*size,y=oy+(r-b.mny)*size;drawBlk(ctx,x,y,size,col)}}
+
+// ══════════════════════════════════════════
+//  RENDERING
+// ══════════════════════════════════════════
+function render(){
+const w=COLS*CELL,h=ROWS*CELL;
+bctx.save();
+if(G.shake>0){G.shakeX=(Math.random()-.5)*G.shake;G.shakeY=(Math.random()-.5)*G.shake;bctx.translate(G.shakeX,G.shakeY);G.shake*=.88;if(G.shake<.4)G.shake=0}
+bctx.clearRect(-10,-10,w+20,h+20);
+bctx.fillStyle='rgba(0,0,0,.3)';bctx.fillRect(0,0,w,h);
+drawGrid(bctx);
+// board cells
+for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(board[r][c]!==null){
+if(G.clearing&&G.clRows.includes(r)){const a=1-G.clTimer/300;bctx.globalAlpha=Math.max(0,a);bctx.fillStyle='#fff';bctx.fillRect(c*CELL+1,r*CELL+1,CELL-2,CELL-2);bctx.globalAlpha=1}
+else{drawBlk(bctx,c*CELL,r*CELL,CELL,board[r][c])}
+}
+// ghost + current
+if(cur&&!G.over){
+const gy=ghostY();
+if(gy!==cur.y)drawCells(bctx,cur.type,cur.x,gy,cur.rotation,true);
+bctx.shadowColor=PC[cur.type].col;bctx.shadowBlur=12;
+drawCells(bctx,cur.type,cur.x,cur.y,cur.rotation,false);
+bctx.shadowBlur=0}
+// particles
+drawParts(bctx);
+bctx.restore();
+renderPreviews()}
+
+function renderPreviews(){
+const hw=PVC*5,hh=PVC*5;
+hctx.clearRect(0,0,hw,hh);
+if(holdT)drawPreview(hctx,holdT,hw/2,hh/2,PVC);
+const nw=PVC*5,nh=PVC*17;
+nctx.clearRect(0,0,nw,nh);
+for(let i=0;i<Math.min(queue.length,5);i++){
+const sc=i===0?1:.72,ps=PVC*sc;
+const cy=i*PVC*3.2+PVC*1.6;
+drawPreview(nctx,queue[i],nw/2,cy,ps)
+}}
+
+function updUI(){
+document.getElementById('sSc').textContent=G.score;
+document.getElementById('sLvl').textContent=G.lvl;
+document.getElementById('sLn').textContent=G.lines;
+const s=Math.floor(G.gtime/1000),m=Math.floor(s/60),ss=s%60;
+document.getElementById('sTm').textContent=`${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+document.getElementById('lFill').style.width=`${(G.lines%10)*10}%`;
+document.getElementById('sCb').textContent=Math.max(0,G.combo);
+document.getElementById('cbx').className=G.combo>0?'panel combo-box on':'panel combo-box'}
+
+function toast(txt,col){const c=document.getElementById('toast');const d=document.createElement('div');d.className='toast-i';d.textContent=txt;d.style.color=col;c.appendChild(d);setTimeout(()=>d.remove(),1500)}
+
+// ══════════════════════════════════════════
+//  GAME LOOP
+// ══════════════════════════════════════════
+let lastT=0;
+function loop(t){
+const dt=Math.min(t-lastT,100);lastT=t;
+if(G.started&&!G.pause&&!G.over){update(dt);updUI()}
+if(G.started)render();
+requestAnimationFrame(loop)}
+
+function update(dt){
+G.gtime+=dt;
+if(G.clearing){G.clTimer+=dt;if(G.clTimer>=350)finishClear();updParts(dt);return}
+// DAS
+if((lHeld||rHeld)&&cur){
+dasT+=dt;
+if(dasT>=DAS){arrT+=dt;if(arrT>=ARR){arrT=0;tryMove(lHeld?-1:1,0)}}
+}else{dasT=0;arrT=0}
+// Drop
+G.dropT+=dt;
+const spd=SPEEDS[Math.min(G.lvl-1,SPEEDS.length-1)];
+if(dHeld){if(G.dropT>=45){G.dropT=0;if(valid(cur.type,cur.x,cur.y+1,cur.rotation)){cur.y++;G.score++;G.lastRot=false}}}
+else if(G.dropT>=spd){G.dropT=0;if(valid(cur.type,cur.x,cur.y+1,cur.rotation)){cur.y++;G.lastRot=false}}
+// Lock delay
+if(cur&&!G.clearing){
+if(!valid(cur.type,cur.x,cur.y+1,cur.rotation)){
+G.lockT+=dt;
+if(G.lockT>=LOCK_DELAY&&G.lockR<=MAX_RES)lockPiece();
+if(G.lockR>=MAX_RES)lockPiece()
+}else{G.lockT=0;G.lockR=0}
+}
+updParts(dt)}
+
+// ══════════════════════════════════════════
+//  INPUT
+// ══════════════════════════════════════════
+document.addEventListener('keydown',e=>{
+if(!G.started)return;
+if(e.code==='Escape'||e.code==='KeyP'){e.preventDefault();togglePause();return}
+if(G.over||G.pause)return;
+switch(e.code){
+case'ArrowLeft':if(!e.repeat){lHeld=true;rHeld=false;dasT=0;arrT=0;tryMove(-1,0)}e.preventDefault();break;
+case'ArrowRight':if(!e.repeat){rHeld=true;lHeld=false;dasT=0;arrT=0;tryMove(1,0)}e.preventDefault();break;
+case'ArrowDown':dHeld=true;e.preventDefault();break;
+case'ArrowUp':case'KeyX':if(!e.repeat)rotate(1);e.preventDefault();break;
+case'KeyZ':case'ControlLeft':case'ControlRight':if(!e.repeat)rotate(-1);e.preventDefault();break;
+case'Space':if(!e.repeat)hardDrop();e.preventDefault();break;
+case'KeyC':case'ShiftLeft':case'ShiftRight':if(!e.repeat)doHold();e.preventDefault();break}});
+document.addEventListener('keyup',e=>{
+switch(e.code){case'ArrowLeft':lHeld=false;break;case'ArrowRight':rHeld=false;break;case'ArrowDown':dHeld=false;break}});
+document.addEventListener('blur',()=>{lHeld=rHeld=dHeld=false});
+
+// Touch on board (swipe/tap)
+let tsx,tsy,tst;
+boardCv.addEventListener('touchstart',e=>{const t=e.touches[0];tsx=t.clientX;tsy=t.clientY;tst=Date.now()},{passive:true});
+boardCv.addEventListener('touchend',e=>{if(!G.started||G.over||G.pause)return;const t=e.changedTouches[0],dx=t.clientX-tsx,dy=t.clientY-tsy,dt2=Date.now()-tst;
+if(Math.abs(dx)<15&&Math.abs(dy)<15&&dt2<250){rotate(1);return}
+if(Math.abs(dx)>Math.abs(dy)){const s=Math.floor(Math.abs(dx)/(CELL*.8));for(let i=0;i<s;i++)tryMove(dx>0?1:-1,0)}
+else if(dy>30&&dt2<400)hardDrop();
+else if(dy<-40)rotate(1)},{passive:true});
+
+// Mobile buttons
+function mc(a){if(!G.started||G.over||G.pause)return;switch(a){case'left':lHeld=true;rHeld=false;dasT=0;arrT=0;tryMove(-1,0);break;case'right':rHeld=true;lHeld=false;dasT=0;arrT=0;tryMove(1,0);break;case'down':dHeld=true;tryMove(0,1);G.score++;break;case'cw':rotate(1);break;case'ccw':rotate(-1);break;case'hd':hardDrop();break;case'hold':doHold();break}}
+function me(a){if(a==='down')dHeld=false;if(a==='left')lHeld=false;if(a==='right')rHeld=false}
+
+// ══════════════════════════════════════════
+//  GAME CONTROL
+// ══════════════════════════════════════════
+function showOv(id){document.getElementById(id).classList.remove('off')}
+function hideOv(id){document.getElementById(id).classList.add('off')}
+
+function startGame(){
+initAudio();hideOv('ov1');G.started=true;G.over=false;G.pause=false;
+init();startMusic();lastT=performance.now();requestAnimationFrame(loop);
+}
+
+function init(){
+board=Array(ROWS).fill(null).map(()=>Array(COLS).fill(null));
+bag=[];queue=[];holdT=null;canHold=true;
+G.score=0;G.lvl=1;G.lines=0;G.combo=-1;G.b2b=false;G.over=false;G.pause=false;
+G.clearing=false;G.clRows=[];G.clTimer=0;G.tspin=false;G.gtime=0;
+G.dropT=0;G.lockT=0;G.lockR=0;G.lastRot=false;G.shake=0;
+parts=[];dasT=0;arrT=0;lHeld=rHeld=dHeld=false;
+for(let i=0;i<5;i++){if(!bag.length)fillBag();queue.push(bag.shift())}
+document.getElementById('b2b').className='b2b';
+document.getElementById('toast').innerHTML='';
+spawn();renderPreviews();updUI()}
+
+function gameOver(){G.over=true;sfx.go();stopMusic();
+document.getElementById('fSc').textContent=G.score;
+document.getElementById('fLv').textContent=G.lvl;
+document.getElementById('fLn').textContent=G.lines;
+const s=Math.floor(G.gtime/1000),m=Math.floor(s/60),ss=s%60;
+document.getElementById('fTm').textContent=`${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+setTimeout(()=>showOv('ov3'),800)}
+
+function restartGame(){hideOv('ov3');hideOv('ov2');init();startMusic();lastT=performance.now()}
+function togglePause(){if(!G.started||G.over)return;G.pause=!G.pause;if(G.pause){showOv('ov2')}else{hideOv('ov2');lastT=performance.now()}}
+function resumeGame(){hideOv('ov2');G.pause=false;lastT=performance.now()}
+function toggleAudio(){aMuted=!aMuted;document.getElementById('audbtn').textContent=aMuted?'🔇':'🔊'}
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+resize();
+// Idle animation before game start
+(function idle(){if(!G.started){const w=COLS*CELL,h=ROWS*CELL;bctx.clearRect(0,0,w,h);bctx.fillStyle='rgba(0,0,0,.3)';bctx.fillRect(0,0,w,h);drawGrid(bctx);requestAnimationFrame(idle)}})();
+</script>
+</body>
+</html>

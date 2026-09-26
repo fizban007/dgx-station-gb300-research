@@ -1,0 +1,29 @@
+--- moe_hook.py.orig	2026-09-24 22:14:21.069748774 -0400
++++ moe_hook.py	2026-09-25 07:09:54.893435101 -0400
+@@ -206,6 +206,7 @@
+         "NemotronHPuzzleForCausalLM",
+         "Qwen2MoeForCausalLM",
+         "Qwen3MoeForCausalLM",
++        "Qwen4ExpForConditionalGeneration",  # local patch: unvalidated, Qwen3.8-Flash-Next test
+     )
+     if not any(
+         architecture in validated_architectures for architecture in architectures
+@@ -218,7 +219,7 @@
+ 
+     quantization = resolved_view(server_args).quantization
+     supports_megamoe_quantization = (
+-        quantization in ("mxfp8", "modelopt_fp4")
++        quantization in ("mxfp8", "modelopt_fp4", "modelopt_mixed")  # local patch: NVFP4 routed experts
+         or model_config.is_fp4_experts
+         or model_config.nvfp4_moe_meta is not None
+     )
+@@ -265,7 +266,8 @@
+     if a2a_backend == "flashinfer_megamoe":
+         validate_flashinfer_megamoe_model(server_args)
+         validate_flashinfer_megamoe_envs()
+-        assert cfg.enable_dp_attention and cfg.dp_size == cfg.tp_size, (
++        # local patch: TP1 has a single rank, so DP attention (forced off at dp_size 1) is moot.
++        assert (cfg.enable_dp_attention or cfg.tp_size == 1) and cfg.dp_size == cfg.tp_size, (
+             "FlashInfer MegaMOE is only supported with dp_size == tp_size and --enable-dp-attention"
+         )
+         if resolved_view(server_args).moe_runner_backend == "auto":

@@ -1,0 +1,6 @@
+C8 rc=0
+Terminated
+C64 rc=143
+run                                     C  agg tok/s user tok/s  TTFT p50  ITL p50  accept  err
+decode                                  1       55.0       58.1      991ms   17.20ms       -    0
+decode                                  8      131.0       18.2    6,398ms   54.94ms       -    0

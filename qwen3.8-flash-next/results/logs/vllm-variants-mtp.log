@@ -1,0 +1,28 @@
+=== vllm-recipe-mtp3 (--moe-backend flashinfer_trtllm, MTP 3) --no-enable-flashinfer-autotune --distributed-executor-backend mp -cc.cudagraph_mode full_decode_only VLLM_USE_RUST_FRONTEND=1  08:04:51
+non-default args: {'model_tag': '/models/Qwen3.8-Flash-Next-NVFP4-nvidia', 'api_server_count': 1, 'host': '0.0.0.0', 'port': 30006, 'model': '/models/Qwen3.8-Fl
+Launching Rust frontend: /usr/local/lib/python3.12/dist-packages/vllm/vllm-rs frontend --listen-fd 32 --input-address ipc:///tmp/e449754d-01c7-4a32-b199-00659eb
+Initializing a V1 LLM engine (v0.30.1rc1.dev48+g7f1a5398e) with config: model='/models/Qwen3.8-Flash-Next-NVFP4-nvidia', speculative_config=SpeculativeConfig(me
+Using 'FLASHINFER_TRTLLM' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUT
+Using FLASHINFER_TRTLLM Fp8 MoE backend out of potential backends: ['AITER', 'FLASHINFER_TRTLLM', 'FLASHINFER_CUTLASS', 'DEEPGEMM', 'VLLM_CUTLASS', 'TRITON', 'M
+GPU KV cache size: 5,026,079 tokens, Maximum concurrency for 262,144 tokens per request: 19.17x
+Skipping FlashInfer autotune because it is disabled.
+sanity: 391
+qwen-vllm-recipe-mtp3: GSM8K 191/200 = 95.5%
+C1 rc=0
+C2 rc=0
+C4 rc=0
+C8 rc=0
+C16 rc=0
+C32 rc=0
+C64 rc=0
+decode                                  1      339.6      361.0      143ms    2.77ms    2.62    0
+decode                                  2      565.6      301.9      165ms    3.31ms    2.54    0
+decode                                  4      946.7      249.4      172ms    4.01ms    2.61    0
+decode                                  8    1,415.4      185.0      222ms    5.41ms    2.57    0
+decode                                 16    2,139.6      139.2      242ms    7.18ms    2.55    0
+decode                                 32    3,215.5      105.7      320ms    9.47ms    2.57    0
+decode                                 64    4,290.5       69.3      425ms   14.42ms    2.55    0
+   8192    1    4     1.08    30382.3     0.270     0.270     0.271   30385.7    77    593            32768   0
+  32768    1    4     2.97    44186.3     0.742     0.742     0.742   44187.8    83    972           131072   0
+  65536    1    4     5.86    44730.0     1.465     1.465     1.466   44730.8    89   1017           262144   0
+ 131072    1    4    11.98    43773.5     2.994     2.991     3.008   43774.3    87   1020           524288   0

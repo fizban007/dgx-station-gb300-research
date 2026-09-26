@@ -1,0 +1,4 @@
+=== vllm-trtllm-mtp0 (--moe-backend flashinfer_trtllm, MTP 0)  07:59:57
+Using 'FLASHINFER_TRTLLM' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUT
+GPU KV cache size: 5,930,082 tokens, Maximum concurrency for 262,144 tokens per request: 22.62x
+sanity: 391

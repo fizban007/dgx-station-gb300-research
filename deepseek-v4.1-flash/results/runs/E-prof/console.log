@@ -1,0 +1,523 @@
+INFO 09-24 09:56:18 [__init__.py:112] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+(APIServer pid=638569) INFO 09-24 09:56:18 [api_utils.py:347] 
+(APIServer pid=638569) INFO 09-24 09:56:18 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=638569) INFO 09-24 09:56:18 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.1.dev21505+ge77be2251.d20260924
+(APIServer pid=638569) INFO 09-24 09:56:18 [api_utils.py:347]   █▄█▀ █     █     █     █  model   /home/jasonc/models/DeepSeek-V4.1-Flash
+(APIServer pid=638569) INFO 09-24 09:56:18 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=638569) INFO 09-24 09:56:18 [api_utils.py:347] 
+(APIServer pid=638569) INFO 09-24 09:56:18 [api_utils.py:286] non-default args: {'model_tag': '/home/jasonc/models/DeepSeek-V4.1-Flash', 'host': '127.0.0.1', 'port': 30000, 'model': '/home/jasonc/models/DeepSeek-V4.1-Flash', 'tokenizer_mode': 'deepseek_v41', 'dtype': 'bfloat16', 'max_model_len': 262144, 'served_model_name': ['DeepSeek-V4.1-Flash'], 'generation_config': 'vllm', 'load_format': 'safetensors', 'attention_backend': 'B12X', 'block_size': 256, 'kv_cache_memory_bytes': 4294967296, 'enable_prefix_caching': True, 'language_model_only': True, 'max_num_batched_tokens': 8192, 'max_num_seqs': 32, 'max_cudagraph_capture_size': 128, 'moe_backend': 'flashinfer_trtllm', 'linear_backend': 'b12x', 'speculative_config': {'method': 'dspark', 'num_speculative_tokens': 3, 'attention_backend': 'B12X', 'draft_sample_method': 'greedy', 'rejection_sample_method': 'standard', 'enable_adaptive_verification': True}, 'compilation_config': {'mode': None, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': None, 'splitting_ops': None, 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': None, 'compile_ranges_endpoints': None, 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': None, 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': None, 'pass_config': {}, 'max_cudagraph_capture_size': None, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': None, 'static_all_moe_layers': []}, 'engram_config': EngramConfig(cpu_offload=False, embedding_across_dp=False, dp_shared_memory=False, table_memory='disk', disk_resident_scales=False, projection_tp=False), 'expert_residency_config': ExpertResidencyConfig(profile_path=None, workload='default', profile_directory=None, hbm_reserve_gb=12.0, grace_gb=None, grace_reserve_gb=16.0, min_hot_experts=None, max_hot_experts=None, shared_workspace=False, kernel='flashinfer', hot_experts=305), 'profiler_config': ProfilerConfig(profiler='torch', torch_profiler_dir='/home/jasonc/ds41f-exp/runs/E-prof/prof', proton_profiler_dir='', proton_context='shadow', proton_data='tree', proton_backend=None, proton_mode=None, proton_hook=None, proton_output_format=None, proton_graph_attribution=False, torch_profiler_with_stack=False, torch_profiler_with_flops=False, torch_profiler_use_gzip=True, torch_profiler_dump_cuda_time_total=True, torch_profiler_record_shapes=False, torch_profiler_with_memory=False, capture_torch_profiler=False, detailed_trace_annotation=False, ignore_frontend=False, delay_iterations=0, max_iterations=0, warmup_iterations=0, active_iterations=5, wait_iterations=0)}
+(APIServer pid=638569) WARNING 09-24 09:56:18 [envs.py:2416] Unknown vLLM environment variable detected: VLLM_EXP_STAGE_MIN_TOKENS
+(APIServer pid=638569) WARNING 09-24 09:56:18 [envs.py:2416] Unknown vLLM environment variable detected: VLLM_EXP_RESIDENCY_PROFILE
+(APIServer pid=638569) WARNING 09-24 09:56:18 [envs.py:2416] Unknown vLLM environment variable detected: VLLM_EXP_A16_DECODE
+(APIServer pid=638569) WARNING 09-24 09:56:18 [envs.py:2416] Unknown vLLM environment variable detected: VLLM_EXP_PRIME_AUTOTUNE
+(APIServer pid=638569) INFO 09-24 09:56:18 [config.py:852] Detected quantization_config.scale_fmt=ue8m0; enabling UE8M0 for DeepGEMM.
+(APIServer pid=638569) INFO 09-24 09:56:18 [model.py:693] Resolved architecture: DeepseekV41ForCausalLM
+(APIServer pid=638569) INFO 09-24 09:56:18 [model.py:2054] Using max model len 262144
+(APIServer pid=638569) INFO 09-24 09:56:22 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(APIServer pid=638569) INFO 09-24 09:56:22 [model.py:901] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(APIServer pid=638569) INFO 09-24 09:56:22 [model.py:693] Resolved architecture: DeepseekV41ForCausalLM
+(APIServer pid=638569) INFO 09-24 09:56:22 [model.py:2054] Using max model len 1048576
+(APIServer pid=638569) INFO 09-24 09:56:22 [speculative.py:1807] Overriding draft model max model len from 1048576 to 262144
+(APIServer pid=638569) INFO 09-24 09:56:22 [scheduler.py:385] Chunked prefill is enabled with max_num_batched_tokens=8192.
+(APIServer pid=638569) INFO 09-24 09:56:22 [vllm.py:1434] Resolved Engram configuration: EngramConfig(cpu_offload=False, embedding_across_dp=False, dp_shared_memory=False, table_memory='disk', disk_resident_scales=False, projection_tp=False)
+(APIServer pid=638569) INFO 09-24 09:56:22 [vllm.py:928] Auto-enabling VLLM_USE_BREAKABLE_CUDAGRAPH=1. Set VLLM_USE_BREAKABLE_CUDAGRAPH=0 to opt out.
+(APIServer pid=638569) INFO 09-24 09:56:22 [kernel.py:430] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=638569) INFO 09-24 09:56:22 [compilation.py:336] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=638663) INFO 09-24 09:56:29 [__init__.py:112] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+(EngineCore pid=638663) INFO 09-24 09:56:29 [core.py:123] Initializing a V1 LLM engine (v0.1.dev21505+ge77be2251.d20260924) with config: model='/home/jasonc/models/DeepSeek-V4.1-Flash', speculative_config=SpeculativeConfig(method='dspark', model='/home/jasonc/models/DeepSeek-V4.1-Flash', num_spec_tokens=3), tokenizer='/home/jasonc/models/DeepSeek-V4.1-Flash', skip_tokenizer_init=False, tokenizer_mode=deepseek_v41, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=262144, download_dir=None, load_format=safetensors, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=deepseek_v41_fp8, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=DeepSeek-V4.1-Flash, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all', '+quant_fp8', '+quant_fp8'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 128, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_b12x_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='flashinfer_trtllm', sparse_indexer_topk_backend='auto', linear_backend='b12x', linear_backend_per_quant=None)
+(EngineCore pid=638663) INFO 09-24 09:56:31 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(EngineCore pid=638663) INFO 09-24 09:56:31 [parallel_state.py:1859] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_b49fb3a0daa94e7bb62acdf1a2eb58ed backend=nccl
+(EngineCore pid=638663) INFO 09-24 09:56:31 [parallel_state.py:2299] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank 0, EPLB rank N/A
+(EngineCore pid=638663) INFO 09-24 09:56:31 [gpu_worker.py:472] Using V2 Model Runner
+(EngineCore pid=638663) INFO 09-24 09:56:32 [model_runner.py:412] Loading model from scratch...
+(EngineCore pid=638663) INFO 09-24 09:56:33 [mxfp4.py:458] Using 'FLASHINFER_TRTLLM_MXFP4_MXFP8' Mxfp4 MoE backend.
+(EngineCore pid=638663) WARNING 09-24 09:56:35 [compilation.py:1361] Op 'quant_fp8' not present in model, enabling with '+quant_fp8' has no effect
+(EngineCore pid=638663) INFO 09-24 09:56:36 [weight_utils.py:1058] Filesystem type for checkpoints: XFS. Checkpoint size: 286.12 GiB. Available RAM: 404.85 GiB.
+(EngineCore pid=638663) INFO 09-24 09:56:36 [weight_utils.py:1081] Auto-prefetch is disabled because the filesystem (XFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=638663) Loading safetensors checkpoint shards:   0% Completed | 0/46 [00:00<?, ?it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:   4% Completed | 2/46 [00:00<00:04, 10.91it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:   9% Completed | 4/46 [00:01<00:22,  1.89it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  11% Completed | 5/46 [00:02<00:25,  1.60it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  13% Completed | 6/46 [00:03<00:27,  1.45it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  15% Completed | 7/46 [00:04<00:28,  1.35it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  17% Completed | 8/46 [00:05<00:30,  1.26it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  20% Completed | 9/46 [00:06<00:30,  1.22it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  22% Completed | 10/46 [00:07<00:29,  1.20it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  24% Completed | 11/46 [00:07<00:29,  1.20it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  26% Completed | 12/46 [00:08<00:28,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  28% Completed | 13/46 [00:09<00:27,  1.18it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  30% Completed | 14/46 [00:10<00:26,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  33% Completed | 15/46 [00:11<00:26,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  35% Completed | 16/46 [00:12<00:25,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  37% Completed | 17/46 [00:12<00:24,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  39% Completed | 18/46 [00:13<00:23,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  41% Completed | 19/46 [00:14<00:22,  1.18it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  43% Completed | 20/46 [00:15<00:21,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  46% Completed | 21/46 [00:16<00:21,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  48% Completed | 22/46 [00:17<00:20,  1.20it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  50% Completed | 23/46 [00:18<00:19,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  52% Completed | 24/46 [00:18<00:18,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  54% Completed | 25/46 [00:19<00:17,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  57% Completed | 26/46 [00:20<00:16,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  59% Completed | 27/46 [00:21<00:15,  1.20it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  61% Completed | 28/46 [00:22<00:15,  1.19it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  63% Completed | 29/46 [00:23<00:14,  1.18it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  65% Completed | 30/46 [00:23<00:13,  1.17it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  67% Completed | 31/46 [00:24<00:12,  1.16it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  70% Completed | 32/46 [00:25<00:12,  1.15it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  72% Completed | 33/46 [00:26<00:11,  1.17it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  74% Completed | 34/46 [00:27<00:10,  1.16it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  76% Completed | 35/46 [00:28<00:09,  1.18it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  78% Completed | 36/46 [00:29<00:08,  1.18it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  80% Completed | 37/46 [00:29<00:07,  1.18it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  83% Completed | 38/46 [00:30<00:06,  1.16it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  85% Completed | 39/46 [00:31<00:06,  1.15it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  87% Completed | 40/46 [00:32<00:05,  1.15it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  89% Completed | 41/46 [00:33<00:04,  1.15it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  91% Completed | 42/46 [00:34<00:03,  1.16it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  93% Completed | 43/46 [00:34<00:01,  1.55it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  96% Completed | 44/46 [00:34<00:01,  1.93it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  98% Completed | 45/46 [00:34<00:00,  2.33it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards: 100% Completed | 46/46 [00:35<00:00,  2.76it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards: 100% Completed | 46/46 [00:35<00:00,  1.31it/s]
+(EngineCore pid=638663) 
+(EngineCore pid=638663) INFO 09-24 09:57:11 [default_loader.py:510] Loading weights took 35.73 seconds
+(EngineCore pid=638663) 2026-09-24 09:57:14,685 - INFO - autotuner.py:972 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(EngineCore pid=638663) [AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:   0%|          | 0/21 [00:00<?, ?profile/s][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:   5%|▍         | 1/21 [00:03<01:00,  3.01s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  10%|▉         | 2/21 [00:05<00:52,  2.75s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  14%|█▍        | 3/21 [00:08<00:50,  2.79s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  19%|█▉        | 4/21 [00:11<00:50,  3.00s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  24%|██▍       | 5/21 [00:16<01:00,  3.80s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  29%|██▊       | 6/21 [00:24<01:18,  5.21s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  33%|███▎      | 7/21 [00:36<01:41,  7.28s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  38%|███▊      | 8/21 [00:50<02:03,  9.48s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  43%|████▎     | 9/21 [01:06<02:17, 11.49s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  48%|████▊     | 10/21 [01:23<02:26, 13.28s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  52%|█████▏    | 11/21 [01:42<02:29, 14.93s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  57%|█████▋    | 12/21 [01:58<02:16, 15.12s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  62%|██████▏   | 13/21 [02:14<02:04, 15.58s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  67%|██████▋   | 14/21 [02:32<01:53, 16.24s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  71%|███████▏  | 15/21 [02:40<01:22, 13.81s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  76%|███████▌  | 16/21 [02:49<01:01, 12.29s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  81%|████████  | 17/21 [02:59<00:46, 11.67s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  86%|████████▌ | 18/21 [03:10<00:33, 11.33s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  90%|█████████ | 19/21 [03:11<00:16,  8.47s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  95%|█████████▌| 20/21 [03:13<00:06,  6.48s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe: 100%|██████████| 21/21 [03:14<00:00,  4.75s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe: 100%|██████████| 21/21 [03:14<00:00,  9.26s/profile]
+(EngineCore pid=638663) [AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:   0%|          | 0/21 [00:00<?, ?profile/s][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:   5%|▍         | 1/21 [00:02<00:44,  2.23s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  10%|▉         | 2/21 [00:04<00:44,  2.36s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  14%|█▍        | 3/21 [00:07<00:44,  2.46s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  19%|█▉        | 4/21 [00:10<00:43,  2.57s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  24%|██▍       | 5/21 [00:13<00:44,  2.80s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  29%|██▊       | 6/21 [00:17<00:50,  3.36s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  33%|███▎      | 7/21 [00:23<00:58,  4.17s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  38%|███▊      | 8/21 [00:30<01:05,  5.00s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  43%|████▎     | 9/21 [00:36<01:04,  5.39s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  48%|████▊     | 10/21 [00:40<00:52,  4.81s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  52%|█████▏    | 11/21 [00:43<00:44,  4.43s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  57%|█████▋    | 12/21 [00:44<00:30,  3.34s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  62%|██████▏   | 13/21 [00:45<00:20,  2.59s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  67%|██████▋   | 14/21 [00:46<00:14,  2.07s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  71%|███████▏  | 15/21 [00:46<00:09,  1.55s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  76%|███████▌  | 16/21 [00:46<00:05,  1.19s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  81%|████████  | 17/21 [00:47<00:03,  1.06profile/s][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  86%|████████▌ | 18/21 [00:47<00:02,  1.30profile/s][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  90%|█████████ | 19/21 [00:47<00:01,  1.54profile/s][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  95%|█████████▌| 20/21 [00:48<00:00,  1.76profile/s][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe: 100%|██████████| 21/21 [00:48<00:00,  1.90profile/s][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe: 100%|██████████| 21/21 [00:48<00:00,  2.32s/profile]
+(EngineCore pid=638663) 2026-09-24 10:01:19,020 - INFO - autotuner.py:995 - flashinfer.jit: [Autotuner]: Autotuning process ends
+(EngineCore pid=638663) INFO 09-24 10:01:19 [mxfp4.py:619] Primed FlashInfer autotune for MoE tiers [(0, 305), (305, 79)] (8192 tokens)
+(EngineCore pid=638663) INFO 09-24 10:01:19 [mxfp4.py:2002] Using MoEPrepareAndFinalizeNoDPEPModular
+(EngineCore pid=638663) INFO 09-24 10:01:19 [mxfp4.py:2003] Using TrtLlmMxfp4ResidencyExperts
+[rank0]:[W924 10:01:28.891278958 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 10551296, total: 267898585088).
+[rank0]:[W924 10:01:37.103235263 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 4521984, total: 267898585088).
+[rank0]:[W924 10:01:47.032656633 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 24248320, total: 267898585088).
+[rank0]:[W924 10:01:51.045375130 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 21233664, total: 267898585088).
+[rank0]:[W924 10:01:56.843424233 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 14221312, total: 267898585088).
+[rank0]:[W924 10:01:57.904154525 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 10420224, total: 267898585088).
+(EngineCore pid=638663) INFO 09-24 10:01:58 [eagle3_utils.py:27] Using Eagle3 auxiliary layers from config: (37, 38, 39)
+(EngineCore pid=638663) INFO 09-24 10:01:58 [vllm.py:1434] Resolved Engram configuration: EngramConfig(cpu_offload=False, embedding_across_dp=False, dp_shared_memory=False, table_memory='disk', disk_resident_scales=False, projection_tp=False)
+(EngineCore pid=638663) INFO 09-24 10:01:58 [kernel.py:430] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=638663) INFO 09-24 10:01:58 [compilation.py:336] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=638663) INFO 09-24 10:01:58 [weight_utils.py:704] Safetensors index filter selected 3/48 checkpoint shards.
+(EngineCore pid=638663) INFO 09-24 10:01:58 [weight_utils.py:1058] Filesystem type for checkpoints: XFS. Checkpoint size: 7.39 GiB. Available RAM: 387.45 GiB.
+(EngineCore pid=638663) Loading safetensors checkpoint shards:   0% Completed | 0/3 [00:00<?, ?it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  33% Completed | 1/3 [00:00<00:00,  3.86it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards:  67% Completed | 2/3 [00:00<00:00,  3.96it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards: 100% Completed | 3/3 [00:00<00:00,  3.92it/s]
+(EngineCore pid=638663) Loading safetensors checkpoint shards: 100% Completed | 3/3 [00:00<00:00,  3.92it/s]
+(EngineCore pid=638663) 
+(EngineCore pid=638663) INFO 09-24 10:01:59 [dspark.py:736] DSpark draft model loaded: 97 params
+(EngineCore pid=638663) INFO 09-24 10:01:59 [default_loader.py:510] Loading weights took 0.77 seconds
+(EngineCore pid=638663) 2026-09-24 10:01:59,335 - INFO - autotuner.py:972 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(EngineCore pid=638663) [AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:   0%|          | 0/21 [00:00<?, ?profile/s][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:   5%|▍         | 1/21 [00:02<00:47,  2.37s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  10%|▉         | 2/21 [00:04<00:45,  2.40s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  14%|█▍        | 3/21 [00:07<00:46,  2.56s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  19%|█▉        | 4/21 [00:10<00:47,  2.82s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  24%|██▍       | 5/21 [00:15<00:53,  3.34s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  29%|██▊       | 6/21 [00:20<01:00,  4.05s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  33%|███▎      | 7/21 [00:27<01:10,  5.07s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  38%|███▊      | 8/21 [00:35<01:17,  5.95s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  43%|████▎     | 9/21 [00:43<01:19,  6.65s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  48%|████▊     | 10/21 [00:52<01:21,  7.41s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  52%|█████▏    | 11/21 [01:00<01:15,  7.54s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  57%|█████▋    | 12/21 [01:09<01:10,  7.83s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  62%|██████▏   | 13/21 [01:18<01:06,  8.26s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  67%|██████▋   | 14/21 [01:22<00:49,  7.13s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  71%|███████▏  | 15/21 [01:27<00:38,  6.43s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  76%|███████▌  | 16/21 [01:32<00:29,  5.99s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  81%|████████  | 17/21 [01:38<00:23,  5.84s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  86%|████████▌ | 18/21 [01:38<00:13,  4.34s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  90%|█████████ | 19/21 [01:39<00:06,  3.29s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  95%|█████████▌| 20/21 [01:40<00:02,  2.55s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe: 100%|██████████| 21/21 [01:41<00:00,  1.89s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe: 100%|██████████| 21/21 [01:41<00:00,  4.81s/profile]
+(EngineCore pid=638663) 2026-09-24 10:03:40,354 - INFO - autotuner.py:995 - flashinfer.jit: [Autotuner]: Autotuning process ends
+(EngineCore pid=638663) INFO 09-24 10:03:40 [mxfp4.py:619] Primed FlashInfer autotune for MoE tiers [(0, 128)] (8192 tokens)
+(EngineCore pid=638663) INFO 09-24 10:03:41 [model_runner.py:444] Model loading took 234.97 GiB memory and 429.530113 seconds
+(EngineCore pid=638663) INFO 09-24 10:03:42 [topk_topp_sampler.py:80] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=638663) INFO 09-24 10:03:42 [utils.py:405] Using BLHNC KV cache layout.
+(EngineCore pid=638663) INFO 09-24 10:03:44 [b12x_prepare.py:594] b12x weights preparation uses 32 compiler workers
+b12x planning sequence.embedding: 0/2357 ready, 0 measured, 0 cached, 0 compilations, 0:00, tuning stopped; completing required preparation
+b12x planning gemm.bf16_gemv: 0/2357 ready, 0 measured, 0 cached, 0 compilations, 0:01, tuning stopped; completing required preparation
+b12x warming heuristics sequence.embedding: 0/2357 ready, 0 measured, 0 cached, 0 compilations, 0:01, tuning stopped; completing required preparation
+b12x warming heuristics norm.mhc: 53/2357 ready, 0 measured, 0 cached, 0 compilations, 0:01, tuning stopped; completing required preparation
+b12x warming heuristics gemm.block_fp8_linear: 196/2357 ready, 0 measured, 0 cached, 0 compilations, 0:02, tuning stopped; completing required preparation
+b12x warming heuristics gemm.bf16_gemv: 343/2357 ready, 0 measured, 0 cached, 0 compilations, 0:03, tuning stopped; completing required preparation
+b12x warming heuristics norm.hyperconnection: 614/2357 ready, 0 measured, 0 cached, 0 compilations, 0:05, tuning stopped; completing required preparation
+b12x warming heuristics gemm.bf16_vocab_projection: 1644/2357 ready, 0 measured, 0 cached, 0 compilations, 0:08, tuning stopped; completing required preparation
+b12x warming heuristics gemm.wo_projection: 2042/2357 ready, 0 measured, 0 cached, 0 compilations, 0:13, tuning stopped; completing required preparation
+b12x warming heuristics attention.compressed_sparse_mla.rotate: 2270/2357 ready, 0 measured, 0 cached, 0 compilations, 0:16, tuning stopped; completing required preparation
+b12x ready gemm.block_fp8_linear: 2357/2357 ready, 0 measured, 0 cached, 0 compilations, 0:18
+(EngineCore pid=638663) /home/jasonc/venvs/vllm-karmic/lib/python3.12/site-packages/torch/_tensor.py:1665: UserWarning: Accessing the data pointer of FakeTensor is deprecated and will error in PyTorch 2.5. This is almost definitely a bug in your code and will cause undefined behavior with subsystems like torch.compile. Please wrap calls to tensor.data_ptr() in an opaque custom op; If all else fails, you can guard accesses to tensor.data_ptr() on isinstance(tensor, FakeTensor). (Triggered internally at /__w/pytorch/pytorch/c10/core/StorageImpl.cpp:46.)
+(EngineCore pid=638663)   return _C._to_dlpack(self, dl_device=dl_device, copy=copy)
+(EngineCore pid=638663) INFO 09-24 10:04:15 [gpu_worker.py:638] Initial free memory 248.09 GiB, reserved 4.0 GiB memory for KV Cache as specified by kv_cache_memory_bytes config and skipped memory profiling. This does not respect the gpu_memory_utilization config. Only use kv_cache_memory_bytes config when you want manual control of KV cache memory size. If OOM'ed, check the difference of initial free memory between the current run and the previous run where kv_cache_memory_bytes is suggested and update it correspondingly.
+(EngineCore pid=638663) INFO 09-24 10:04:15 [kv_cache_utils.py:2798] GPU KV cache size: 1,660,979 tokens, Maximum concurrency for 262,144 tokens per request: 6.34x
+(EngineCore pid=638663) INFO 09-24 10:04:15 [b12x_prepare.py:655] b12x autotuning uses 130 temporary KV blocks before allocating 18850 serving blocks
+(EngineCore pid=638663) INFO 09-24 10:04:15 [b12x_prepare.py:594] b12x state preparation uses 32 compiler workers
+b12x planning attention.compressed_sparse_mla: 0/1460 ready, 0 measured, 0 cached, 0 compilations, 0:00, tuning stopped; completing required preparation
+b12x warming heuristics attention.compressed_sparse_mla: 0/1460 ready, 0 measured, 0 cached, 0 compilations, 0:00, tuning stopped; completing required preparation
+b12x warming heuristics attention.dsa_indexer: 13/1460 ready, 0 measured, 0 cached, 0 compilations, 0:00, tuning stopped; completing required preparation
+b12x ready gemm.block_fp8_linear: 1460/1460 ready, 0 measured, 0 cached, 0 compilations, 0:08
+(EngineCore pid=638663) INFO 09-24 10:04:26 [b12x_prepare.py:594] b12x bind preparation uses 32 compiler workers
+b12x planning attention.compressed_sparse_mla: 0/1460 ready, 0 measured, 0 cached, 0 compilations, 0:00, tuning stopped; completing required preparation
+b12x warming heuristics attention.compressed_sparse_mla: 0/1460 ready, 0 measured, 0 cached, 0 compilations, 0:00, tuning stopped; completing required preparation
+b12x warming heuristics attention.dsa_indexer: 13/1460 ready, 0 measured, 0 cached, 0 compilations, 0:01, tuning stopped; completing required preparation
+b12x ready gemm.block_fp8_linear: 1460/1460 ready, 0 measured, 0 cached, 0 compilations, 0:10
+(EngineCore pid=638663) INFO 09-24 10:04:36 [kernel_warmup.py:174] JIT kernel warmup starting.
+(EngineCore pid=638663) JIT kernel warmup (120 compile keys):   0%|          | 0/4 [00:00<?, ?kernel/s]JIT kernel warmup (120 compile keys):  25%|██▌       | 1/4 [00:00<00:00,  5.21kernel/s, _DecoratedTritonJitKernel (20 keys)]JIT kernel warmup (120 compile keys):  50%|█████     | 2/4 [00:00<00:00,  6.08kernel/s, _DecoratedTritonJitKernel (20 keys)]JIT kernel warmup (120 compile keys):  75%|███████▌  | 3/4 [00:00<00:00,  3.34kernel/s, _DecoratedTritonJitKernel (60 keys)]JIT kernel warmup (120 compile keys): 100%|██████████| 4/4 [00:00<00:00,  4.05kernel/s, _DecoratedTritonJitKernel (20 keys)]JIT kernel warmup (120 compile keys): 100%|██████████| 4/4 [00:00<00:00,  4.15kernel/s, _DecoratedTritonJitKernel (20 keys)]
+(EngineCore pid=638663) INFO 09-24 10:04:37 [kernel_warmup.py:187] JIT kernel warmup finished in 1.03s.
+(EngineCore pid=638663) INFO 09-24 10:04:37 [kernel_warmup.py:402] Using FlashInfer autotune cache file: /home/jasonc/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/103a/39a6ef6a696f835bb2a4302f212a6ef75d7a6d222d5bfb78829a0c41bd3d1f67/autotune_configs.json
+(EngineCore pid=638663) 2026-09-24 10:04:37,811 - INFO - autotuner.py:2789 - flashinfer.jit: [Autotuner]: Loaded 42 configs from /home/jasonc/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/103a/39a6ef6a696f835bb2a4302f212a6ef75d7a6d222d5bfb78829a0c41bd3d1f67/autotune_configs.json
+(EngineCore pid=638663) 2026-09-24 10:04:37,812 - INFO - autotuner.py:972 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(EngineCore pid=638663) INFO 09-24 10:04:37 [kernel_warmup.py:353] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(EngineCore pid=638663) 2026-09-24 10:04:39,153 - INFO - autotuner.py:995 - flashinfer.jit: [Autotuner]: Autotuning process ends
+(EngineCore pid=638663) 2026-09-24 10:04:39,167 - INFO - autotuner.py:2652 - flashinfer.jit: [Autotuner]: Saved 42 configs to /home/jasonc/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/103a/39a6ef6a696f835bb2a4302f212a6ef75d7a6d222d5bfb78829a0c41bd3d1f67/autotune_configs.json (0 new, 42 from previous config)
+(EngineCore pid=638663) INFO 09-24 10:04:42 [breakable_cudagraph.py:327] Breakable CUDA graph enabled
+(EngineCore pid=638663) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/19 [00:00<?, ?it/s]/home/jasonc/venvs/vllm-karmic/lib/python3.12/site-packages/torch/cuda/graphs.py:169: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:210.)
+(EngineCore pid=638663)   super().capture_end()
+(EngineCore pid=638663) Capturing CUDA graphs (PIECEWISE):   5%|▌         | 1/19 [00:00<00:12,  1.40it/s]Capturing CUDA graphs (PIECEWISE):  11%|█         | 2/19 [00:01<00:11,  1.44it/s]Capturing CUDA graphs (PIECEWISE):  16%|█▌        | 3/19 [00:02<00:10,  1.47it/s]Capturing CUDA graphs (PIECEWISE):  21%|██        | 4/19 [00:02<00:10,  1.48it/s]Capturing CUDA graphs (PIECEWISE):  26%|██▋       | 5/19 [00:03<00:09,  1.49it/s]Capturing CUDA graphs (PIECEWISE):  32%|███▏      | 6/19 [00:04<00:08,  1.49it/s]Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 7/19 [00:04<00:08,  1.49it/s]Capturing CUDA graphs (PIECEWISE):  42%|████▏     | 8/19 [00:05<00:07,  1.50it/s]Capturing CUDA graphs (PIECEWISE):  47%|████▋     | 9/19 [00:06<00:06,  1.51it/s]Capturing CUDA graphs (PIECEWISE):  53%|█████▎    | 10/19 [00:06<00:05,  1.52it/s]Capturing CUDA graphs (PIECEWISE):  58%|█████▊    | 11/19 [00:07<00:05,  1.52it/s]Capturing CUDA graphs (PIECEWISE):  63%|██████▎   | 12/19 [00:08<00:04,  1.52it/s]Capturing CUDA graphs (PIECEWISE):  68%|██████▊   | 13/19 [00:08<00:03,  1.53it/s]Capturing CUDA graphs (PIECEWISE):  74%|███████▎  | 14/19 [00:09<00:03,  1.53it/s]Capturing CUDA graphs (PIECEWISE):  79%|███████▉  | 15/19 [00:09<00:02,  1.53it/s]Capturing CUDA graphs (PIECEWISE):  84%|████████▍ | 16/19 [00:10<00:01,  1.51it/s]Capturing CUDA graphs (PIECEWISE):  89%|████████▉ | 17/19 [00:11<00:01,  1.49it/s]Capturing CUDA graphs (PIECEWISE):  95%|█████████▍| 18/19 [00:12<00:00,  1.48it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 19/19 [00:12<00:00,  1.48it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 19/19 [00:12<00:00,  1.50it/s]
+(EngineCore pid=638663) Capturing CUDA graphs (FULL):   0%|          | 0/25 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):   4%|▍         | 1/25 [00:00<00:15,  1.55it/s]Capturing CUDA graphs (FULL):   8%|▊         | 2/25 [00:01<00:14,  1.55it/s]Capturing CUDA graphs (FULL):  12%|█▏        | 3/25 [00:01<00:14,  1.55it/s]Capturing CUDA graphs (FULL):  16%|█▌        | 4/25 [00:02<00:13,  1.55it/s]Capturing CUDA graphs (FULL):  20%|██        | 5/25 [00:03<00:12,  1.54it/s]Capturing CUDA graphs (FULL):  24%|██▍       | 6/25 [00:03<00:12,  1.54it/s]Capturing CUDA graphs (FULL):  28%|██▊       | 7/25 [00:04<00:11,  1.54it/s]Capturing CUDA graphs (FULL):  32%|███▏      | 8/25 [00:05<00:11,  1.54it/s]Capturing CUDA graphs (FULL):  36%|███▌      | 9/25 [00:05<00:10,  1.55it/s]Capturing CUDA graphs (FULL):  40%|████      | 10/25 [00:06<00:09,  1.55it/s]Capturing CUDA graphs (FULL):  44%|████▍     | 11/25 [00:07<00:09,  1.56it/s]Capturing CUDA graphs (FULL):  48%|████▊     | 12/25 [00:07<00:08,  1.56it/s]Capturing CUDA graphs (FULL):  52%|█████▏    | 13/25 [00:08<00:07,  1.56it/s]Capturing CUDA graphs (FULL):  56%|█████▌    | 14/25 [00:09<00:07,  1.57it/s]Capturing CUDA graphs (FULL):  60%|██████    | 15/25 [00:09<00:06,  1.57it/s]Capturing CUDA graphs (FULL):  64%|██████▍   | 16/25 [00:10<00:05,  1.53it/s]Capturing CUDA graphs (FULL):  68%|██████▊   | 17/25 [00:11<00:05,  1.50it/s]Capturing CUDA graphs (FULL):  72%|███████▏  | 18/25 [00:11<00:04,  1.48it/s]Capturing CUDA graphs (FULL):  76%|███████▌  | 19/25 [00:12<00:04,  1.47it/s]Capturing CUDA graphs (FULL):  80%|████████  | 20/25 [00:13<00:03,  1.46it/s]Capturing CUDA graphs (FULL):  84%|████████▍ | 21/25 [00:13<00:02,  1.45it/s]Capturing CUDA graphs (FULL):  88%|████████▊ | 22/25 [00:14<00:02,  1.45it/s]Capturing CUDA graphs (FULL):  92%|█████████▏| 23/25 [00:15<00:01,  1.44it/s]Capturing CUDA graphs (FULL):  96%|█████████▌| 24/25 [00:15<00:00,  1.44it/s]Capturing CUDA graphs (FULL): 100%|██████████| 25/25 [00:16<00:00,  1.44it/s]Capturing CUDA graphs (FULL): 100%|██████████| 25/25 [00:16<00:00,  1.51it/s]
+(EngineCore pid=638663) INFO 09-24 10:05:12 [speculator.py:152] Capturing model for DSpark speculator...
+(EngineCore pid=638663) Capturing dspark CUDA graphs (FULL):   0%|          | 0/14 [00:00<?, ?it/s]Capturing dspark CUDA graphs (FULL):  14%|█▍        | 2/14 [00:00<00:00, 13.74it/s]Capturing dspark CUDA graphs (FULL):  29%|██▊       | 4/14 [00:00<00:00, 14.11it/s]Capturing dspark CUDA graphs (FULL):  43%|████▎     | 6/14 [00:00<00:00, 14.45it/s]Capturing dspark CUDA graphs (FULL):  57%|█████▋    | 8/14 [00:00<00:00, 14.98it/s]Capturing dspark CUDA graphs (FULL):  71%|███████▏  | 10/14 [00:00<00:00, 15.50it/s]Capturing dspark CUDA graphs (FULL):  86%|████████▌ | 12/14 [00:00<00:00, 16.00it/s]Capturing dspark CUDA graphs (FULL): 100%|██████████| 14/14 [00:00<00:00, 16.25it/s]Capturing dspark CUDA graphs (FULL): 100%|██████████| 14/14 [00:00<00:00, 15.51it/s]
+(EngineCore pid=638663) Capturing DSpark context CUDA graphs (FULL):   0%|          | 0/8 [00:00<?, ?it/s]Capturing DSpark context CUDA graphs (FULL): 100%|██████████| 8/8 [00:00<00:00, 127.72it/s]
+(EngineCore pid=638663) INFO 09-24 10:05:35 [model_runner.py:1247] Graph capturing finished in 53 secs, took 4.37 GiB
+(EngineCore pid=638663) INFO 09-24 10:05:58 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(EngineCore pid=638663) WARNING 09-24 10:05:58 [torch_utils.py:275] OMP_NUM_THREADS=8 is set; leaving Torch threads at 8 for serving. Multi-threaded torch CPU ops during serving can degrade performance through spin-wait contention and cgroup CPU-quota throttling.
+(EngineCore pid=638663) INFO 09-24 10:05:58 [core.py:389] init engine (profile, create kv cache, warmup model) took 136.34 s
+(EngineCore pid=638663) INFO 09-24 10:05:58 [kv_cache_utils.py:752] kv cache group sizes [128, 128, 128, 128, 128, 128, 128, 256, 8, 128, 128, 128, 128, 128, 128, 128, 128]
+(EngineCore pid=638663) INFO 09-24 10:05:58 [kv_cache_utils.py:753] kv lcm block sizes 256
+(EngineCore pid=638663) WARNING 09-24 10:05:58 [scheduler.py:335] EAGLE trailing prefix-cache block dropping is disabled. This is experimental and may affect speculative-token acceptance rates.
+(EngineCore pid=638663) INFO 09-24 10:05:58 [kernel.py:430] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=638569) INFO 09-24 10:05:58 [async_llm.py:208] Torch profiler enabled. AsyncLLM CPU traces will be collected under /home/jasonc/ds41f-exp/runs/E-prof/prof
+(APIServer pid=638569) INFO 09-24 10:05:58 [wrapper.py:202] Torch profiling enabled. Traces will be saved to: /home/jasonc/ds41f-exp/runs/E-prof/prof
+(APIServer pid=638569) INFO 09-24 10:05:58 [entry.py:135] Supported tasks: ['generate']
+(APIServer pid=638569) WARNING 09-24 10:05:58 [api_router.py:41] Profiler with mode 'torch' is enabled in the API server. This should ONLY be used for local development!
+(APIServer pid=638569) WARNING 09-24 10:05:58 [__init__.py:44] SECURITY WARNING: Development endpoints are enabled! This should NOT be used in production!
+(APIServer pid=638569) INFO 09-24 10:05:58 [factories.py:76] Scale-out endpoints are disabled. Set --enable-scale-out to enable them.
+(APIServer pid=638569) INFO 09-24 10:05:58 [entry.py:139] Starting vLLM server on http://127.0.0.1:30000
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:61] Available routes are:
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /openapi.json, Methods: HEAD, GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /docs, Methods: HEAD, GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /redoc, Methods: HEAD, GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /load, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /version, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /health, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /metrics, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /start_profile, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /stop_profile, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /tokenize, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /detokenize, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /v1/models, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /ping, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /ping, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /invocations, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /reset_prefix_cache, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /reset_mm_cache, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /reset_encoder_cache, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /prefill_fairness, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /prefill_fairness, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /pause, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /resume, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /abort_requests, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /is_paused, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /init_weight_transfer_engine, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /start_weight_update, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /start_draft_weight_update, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /update_weights, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /finish_weight_update, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /update_weight_version, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /weight_info, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /get_world_size, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /collective_rpc, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /server_info, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /sleep, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /wake_up, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /is_sleeping, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /v1/chat/completions, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /v1/chat/completions/batch, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /v1/responses, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /v1/responses/{response_id}, Methods: GET
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /v1/responses/{response_id}/cancel, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /v1/completions, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /v1/messages, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /v1/messages/count_tokens, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /generative_scoring, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /scale_elastic_ep, Methods: POST
+(APIServer pid=638569) INFO 09-24 10:05:58 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+(APIServer pid=638569) INFO:     Started server process [638569]
+(APIServer pid=638569) INFO:     Waiting for application startup.
+(APIServer pid=638569) INFO:     Application startup complete.
+(APIServer pid=638569) INFO:     127.0.0.1:55362 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO 09-24 10:06:05 [api_router.py:23] Starting profiler...
+ERROR: External init callback must run in same thread as registerClient (134214016 != 932073408)
+(EngineCore pid=638663) INFO 09-24 10:06:05 [wrapper.py:202] Torch profiling enabled. Traces will be saved to: /home/jasonc/ds41f-exp/runs/E-prof/prof
+USDT:2026-09-24 10:06:05 638569:639585 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-09-24 10:06:05 638663:638663 SyncActivityProfilerHandler.cpp:52] profiler_start
+(APIServer pid=638569) INFO 09-24 10:06:05 [api_router.py:25] Profiler started.
+(APIServer pid=638569) INFO:     127.0.0.1:55368 - "POST /start_profile HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:55378 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO 09-24 10:06:08 [api_router.py:31] Stopping profiler...
+USDT:2026-09-24 10:06:08 638569:639585 SyncActivityProfilerHandler.cpp:59] profiler_stop
+(APIServer pid=638569) 
+(APIServer pid=638569) 
+(APIServer pid=638569) INFO 09-24 10:06:08 [wrapper.py:82] Profiler stopped successfully.
+USDT:2026-09-24 10:06:08 638663:638663 SyncActivityProfilerHandler.cpp:59] profiler_stop
+(APIServer pid=638569) INFO 09-24 10:06:09 [loggers.py:315] Engine 000: Avg prompt throughput: 4.2 tokens/s, Avg generation throughput: 10.6 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=638569) INFO 09-24 10:06:09 [metrics.py:136] SpecDecoding metrics: Mean acceptance length: 2.02, Mean verification depth: 2.78/3, Accepted throughput: 5.30 tokens/s, Drafted throughput: 14.47 tokens/s, Accepted: 56 tokens, Drafted: 153 tokens, Per-position acceptance rate: 0.673, 0.294, 0.085, Per-position verification coverage: 1.000, 0.927, 0.855, Avg Draft acceptance rate: 36.6%
+(APIServer pid=638569) INFO 09-24 10:06:19 [loggers.py:315] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+(EngineCore pid=638663) -------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+(EngineCore pid=638663)                                                    Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+(EngineCore pid=638663) -------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+(EngineCore pid=638663)                    execute_context_0(0)_generation_1(4)         0.00%       0.000us         0.00%       0.000us       0.000us        3.696s       366.71%        3.696s      38.501ms            96  
+(EngineCore pid=638663)                   execute_context_1(22)_generation_0(0)         0.00%       0.000us         0.00%       0.000us       0.000us     120.732ms        11.98%     120.732ms       2.945ms            41  
+(EngineCore pid=638663) bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x16x...         0.00%       0.000us         0.00%       0.000us       0.000us     103.662ms        10.28%     103.662ms      58.899us          1760  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmbf16_gemv_kernelSmallN...         0.00%       0.000us         0.00%       0.000us       0.000us      98.463ms         9.77%      98.463ms     113.306us           869  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmblockscaled_sm103Dense...         0.00%       0.000us         0.00%       0.000us       0.000us      91.410ms         9.07%      91.410ms      20.170us          4532  
+(EngineCore pid=638663) bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x8x5...         0.00%       0.000us         0.00%       0.000us       0.000us      74.595ms         7.40%      74.595ms      38.852us          1920  
+(EngineCore pid=638663) bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x16x256...         0.00%       0.000us         0.00%       0.000us       0.000us      60.021ms         5.96%      60.021ms      34.103us          1760  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKer...         0.00%       0.000us         0.00%       0.000us       0.000us      49.013ms         4.86%      49.013ms      11.856us          4134  
+(EngineCore pid=638663) bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x8x512_...         0.00%       0.000us         0.00%       0.000us       0.000us      46.855ms         4.65%      46.855ms      23.427us          2000  
+(EngineCore pid=638663)                                       _wait_engram_rows         0.00%       0.000us         0.00%       0.000us       0.000us      46.543ms         4.62%      46.543ms     474.933us            98  
+(EngineCore pid=638663) kernel_cutlass_kernel_extra_pertok_b12xattention_sha...         0.00%       0.000us         0.00%       0.000us       0.000us      43.411ms         4.31%      43.411ms      23.800us          1824  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKer...         0.00%       0.000us         0.00%       0.000us       0.000us      41.212ms         4.09%      41.212ms      16.814us          2451  
+(EngineCore pid=638663)                             b12x::bf16_vocab_projection         0.28%      10.190ms         0.30%      10.862ms     221.675us      41.125ms         4.08%      41.128ms     839.352us            49  
+(EngineCore pid=638663) void moe::dev::finalize::finalizeKernel<moe::dev::fi...         0.00%       0.000us         0.00%       0.000us       0.000us      29.547ms         2.93%      29.547ms       7.538us          3920  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormmhc_kernelsMHCFinalize...         0.00%       0.000us         0.00%       0.000us       0.000us      27.124ms         2.69%      27.124ms       6.437us          4214  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmblockscaled_reduceWeig...         0.00%       0.000us         0.00%       0.000us       0.000us      20.764ms         2.06%      20.764ms       2.361us          8796  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormmhc_kernelsMHCPostPreP...         0.00%       0.000us         0.00%       0.000us       0.000us      17.641ms         1.75%      17.641ms       4.045us          4361  
+(EngineCore pid=638663) bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x8x5...         0.00%       0.000us         0.00%       0.000us       0.000us      17.620ms         1.75%      17.620ms      77.619us           227  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKer...         0.00%       0.000us         0.00%       0.000us       0.000us      16.446ms         1.63%      16.446ms       7.957us          2067  
+(EngineCore pid=638663) void moe::dev::routing::routingCustom::routingIndice...         0.00%       0.000us         0.00%       0.000us       0.000us      14.565ms         1.45%      14.565ms       3.793us          3840  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormhyperconnection_cute_G...         0.00%       0.000us         0.00%       0.000us       0.000us      14.442ms         1.43%      14.442ms       3.070us          4704  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmbf16_gemv_kernelSmallN...         0.00%       0.000us         0.00%       0.000us       0.000us      14.050ms         1.39%      14.050ms       5.852us          2401  
+(EngineCore pid=638663) void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      12.095ms         1.20%      12.095ms       2.773us          4361  
+(EngineCore pid=638663) void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      11.929ms         1.18%      11.929ms       1.122us         10633  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentioncompressed_sparse...         0.00%       0.000us         0.00%       0.000us       0.000us      11.404ms         1.13%      11.404ms       2.216us          5145  
+(EngineCore pid=638663)                                       _dsv4_topk_kernel         0.00%       0.000us         0.00%       0.000us       0.000us      10.175ms         1.01%      10.175ms       5.191us          1960  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentioncompressed_sparse...         0.00%       0.000us         0.00%       0.000us       0.000us       9.752ms         0.97%       9.752ms       2.314us          4214  
+(EngineCore pid=638663) void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       6.786ms         0.67%       6.786ms       3.078us          2205  
+(EngineCore pid=638663) void at::native::vectorized_elementwise_kernel<8, at...         0.00%       0.000us         0.00%       0.000us       0.000us       6.463ms         0.64%       6.463ms       1.589us          4067  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattention_sharedmlamergeSp...         0.00%       0.000us         0.00%       0.000us       0.000us       6.385ms         0.63%       6.385ms       3.089us          2067  
+(EngineCore pid=638663) void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       5.696ms         0.57%       5.696ms       2.704us          2107  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmwo_projection_quant_cu...         0.00%       0.000us         0.00%       0.000us       0.000us       5.526ms         0.55%       5.526ms       2.623us          2107  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmwo_projection_quant_cu...         0.00%       0.000us         0.00%       0.000us       0.000us       5.391ms         0.53%       5.391ms       2.559us          2107  
+(EngineCore pid=638663) bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x8x2...         0.00%       0.000us         0.00%       0.000us       0.000us       5.381ms         0.53%       5.381ms      33.630us           160  
+(EngineCore pid=638663) void vllm::act_and_mul_kernel<c10::BFloat16, __nv_bf...         0.00%       0.000us         0.00%       0.000us       0.000us       5.349ms         0.53%       5.349ms       2.539us          2107  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us       5.007ms         0.50%       5.007ms      11.353us           441  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKer...         0.00%       0.000us         0.00%       0.000us       0.000us       4.749ms         0.47%       4.749ms      49.472us            96  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us       3.985ms         0.40%       3.985ms      10.165us           392  
+(EngineCore pid=638663) kernel_cutlass_kernel_flashinferquantizationkernelsm...         0.00%       0.000us         0.00%       0.000us       0.000us       3.879ms         0.38%       3.879ms       1.841us          2107  
+(EngineCore pid=638663) void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us       3.876ms         0.38%       3.876ms       1.758us          2205  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattention_sharedmlakv_cach...         0.00%       0.000us         0.00%       0.000us       0.000us       3.787ms         0.38%       3.787ms       1.680us          2254  
+(EngineCore pid=638663) bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x8x256_...         0.00%       0.000us         0.00%       0.000us       0.000us       3.635ms         0.36%       3.635ms      22.721us           160  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentionsparse_mla_sm103S...         0.00%       0.000us         0.00%       0.000us       0.000us       3.140ms         0.31%       3.140ms       1.519us          2067  
+(EngineCore pid=638663) kernel_cutlass_kernel_pertok_b12xattention_sharedmla...         0.00%       0.000us         0.00%       0.000us       0.000us       3.138ms         0.31%       3.138ms      12.914us           243  
+(EngineCore pid=638663) void at::native::vectorized_elementwise_kernel<8, at...         0.00%       0.000us         0.00%       0.000us       0.000us       3.113ms         0.31%       3.113ms       1.477us          2107  
+(EngineCore pid=638663) void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us       3.042ms         0.30%       3.042ms       1.444us          2107  
+(EngineCore pid=638663)                                                 _tokens         0.00%       0.000us         0.00%       0.000us       0.000us       2.831ms         0.28%       2.831ms       2.222us          1274  
+(EngineCore pid=638663)                                                  _chunk         0.00%       0.000us         0.00%       0.000us       0.000us       2.302ms         0.23%       2.302ms       2.296us          1003  
+(EngineCore pid=638663)                                                  _pages         0.00%       0.000us         0.00%       0.000us       0.000us       2.165ms         0.21%       2.165ms       1.883us          1150  
+(EngineCore pid=638663)                                             aten::copy_         0.38%      13.954ms         0.81%      29.496ms      19.418us       2.126ms         0.21%       2.126ms       1.400us          1519  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xsequenceembedding_kernel_E...         0.00%       0.000us         0.00%       0.000us       0.000us       1.947ms         0.19%       1.947ms      19.867us            98  
+(EngineCore pid=638663)                                               _requests         0.00%       0.000us         0.00%       0.000us       0.000us       1.924ms         0.19%       1.924ms       1.511us          1274  
+(EngineCore pid=638663)                                        cuLaunchKernelEx         0.88%      32.138ms         0.88%      32.138ms       8.300us       1.923ms         0.19%       1.923ms       0.497us          3872  
+(EngineCore pid=638663) bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x8x256_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.742ms         0.17%       1.742ms      11.847us           147  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKer...         0.00%       0.000us         0.00%       0.000us       0.000us       1.426ms         0.14%       1.426ms      29.714us            48  
+(EngineCore pid=638663)                               b12x::compressed_mla_warp         0.94%      34.513ms         1.17%      42.968ms       1.074ms       1.177ms         0.12%       1.289ms      32.230us            40  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormhyperconnection_cute_E...         0.00%       0.000us         0.00%       0.000us       0.000us       1.108ms         0.11%       1.108ms      11.303us            98  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentionmla_compress_cute...         0.00%       0.000us         0.00%       0.000us       0.000us     962.408us         0.10%     962.408us       6.547us           147  
+(EngineCore pid=638663) kernel_cutlass_kernel_dual_b12xattention_sharedmlapr...         0.00%       0.000us         0.00%       0.000us       0.000us     961.411us         0.10%     961.411us      25.300us            38  
+(EngineCore pid=638663) void moe::dev::finalize::finalizeKernel<moe::dev::fi...         0.00%       0.000us         0.00%       0.000us       0.000us     956.201us         0.09%     956.201us       6.505us           147  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentiondsa_indexertiled_...         0.00%       0.000us         0.00%       0.000us       0.000us     955.239us         0.09%     955.239us       2.166us           441  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us     949.891us         0.09%     949.891us       1.615us           588  
+(EngineCore pid=638663)                                    cudaEventSynchronize        20.69%     756.552ms        29.27%        1.070s       5.461ms     854.373us         0.08%       4.278ms      21.828us           196  
+(EngineCore pid=638663)                                    _save_partial_states         0.00%       0.000us         0.00%       0.000us       0.000us     814.919us         0.08%     814.919us       5.544us           147  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us     771.041us         0.08%     771.041us       1.748us           441  
+(EngineCore pid=638663) void vllm::moe::topkGatingSoftplusSqrt<4, 128, 4, 16...         0.00%       0.000us         0.00%       0.000us       0.000us     678.984us         0.07%     678.984us       4.619us           147  
+(EngineCore pid=638663)                          Memcpy HtoD (Pinned -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     677.575us         0.07%     677.575us       1.970us           344  
+(EngineCore pid=638663)                                       b12x::engram_hash         0.47%      17.093ms         0.54%      19.834ms     202.391us     647.202us         0.06%     659.554us       6.730us            98  
+(EngineCore pid=638663) void moe::dev::routing::routingCustom::routingIndice...         0.00%       0.000us         0.00%       0.000us       0.000us     621.125us         0.06%     621.125us       4.225us           147  
+(EngineCore pid=638663)                                             aten::fill_         0.14%       5.227ms         0.31%      11.349ms      13.908us     602.725us         0.06%     604.165us       0.740us           816  
+(EngineCore pid=638663)                                             aten::index         0.16%       5.926ms         0.73%      26.642ms     134.556us     551.939us         0.05%     568.931us       2.873us           198  
+(EngineCore pid=638663)                           _prepare_dflash_inputs_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     549.475us         0.05%     549.475us       3.738us           147  
+(EngineCore pid=638663)                                                 _lookup         0.00%       0.000us         0.00%       0.000us       0.000us     501.986us         0.05%     501.986us       5.122us            98  
+(EngineCore pid=638663)                                           memcpy32_post         0.00%       0.000us         0.00%       0.000us       0.000us     484.548us         0.05%     484.548us       1.429us           339  
+(EngineCore pid=638663)                          Memcpy DtoH (Device -> Pinned)         0.00%       0.000us         0.00%       0.000us       0.000us     479.204us         0.05%     479.204us       1.636us           293  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libquantmxfp8_rows_MXFP8R...         0.00%       0.000us         0.00%       0.000us       0.000us     457.122us         0.05%     457.122us       2.014us           227  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentioncompressed_sparse...         0.00%       0.000us         0.00%       0.000us       0.000us     452.738us         0.04%     452.738us       1.155us           392  
+(EngineCore pid=638663) kernel_cutlass_commit_b12xattentionmla_compress_cute...         0.00%       0.000us         0.00%       0.000us       0.000us     354.338us         0.04%     354.338us       2.410us           147  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattention_sharedmlakv_cach...         0.00%       0.000us         0.00%       0.000us       0.000us     346.114us         0.03%     346.114us       1.766us           196  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormmhc_kernelsMHCPostPreP...         0.00%       0.000us         0.00%       0.000us       0.000us     332.738us         0.03%     332.738us       3.395us            98  
+(EngineCore pid=638663) void moe::dev::routing::routingCustom::routingIndice...         0.00%       0.000us         0.00%       0.000us       0.000us     322.018us         0.03%     322.018us       4.025us            80  
+(EngineCore pid=638663)                                         _partial_argmax         0.00%       0.000us         0.00%       0.000us       0.000us     311.234us         0.03%     311.234us       2.117us           147  
+(EngineCore pid=638663)                          Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     308.705us         0.03%     308.705us       1.583us           195  
+(EngineCore pid=638663)                                            aten::cumsum         0.06%       2.054ms         0.10%       3.750ms      39.065us     297.090us         0.03%     297.090us       3.095us            96  
+(EngineCore pid=638663)                           _compute_slot_mappings_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     291.360us         0.03%     291.360us       5.946us            49  
+(EngineCore pid=638663)                                     _load_partial_state         0.00%       0.000us         0.00%       0.000us       0.000us     290.017us         0.03%     290.017us       1.973us           147  
+(EngineCore pid=638663) void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     286.176us         0.03%     286.176us       2.920us            98  
+(EngineCore pid=638663)                                  aten::_index_put_impl_         0.05%       1.871ms         0.10%       3.685ms      37.599us     285.795us         0.03%     285.795us       2.916us            98  
+(EngineCore pid=638663)                                                   _hash         0.00%       0.000us         0.00%       0.000us       0.000us     284.258us         0.03%     284.258us       2.901us            98  
+(EngineCore pid=638663) void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     284.065us         0.03%     284.065us       1.449us           196  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormmhc_kernelsMHCPostPreP...         0.00%       0.000us         0.00%       0.000us       0.000us     282.337us         0.03%     282.337us       2.881us            98  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentionmla_compress_cute...         0.00%       0.000us         0.00%       0.000us       0.000us     281.187us         0.03%     281.187us       5.739us            49  
+(EngineCore pid=638663)                      _compute_local_logits_stats_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     266.914us         0.03%     266.914us       5.561us            48  
+(EngineCore pid=638663)                                       _rejection_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     229.120us         0.02%     229.120us       4.773us            48  
+(EngineCore pid=638663)                                          _finish_argmax         0.00%       0.000us         0.00%       0.000us       0.000us     222.595us         0.02%     222.595us       1.514us           147  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormmhc_kernels_MhcCollaps...         0.00%       0.000us         0.00%       0.000us       0.000us     217.473us         0.02%     217.473us       1.479us           147  
+(EngineCore pid=638663)                                               _compress         0.00%       0.000us         0.00%       0.000us       0.000us     208.224us         0.02%     208.224us       2.125us            98  
+(EngineCore pid=638663) void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     208.065us         0.02%     208.065us       2.167us            96  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libquantmxfp8_rows_MXFP8R...         0.00%       0.000us         0.00%       0.000us       0.000us     199.746us         0.02%     199.746us       4.994us            40  
+(EngineCore pid=638663)                             _gather_block_tables_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     194.433us         0.02%     194.433us       3.968us            49  
+(EngineCore pid=638663) -------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+(EngineCore pid=638663) Self CPU time total: 3.657s
+(EngineCore pid=638663) Self CUDA time total: 1.008s
+(EngineCore pid=638663) 
+(EngineCore pid=638663) INFO 09-24 10:06:19 [wrapper.py:82] Profiler stopped successfully.
+(APIServer pid=638569) INFO 09-24 10:06:19 [api_router.py:33] Profiler stopped.
+(APIServer pid=638569) INFO:     127.0.0.1:55394 - "POST /stop_profile HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43378 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43392 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43440 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43368 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43370 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43424 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43422 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO 09-24 10:06:46 [api_router.py:23] Starting profiler...
+(APIServer pid=638569) /home/jasonc/venvs/vllm-karmic/lib/python3.12/site-packages/torch/profiler/profiler.py:300: UserWarning: Warning: Profiler clears events at the end of each cycle. Only events from the current cycle will be reported. To keep events across cycles, set acc_events=True.
+(APIServer pid=638569)   _warn_once(
+USDT:2026-09-24 10:06:46 638569:639585 SyncActivityProfilerHandler.cpp:52] profiler_start
+(EngineCore pid=638663) /home/jasonc/venvs/vllm-karmic/lib/python3.12/site-packages/torch/profiler/profiler.py:300: UserWarning: Warning: Profiler clears events at the end of each cycle. Only events from the current cycle will be reported. To keep events across cycles, set acc_events=True.
+(EngineCore pid=638663)   _warn_once(
+USDT:2026-09-24 10:06:46 638663:638663 SyncActivityProfilerHandler.cpp:52] profiler_start
+(APIServer pid=638569) INFO 09-24 10:06:46 [api_router.py:25] Profiler started.
+(APIServer pid=638569) INFO:     127.0.0.1:43454 - "POST /start_profile HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43462 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43472 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43484 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43514 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43488 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43502 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43516 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO:     127.0.0.1:43460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO 09-24 10:06:48 [api_router.py:31] Stopping profiler...
+USDT:2026-09-24 10:06:48 638569:639585 SyncActivityProfilerHandler.cpp:59] profiler_stop
+USDT:2026-09-24 10:06:48 638663:638663 SyncActivityProfilerHandler.cpp:59] profiler_stop
+(APIServer pid=638569) 
+(APIServer pid=638569) 
+(APIServer pid=638569) INFO 09-24 10:06:49 [loggers.py:315] Engine 000: Avg prompt throughput: 35.2 tokens/s, Avg generation throughput: 64.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=638569) INFO 09-24 10:06:49 [metrics.py:136] SpecDecoding metrics: Mean acceptance length: 2.12, Mean verification depth: 2.25/3, Accepted throughput: 8.35 tokens/s, Drafted throughput: 16.80 tokens/s, Accepted: 334 tokens, Drafted: 672 tokens, Per-position acceptance rate: 0.649, 0.421, 0.290, Per-position verification coverage: 1.000, 0.809, 0.438, Avg Draft acceptance rate: 49.7%
+(APIServer pid=638569) INFO 09-24 10:06:59 [loggers.py:315] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+(EngineCore pid=638663) -------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+(EngineCore pid=638663)                                                    Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+(EngineCore pid=638663) -------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+(EngineCore pid=638663)                   execute_context_0(0)_generation_8(32)         0.00%       0.000us         0.00%       0.000us       0.000us        1.688s       101.00%        1.688s      31.250ms            54  
+(EngineCore pid=638663)                  execute_context_7(154)_generation_1(4)         0.00%       0.000us         0.00%       0.000us       0.000us     954.779ms        57.15%     954.779ms     477.390ms             2  
+(EngineCore pid=638663) bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x8x5...         0.00%       0.000us         0.00%       0.000us       0.000us     446.667ms        26.73%     446.667ms     171.993us          2597  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmbf16_gemv_kernelSmallN...         0.00%       0.000us         0.00%       0.000us       0.000us     234.364ms        14.03%     234.364ms     805.376us           291  
+(EngineCore pid=638663) bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x8x512_...         0.00%       0.000us         0.00%       0.000us       0.000us     226.661ms        13.57%     226.661ms      80.950us          2800  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmblockscaled_sm103Dense...         0.00%       0.000us         0.00%       0.000us       0.000us     226.383ms        13.55%     226.383ms      23.614us          9587  
+(EngineCore pid=638663)                    execute_context_0(0)_generation_1(4)         0.00%       0.000us         0.00%       0.000us       0.000us     172.245ms        10.31%     172.245ms      14.354ms            12  
+(EngineCore pid=638663)                   execute_context_1(22)_generation_0(0)         0.00%       0.000us         0.00%       0.000us       0.000us     120.272ms         7.20%     120.272ms       2.933ms            41  
+(EngineCore pid=638663)                   execute_context_0(0)_generation_4(16)         0.00%       0.000us         0.00%       0.000us       0.000us     105.333ms         6.30%     105.333ms      26.333ms             4  
+(EngineCore pid=638663)                             b12x::bf16_vocab_projection         0.27%       7.893ms         0.29%       8.509ms     212.737us     101.430ms         6.07%     101.430ms       2.536ms            40  
+(EngineCore pid=638663)                   execute_context_0(0)_generation_6(24)         0.00%       0.000us         0.00%       0.000us       0.000us      66.437ms         3.98%      66.437ms      33.219ms             2  
+(EngineCore pid=638663)                                       _wait_engram_rows         0.00%       0.000us         0.00%       0.000us       0.000us      58.878ms         3.52%      58.878ms     735.973us            80  
+(EngineCore pid=638663)                   execute_context_0(0)_generation_5(20)         0.00%       0.000us         0.00%       0.000us       0.000us      57.866ms         3.46%      57.866ms      28.933ms             2  
+(EngineCore pid=638663) void moe::dev::finalize::finalizeKernel<moe::dev::fi...         0.00%       0.000us         0.00%       0.000us       0.000us      44.137ms         2.64%      44.137ms      14.146us          3120  
+(EngineCore pid=638663)                                vllm::moe_forward_shared         1.70%      49.704ms         4.39%     128.591ms       3.215ms      38.350ms         2.30%      45.697ms       1.142ms            40  
+(EngineCore pid=638663)                    execute_context_0(0)_generation_2(8)         0.00%       0.000us         0.00%       0.000us       0.000us      35.261ms         2.11%      35.261ms      17.630ms             2  
+(EngineCore pid=638663) kernel_cutlass_kernel_extra_pertok_b12xattention_sha...         0.00%       0.000us         0.00%       0.000us       0.000us      33.879ms         2.03%      33.879ms      23.462us          1444  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormmhc_kernelsMHCPostPreP...         0.00%       0.000us         0.00%       0.000us       0.000us      30.548ms         1.83%      30.548ms       8.771us          3483  
+(EngineCore pid=638663) bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x8x5...         0.00%       0.000us         0.00%       0.000us       0.000us      27.469ms         1.64%      27.469ms      62.431us           440  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormmhc_kernelsMHCFinalize...         0.00%       0.000us         0.00%       0.000us       0.000us      24.286ms         1.45%      24.286ms       7.060us          3440  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmbf16_gemv_kernelSmallN...         0.00%       0.000us         0.00%       0.000us       0.000us      22.617ms         1.35%      22.617ms      11.817us          1914  
+(EngineCore pid=638663) bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x16x...         0.00%       0.000us         0.00%       0.000us       0.000us      16.360ms         0.98%      16.360ms     408.993us            40  
+(EngineCore pid=638663) bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x16x256...         0.00%       0.000us         0.00%       0.000us       0.000us      15.439ms         0.92%      15.439ms      55.138us           280  
+(EngineCore pid=638663) bmm_MxE4m3_MxE2m1MxE4m3_Fp32_Ab32_Bb32_Cb32_t128x16x...         0.00%       0.000us         0.00%       0.000us       0.000us      13.753ms         0.82%      13.753ms      56.597us           243  
+(EngineCore pid=638663)                                     vllm::dsv41_mhc_pre         2.56%      74.949ms         2.82%      82.794ms       1.035ms      13.328ms         0.80%      13.328ms     166.601us            80  
+(EngineCore pid=638663) bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x8x256_...         0.00%       0.000us         0.00%       0.000us       0.000us      12.893ms         0.77%      12.893ms      91.436us           141  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormmhc_kernelsMHCPrefillT...         0.00%       0.000us         0.00%       0.000us       0.000us      11.468ms         0.69%      11.468ms     145.163us            79  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattention_sharedmlamergeSp...         0.00%       0.000us         0.00%       0.000us       0.000us      11.178ms         0.67%      11.178ms       6.816us          1640  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormhyperconnection_cute_G...         0.00%       0.000us         0.00%       0.000us       0.000us      10.894ms         0.65%      10.894ms       2.837us          3840  
+(EngineCore pid=638663) void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      10.230ms         0.61%      10.230ms       2.876us          3557  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentioncompressed_sparse...         0.00%       0.000us         0.00%       0.000us       0.000us      10.118ms         0.61%      10.118ms       2.409us          4200  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libquantmxfp8_rows_MXFP8R...         0.00%       0.000us         0.00%       0.000us       0.000us       9.756ms         0.58%       9.756ms       3.305us          2952  
+(EngineCore pid=638663)                              vllm::dsv41_block32_linear         2.34%      68.505ms         2.89%      84.837ms     496.125us       9.515ms         0.57%       9.515ms      55.642us           171  
+(EngineCore pid=638663) void moe::dev::routing::routingCustom::routingIndice...         0.00%       0.000us         0.00%       0.000us       0.000us       9.386ms         0.56%       9.386ms       4.046us          2320  
+(EngineCore pid=638663) void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       9.290ms         0.56%       9.290ms       1.070us          8680  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentioncompressed_sparse...         0.00%       0.000us         0.00%       0.000us       0.000us       8.193ms         0.49%       8.193ms       2.382us          3440  
+(EngineCore pid=638663)                                       _dsv4_topk_kernel         0.00%       0.000us         0.00%       0.000us       0.000us       7.438ms         0.45%       7.438ms       4.649us          1600  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKer...         0.00%       0.000us         0.00%       0.000us       0.000us       7.217ms         0.43%       7.217ms      11.870us           608  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libquantmxfp8_rows_MXFP8R...         0.00%       0.000us         0.00%       0.000us       0.000us       6.204ms         0.37%       6.204ms       4.381us          1416  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKer...         0.00%       0.000us         0.00%       0.000us       0.000us       6.070ms         0.36%       6.070ms      16.861us           360  
+(EngineCore pid=638663) void vllm::act_and_mul_kernel<c10::BFloat16, __nv_bf...         0.00%       0.000us         0.00%       0.000us       0.000us       6.048ms         0.36%       6.048ms       3.600us          1680  
+(EngineCore pid=638663) void at::native::index_elementwise_kernel<128, 4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       5.984ms         0.36%       5.984ms       3.324us          1800  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us       5.940ms         0.36%       5.940ms      18.564us           320  
+(EngineCore pid=638663)                               b12x::compressed_mla_warp         2.42%      70.928ms         3.01%      88.366ms       1.105ms       5.852ms         0.35%       6.073ms      75.913us            80  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmwo_projection_quant_cu...         0.00%       0.000us         0.00%       0.000us       0.000us       5.443ms         0.33%       5.443ms       3.164us          1720  
+(EngineCore pid=638663)                              vllm::dsv41_b12x_attention         3.28%      96.164ms         8.41%     246.525ms       6.163ms       5.361ms         0.32%      15.972ms     399.305us            40  
+(EngineCore pid=638663) kernel_cutlass_kernel_dual_b12xattention_sharedmlapr...         0.00%       0.000us         0.00%       0.000us       0.000us       5.335ms         0.32%       5.335ms      70.198us            76  
+(EngineCore pid=638663) void at::native::vectorized_elementwise_kernel<8, at...         0.00%       0.000us         0.00%       0.000us       0.000us       5.291ms         0.32%       5.291ms       1.594us          3320  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us       4.218ms         0.25%       4.218ms      11.718us           360  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmwo_projection_quant_cu...         0.00%       0.000us         0.00%       0.000us       0.000us       4.138ms         0.25%       4.138ms       2.406us          1720  
+(EngineCore pid=638663) void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us       3.748ms         0.22%       3.748ms       2.082us          1800  
+(EngineCore pid=638663) void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       3.265ms         0.20%       3.265ms       1.899us          1720  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmblockscaled_reduceWeig...         0.00%       0.000us         0.00%       0.000us       0.000us       3.112ms         0.19%       3.112ms       2.406us          1293  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattention_sharedmlakv_cach...         0.00%       0.000us         0.00%       0.000us       0.000us       3.090ms         0.18%       3.090ms       1.679us          1840  
+(EngineCore pid=638663)                                                 _tokens         0.00%       0.000us         0.00%       0.000us       0.000us       3.080ms         0.18%       3.080ms       2.961us          1040  
+(EngineCore pid=638663) kernel_cutlass_kernel_flashinferquantizationkernelsm...         0.00%       0.000us         0.00%       0.000us       0.000us       3.039ms         0.18%       3.039ms       1.767us          1720  
+(EngineCore pid=638663) kernel_cutlass_kernel_pertok_b12xattention_sharedmla...         0.00%       0.000us         0.00%       0.000us       0.000us       2.873ms         0.17%       2.873ms      14.658us           196  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libquantmxfp8_rows_MXFP8R...         0.00%       0.000us         0.00%       0.000us       0.000us       2.826ms         0.17%       2.826ms       1.682us          1680  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentionsparse_mla_sm103S...         0.00%       0.000us         0.00%       0.000us       0.000us       2.823ms         0.17%       2.823ms       1.722us          1640  
+(EngineCore pid=638663) void at::native::vectorized_elementwise_kernel<8, at...         0.00%       0.000us         0.00%       0.000us       0.000us       2.669ms         0.16%       2.669ms       1.552us          1720  
+(EngineCore pid=638663) void at::native::vectorized_elementwise_kernel<2, at...         0.00%       0.000us         0.00%       0.000us       0.000us       2.618ms         0.16%       2.618ms       1.522us          1720  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKer...         0.00%       0.000us         0.00%       0.000us       0.000us       2.455ms         0.15%       2.455ms       8.077us           304  
+(EngineCore pid=638663) bmm_Bfloat16_MxE2m1MxE4m3_Fp32_Ab32_Bb32_t128x8x256_...         0.00%       0.000us         0.00%       0.000us       0.000us       2.341ms         0.14%       2.341ms      24.383us            96  
+(EngineCore pid=638663)                                             aten::copy_         0.41%      12.126ms         0.87%      25.605ms      18.828us       2.174ms         0.13%       2.174ms       1.598us          1360  
+(EngineCore pid=638663)                                                  _pages         0.00%       0.000us         0.00%       0.000us       0.000us       1.895ms         0.11%       1.895ms       1.962us           966  
+(EngineCore pid=638663)                                                  _chunk         0.00%       0.000us         0.00%       0.000us       0.000us       1.890ms         0.11%       1.890ms       2.234us           846  
+(EngineCore pid=638663) void moe::dev::finalize::finalizeKernelVecLoad<moe::...         0.00%       0.000us         0.00%       0.000us       0.000us       1.881ms         0.11%       1.881ms      23.509us            80  
+(EngineCore pid=638663)                                 b12x::bf16_gemv_small_n         0.31%       9.003ms         0.40%      11.859ms     211.774us       1.842ms         0.11%       1.925ms      34.379us            56  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xgemmbf16_gemv_prefillBf16P...         0.00%       0.000us         0.00%       0.000us       0.000us       1.842ms         0.11%       1.842ms      46.050us            40  
+(EngineCore pid=638663) void moe::dev::routing::routingCustom::routingIndice...         0.00%       0.000us         0.00%       0.000us       0.000us       1.800ms         0.11%       1.800ms       3.749us           480  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xsequenceembedding_kernel_E...         0.00%       0.000us         0.00%       0.000us       0.000us       1.627ms         0.10%       1.627ms      20.338us            80  
+(APIServer pid=638569) INFO 09-24 10:07:00 [api_router.py:33] Profiler stopped.
+(APIServer pid=638569) INFO:     127.0.0.1:43526 - "POST /stop_profile HTTP/1.1" 200 OK
+(APIServer pid=638569) INFO 09-24 10:20:59 [launcher.py:129] [shutdown] API server: shutdown triggered
+(EngineCore pid=638663)                                               _requests         0.00%       0.000us         0.00%       0.000us       0.000us       1.562ms         0.09%       1.562ms       1.502us          1040  
+(EngineCore pid=638663) void moe::dev::routing::routingCustom::routingIndice...         0.00%       0.000us         0.00%       0.000us       0.000us       1.398ms         0.08%       1.398ms       4.369us           320  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.108ms         0.07%       1.108ms       3.078us           360  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormhyperconnection_cute_E...         0.00%       0.000us         0.00%       0.000us       0.000us     933.452us         0.06%     933.452us      11.668us            80  
+(EngineCore pid=638663)                                             aten::fill_         0.25%       7.367ms         0.56%      16.310ms      18.002us     917.030us         0.05%     918.790us       1.014us           906  
+(EngineCore pid=638663) void cublasLt::splitKreduce_kernel<32, 16, int, floa...         0.00%       0.000us         0.00%       0.000us       0.000us     891.751us         0.05%     891.751us       3.013us           296  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentiondsa_indexertiled_...         0.00%       0.000us         0.00%       0.000us       0.000us     861.832us         0.05%     861.832us       2.394us           360  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentiondsa_indexermxfp4_...         0.00%       0.000us         0.00%       0.000us       0.000us     857.636us         0.05%     857.636us       1.787us           480  
+(EngineCore pid=638663)          nvjet_sm103_tst_64x8_64x16_1x4_h_bz_splitK_TNT         0.00%       0.000us         0.00%       0.000us       0.000us     800.007us         0.05%     800.007us       3.704us           216  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentionmla_compress_cute...         0.00%       0.000us         0.00%       0.000us       0.000us     780.034us         0.05%     780.034us       6.500us           120  
+(EngineCore pid=638663) void moe::dev::finalize::finalizeKernel<moe::dev::fi...         0.00%       0.000us         0.00%       0.000us       0.000us     741.315us         0.04%     741.315us       6.178us           120  
+(EngineCore pid=638663)                                             aten::index         0.16%       4.714ms         0.29%       8.618ms      43.090us     728.455us         0.04%     728.455us       3.642us           200  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKer...         0.00%       0.000us         0.00%       0.000us       0.000us     694.982us         0.04%     694.982us      49.642us            14  
+(EngineCore pid=638663)                                    _save_partial_states         0.00%       0.000us         0.00%       0.000us       0.000us     671.078us         0.04%     671.078us       5.592us           120  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormmhc_kernelsMHCPostPreP...         0.00%       0.000us         0.00%       0.000us       0.000us     655.749us         0.04%     655.749us       8.516us            77  
+(EngineCore pid=638663)                                       b12x::engram_hash         0.47%      13.917ms         0.55%      16.098ms     201.231us     565.828us         0.03%     565.828us       7.073us            80  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormmhc_kernelsMHCPostPreP...         0.00%       0.000us         0.00%       0.000us       0.000us     563.396us         0.03%     563.396us       7.223us            78  
+(EngineCore pid=638663)                          Memcpy HtoD (Pinned -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     555.714us         0.03%     555.714us       1.950us           285  
+(EngineCore pid=638663) void at::native::(anonymous namespace)::indexSelectS...         0.00%       0.000us         0.00%       0.000us       0.000us     546.082us         0.03%     546.082us       8.274us            66  
+(EngineCore pid=638663) void vllm::moe::topkGatingSoftplusSqrt<4, 128, 4, 16...         0.00%       0.000us         0.00%       0.000us       0.000us     515.297us         0.03%     515.297us       4.294us           120  
+(EngineCore pid=638663)                                                 _lookup         0.00%       0.000us         0.00%       0.000us       0.000us     498.498us         0.03%     498.498us       6.231us            80  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xnormmhc_kernelsMHCPostPreP...         0.00%       0.000us         0.00%       0.000us       0.000us     477.348us         0.03%     477.348us       5.967us            80  
+(EngineCore pid=638663) void moe::dev::routing::routingCustom::routingIndice...         0.00%       0.000us         0.00%       0.000us       0.000us     472.098us         0.03%     472.098us       5.901us            80  
+(EngineCore pid=638663)                           _prepare_dflash_inputs_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     469.089us         0.03%     469.089us       3.909us           120  
+(EngineCore pid=638663) kernel_cutlass_commit_b12xattentionmla_compress_cute...         0.00%       0.000us         0.00%       0.000us       0.000us     447.491us         0.03%     447.491us       3.729us           120  
+(EngineCore pid=638663)                             b12x::bf16_gemv_small_n_out         0.09%       2.513ms         0.10%       2.883ms     205.894us     432.835us         0.03%     442.947us      31.639us            14  
+(EngineCore pid=638663) kernel_cutlass_kernel_b12xattentioncompressed_sparse...         0.00%       0.000us         0.00%       0.000us       0.000us     400.358us         0.02%     400.358us       1.251us           320  
+(EngineCore pid=638663)                          Memcpy DtoH (Device -> Pinned)         0.00%       0.000us         0.00%       0.000us       0.000us     398.850us         0.02%     398.850us       1.669us           239  
+(EngineCore pid=638663)                                           memcpy32_post         0.00%       0.000us         0.00%       0.000us       0.000us     398.020us         0.02%     398.020us       1.491us           267  
+(EngineCore pid=638663) -------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+(EngineCore pid=638663) Self CPU time total: 2.932s
+(EngineCore pid=638663) Self CUDA time total: 1.671s
+(EngineCore pid=638663) 
+(EngineCore pid=638663) INFO 09-24 10:20:59 [core.py:1458] [shutdown] EngineCore: trigger received signal=SIGTERM
+(APIServer pid=638569) INFO 09-24 10:20:59 [launcher.py:145] [shutdown] API server: stopping engine client mode=abort timeout=0s
+(EngineCore pid=638663) INFO 09-24 10:20:59 [core.py:1609] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=638663) INFO 09-24 10:20:59 [core.py:1640] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=638663) INFO 09-24 10:20:59 [core.py:1471] [shutdown] EngineCore: exiting busy loop
+(APIServer pid=638569) INFO 09-24 10:20:59 [core_client.py:764] [shutdown] MPClient: start timeout=0s
+(EngineCore pid=638663) INFO 09-24 10:20:59 [wrapper.py:160] Shutting down profiler
+(APIServer pid=638569) INFO 09-24 10:20:59 [core_client.py:766] [shutdown] MPClient: stopping engine manager
+(APIServer pid=638569) INFO 09-24 10:20:59 [utils.py:632] [shutdown] Process manager: send sigterm to process EngineCore
+(APIServer pid=638569) WARNING 09-24 10:20:59 [utils.py:652] [shutdown] Process manager: force killing remaining processes count=1
+(APIServer pid=638569) WARNING 09-24 10:20:59 [utils.py:657] [shutdown] Process manager: force killing remaining process EngineCore pid 638663
+(APIServer pid=638569) INFO 09-24 10:20:59 [core_client.py:768] [shutdown] MPClient: engine manager stopped
+(APIServer pid=638569) INFO 09-24 10:20:59 [core_client.py:769] [shutdown] MPClient: cleaning up background resources
+(APIServer pid=638569) INFO 09-24 10:20:59 [core_client.py:771] [shutdown] MPClient: complete
+(APIServer pid=638569) INFO 09-24 10:20:59 [launcher.py:154] [shutdown] API server: engine client stopped
+(APIServer pid=638569) INFO 09-24 10:20:59 [launcher.py:157] [shutdown] API server: signalling HTTP server shutdown
+(APIServer pid=638569) INFO 09-24 10:20:59 [launcher.py:179] [shutdown] API server: shutting down FastAPI HTTP server
+(APIServer pid=638569) INFO:     Shutting down
+(APIServer pid=638569) INFO:     Waiting for application shutdown.
+(APIServer pid=638569) INFO:     Application shutdown complete.
+/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

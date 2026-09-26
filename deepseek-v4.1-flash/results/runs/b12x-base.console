@@ -1,0 +1,213 @@
+INFO 09-23 21:40:10 [__init__.py:112] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+(APIServer pid=471864) INFO 09-23 21:40:10 [api_utils.py:347] 
+(APIServer pid=471864) INFO 09-23 21:40:10 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=471864) INFO 09-23 21:40:10 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.1.dev21505+ge77be2251.d20260924
+(APIServer pid=471864) INFO 09-23 21:40:10 [api_utils.py:347]   █▄█▀ █     █     █     █  model   /home/jasonc/models/DeepSeek-V4.1-Flash
+(APIServer pid=471864) INFO 09-23 21:40:10 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=471864) INFO 09-23 21:40:10 [api_utils.py:347] 
+(APIServer pid=471864) INFO 09-23 21:40:10 [api_utils.py:286] non-default args: {'model_tag': '/home/jasonc/models/DeepSeek-V4.1-Flash', 'host': '127.0.0.1', 'port': 30000, 'model': '/home/jasonc/models/DeepSeek-V4.1-Flash', 'tokenizer_mode': 'deepseek_v41', 'dtype': 'bfloat16', 'max_model_len': 262144, 'served_model_name': ['DeepSeek-V4.1-Flash'], 'generation_config': 'vllm', 'load_format': 'safetensors', 'attention_backend': 'B12X', 'block_size': 256, 'kv_cache_memory_bytes': 10737418240, 'enable_prefix_caching': False, 'language_model_only': True, 'max_num_batched_tokens': 1024, 'max_num_seqs': 64, 'max_cudagraph_capture_size': 64, 'moe_backend': 'b12x', 'linear_backend': 'b12x', 'compilation_config': {'mode': None, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': None, 'splitting_ops': None, 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': None, 'compile_ranges_endpoints': None, 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': None, 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': None, 'pass_config': {}, 'max_cudagraph_capture_size': None, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': None, 'static_all_moe_layers': []}, 'engram_config': EngramConfig(cpu_offload=False, embedding_across_dp=False, dp_shared_memory=False, table_memory='disk', disk_resident_scales=False, projection_tp=False), 'expert_residency_config': ExpertResidencyConfig(profile_path=None, workload='default', profile_directory=None, hbm_reserve_gb=12.0, grace_gb=None, grace_reserve_gb=16.0, min_hot_experts=None, max_hot_experts=None, shared_workspace=False)}
+(APIServer pid=471864) INFO 09-23 21:40:10 [config.py:852] Detected quantization_config.scale_fmt=ue8m0; enabling UE8M0 for DeepGEMM.
+(APIServer pid=471864) INFO 09-23 21:40:10 [model.py:693] Resolved architecture: DeepseekV41ForCausalLM
+(APIServer pid=471864) INFO 09-23 21:40:10 [model.py:2054] Using max model len 262144
+(APIServer pid=471864) INFO 09-23 21:40:11 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(APIServer pid=471864) INFO 09-23 21:40:11 [model.py:901] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(APIServer pid=471864) INFO 09-23 21:40:11 [scheduler.py:385] Chunked prefill is enabled with max_num_batched_tokens=1024.
+(APIServer pid=471864) INFO 09-23 21:40:11 [vllm.py:1434] Resolved Engram configuration: EngramConfig(cpu_offload=False, embedding_across_dp=False, dp_shared_memory=False, table_memory='disk', disk_resident_scales=False, projection_tp=False)
+(APIServer pid=471864) INFO 09-23 21:40:11 [vllm.py:928] Auto-enabling VLLM_USE_BREAKABLE_CUDAGRAPH=1. Set VLLM_USE_BREAKABLE_CUDAGRAPH=0 to opt out.
+(APIServer pid=471864) INFO 09-23 21:40:11 [kernel.py:430] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=471864) INFO 09-23 21:40:11 [compilation.py:336] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=471925) INFO 09-23 21:40:16 [__init__.py:112] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+(EngineCore pid=471925) INFO 09-23 21:40:16 [core.py:123] Initializing a V1 LLM engine (v0.1.dev21505+ge77be2251.d20260924) with config: model='/home/jasonc/models/DeepSeek-V4.1-Flash', speculative_config=None, tokenizer='/home/jasonc/models/DeepSeek-V4.1-Flash', skip_tokenizer_init=False, tokenizer_mode=deepseek_v41, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=262144, download_dir=None, load_format=safetensors, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=deepseek_v41_fp8, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=DeepSeek-V4.1-Flash, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all', '+quant_fp8', '+quant_fp8'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [1024], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 64, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_b12x_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='b12x', sparse_indexer_topk_backend='auto', linear_backend='b12x', linear_backend_per_quant=None)
+(EngineCore pid=471925) INFO 09-23 21:40:17 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(EngineCore pid=471925) INFO 09-23 21:40:17 [parallel_state.py:1859] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_79c38bfd40e449fab52c8d494a25eb6e backend=nccl
+(EngineCore pid=471925) INFO 09-23 21:40:17 [parallel_state.py:2299] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank 0, EPLB rank N/A
+(EngineCore pid=471925) INFO 09-23 21:40:17 [gpu_worker.py:472] Using V2 Model Runner
+(EngineCore pid=471925) INFO 09-23 21:40:18 [model_runner.py:412] Loading model from scratch...
+(EngineCore pid=471925) INFO 09-23 21:40:20 [mxfp4.py:453] Using 'B12X_MXFP4_MXFP8' Mxfp4 MoE backend.
+(EngineCore pid=471925) WARNING 09-23 21:40:23 [compilation.py:1361] Op 'quant_fp8' not present in model, enabling with '+quant_fp8' has no effect
+(EngineCore pid=471925) INFO 09-23 21:40:24 [weight_utils.py:1058] Filesystem type for checkpoints: XFS. Checkpoint size: 286.12 GiB. Available RAM: 405.41 GiB.
+(EngineCore pid=471925) INFO 09-23 21:40:24 [weight_utils.py:1081] Auto-prefetch is disabled because the filesystem (XFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=471925) Loading safetensors checkpoint shards:   0% Completed | 0/46 [00:00<?, ?it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:   4% Completed | 2/46 [00:00<00:03, 11.16it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:   9% Completed | 4/46 [00:01<00:22,  1.89it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  11% Completed | 5/46 [00:02<00:25,  1.58it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  13% Completed | 6/46 [00:03<00:27,  1.44it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  15% Completed | 7/46 [00:04<00:28,  1.35it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  17% Completed | 8/46 [00:05<00:31,  1.21it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  20% Completed | 9/46 [00:06<00:31,  1.17it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  22% Completed | 10/46 [00:07<00:30,  1.17it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  24% Completed | 11/46 [00:08<00:29,  1.18it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  26% Completed | 12/46 [00:08<00:28,  1.18it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  28% Completed | 13/46 [00:09<00:28,  1.17it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  30% Completed | 14/46 [00:10<00:27,  1.17it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  33% Completed | 15/46 [00:11<00:26,  1.18it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  35% Completed | 16/46 [00:12<00:26,  1.13it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  37% Completed | 17/46 [00:13<00:25,  1.15it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  39% Completed | 18/46 [00:14<00:24,  1.13it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  41% Completed | 19/46 [00:15<00:23,  1.13it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  43% Completed | 20/46 [00:15<00:22,  1.13it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  46% Completed | 21/46 [00:16<00:21,  1.14it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  48% Completed | 22/46 [00:17<00:21,  1.14it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  50% Completed | 23/46 [00:18<00:20,  1.14it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  52% Completed | 24/46 [00:19<00:19,  1.13it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  54% Completed | 25/46 [00:20<00:18,  1.14it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  57% Completed | 26/46 [00:21<00:17,  1.15it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  59% Completed | 27/46 [00:22<00:16,  1.14it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  61% Completed | 28/46 [00:22<00:15,  1.13it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  63% Completed | 29/46 [00:23<00:14,  1.14it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  65% Completed | 30/46 [00:24<00:13,  1.15it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  67% Completed | 31/46 [00:25<00:13,  1.14it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  70% Completed | 32/46 [00:26<00:12,  1.14it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  72% Completed | 33/46 [00:27<00:11,  1.14it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  74% Completed | 34/46 [00:28<00:10,  1.15it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  76% Completed | 35/46 [00:29<00:09,  1.17it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  78% Completed | 36/46 [00:29<00:08,  1.16it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  80% Completed | 37/46 [00:30<00:07,  1.13it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  83% Completed | 38/46 [00:31<00:07,  1.13it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  85% Completed | 39/46 [00:32<00:06,  1.14it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  87% Completed | 40/46 [00:33<00:05,  1.15it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  89% Completed | 41/46 [00:34<00:04,  1.16it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  91% Completed | 42/46 [00:35<00:03,  1.16it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  93% Completed | 43/46 [00:35<00:01,  1.55it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  96% Completed | 44/46 [00:35<00:01,  1.94it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards:  98% Completed | 45/46 [00:35<00:00,  2.36it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards: 100% Completed | 46/46 [00:35<00:00,  2.80it/s]
+(EngineCore pid=471925) Loading safetensors checkpoint shards: 100% Completed | 46/46 [00:35<00:00,  1.28it/s]
+(EngineCore pid=471925) 
+(EngineCore pid=471925) INFO 09-23 21:41:00 [default_loader.py:510] Loading weights took 36.76 seconds
+(EngineCore pid=471925) INFO 09-23 21:41:00 [mxfp4.py:1997] Using MoEPrepareAndFinalizeNoDPEPModular
+(EngineCore pid=471925) INFO 09-23 21:41:00 [mxfp4.py:1998] Using B12xExperts
+(EngineCore pid=471925) INFO 09-23 21:41:01 [model_runner.py:444] Model loading took 10.1 GiB memory and 43.269094 seconds
+(EngineCore pid=471925) INFO 09-23 21:41:02 [topk_topp_sampler.py:80] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=471925) INFO 09-23 21:41:02 [utils.py:405] Using BLHNC KV cache layout.
+(EngineCore pid=471925) INFO 09-23 21:41:06 [b12x_residency.py:234] Expert residency: 7653 of 15360 experts in HBM across 40 layers (profile invalid or unavailable: [Errno 2] No such file or directory: '/home/jasonc/.cache/b12x/expert_residency/735bc68fc2a7e3da40c2e41dd84ce00cd93cf643ea6c957edb4ec121fc1ca595/1080a60800d9e5bddc69f51489c636a776bacaadb5368f46db4aa0947c67e3ba/1e23a6e61dca65cbf9d9254efc698d788ccb27f1445da3391f8fabde6d972f1f/latest.json'; balanced static placement); KV reserve 10.00 GiB, HBM headroom 12.00 GiB
+(EngineCore pid=471925) INFO 09-23 21:41:07 [b12x_prepare.py:585] b12x weights preparation uses 8 compiler workers
+b12x planning sequence.embedding: 0/1127 ready, candidates 0/1 prepared, 0 measured, 0 cached, 0 compilations, 0:00
+b12x planning norm.mhc: 0/1127 ready, candidates 0/467 prepared, 0 measured, 0 cached, 0 compilations, 0:00
+b12x selecting sequence.embedding: 0/1127 ready, candidates 0/1 prepared, 0 measured, 0 cached, 0 compilations, 0:04
+b12x compiling sequence.embedding: 0/1127 ready, candidates 0/1 prepared, 0 measured, 0 cached, 0 compilations, 0:04
+b12x compiling norm.mhc: 2/1127 ready, candidates 0/5 prepared, 0 measured, 0 cached, 2 compilations, 0:08
+b12x compiling norm.mhc: 2/1127 ready, candidates 0/5 prepared, rank 0 batch 1, 0 measured, 0 cached, 7 compilations, 0:09
+b12x failed norm.mhc: 2/1127 ready, candidates 0/5 prepared, rank 0 batch 1, 0 measured, 0 cached, 7 compilations, 0:09
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482] EngineCore failed to start.
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482] Traceback (most recent call last):
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 1444, in run_engine_core
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]     return func(*args, **kwargs)
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 1201, in __init__
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]     super().__init__(
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 146, in __init__
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]     kv_cache_config = self._initialize_kv_caches(vllm_config)
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]     return func(*args, **kwargs)
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 318, in _initialize_kv_caches
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]     available_gpu_memory = self.model_executor.determine_available_memory()
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/executor/abstract.py", line 391, in determine_available_memory
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]     self._run_b12x_preparation(stage="weights")
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/executor/abstract.py", line 357, in _run_b12x_preparation
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482]     raise RuntimeError(
+(EngineCore pid=471925) ERROR 09-23 21:41:16 [core.py:1482] RuntimeError: b12x preparation failed on rank 0: RuntimeError: Ninja is required to load C++ extensions (pip install ninja to get it)
+(EngineCore pid=471925) Process EngineCore:
+(EngineCore pid=471925) Traceback (most recent call last):
+(EngineCore pid=471925)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+(EngineCore pid=471925)     self.run()
+(EngineCore pid=471925)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/multiprocessing/process.py", line 108, in run
+(EngineCore pid=471925)     self._target(*self._args, **self._kwargs)
+(EngineCore pid=471925)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 1486, in run_engine_core
+(EngineCore pid=471925)     raise e
+(EngineCore pid=471925)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 1444, in run_engine_core
+(EngineCore pid=471925)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=471925)                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=471925)   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=471925)     return func(*args, **kwargs)
+(EngineCore pid=471925)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=471925)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 1201, in __init__
+(EngineCore pid=471925)     super().__init__(
+(EngineCore pid=471925)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 146, in __init__
+(EngineCore pid=471925)     kv_cache_config = self._initialize_kv_caches(vllm_config)
+(EngineCore pid=471925)                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=471925)   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=471925)     return func(*args, **kwargs)
+(EngineCore pid=471925)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=471925)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 318, in _initialize_kv_caches
+(EngineCore pid=471925)     available_gpu_memory = self.model_executor.determine_available_memory()
+(EngineCore pid=471925)                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=471925)   File "/home/jasonc/vllm-karmic/vllm/v1/executor/abstract.py", line 391, in determine_available_memory
+(EngineCore pid=471925)     self._run_b12x_preparation(stage="weights")
+(EngineCore pid=471925)   File "/home/jasonc/vllm-karmic/vllm/v1/executor/abstract.py", line 357, in _run_b12x_preparation
+(EngineCore pid=471925)     raise RuntimeError(
+(EngineCore pid=471925) RuntimeError: b12x preparation failed on rank 0: RuntimeError: Ninja is required to load C++ extensions (pip install ninja to get it)
+[rank0]:[W923 21:41:17.227819678 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(APIServer pid=471864) INFO 09-23 21:41:18 [utils.py:632] [shutdown] Process manager: send sigterm to process EngineCore
+(APIServer pid=471864) Traceback (most recent call last):
+(APIServer pid=471864)   File "<frozen runpy>", line 198, in _run_module_as_main
+(APIServer pid=471864)   File "<frozen runpy>", line 88, in _run_code
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/cli/main.py", line 112, in <module>
+(APIServer pid=471864)     main()
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/cli/main.py", line 106, in main
+(APIServer pid=471864)     args.dispatch_function(args)
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/cli/serve.py", line 179, in cmd
+(APIServer pid=471864)     uvloop.run(run_server(args))
+(APIServer pid=471864)   File "/home/jasonc/venvs/vllm-karmic/lib/python3.12/site-packages/uvloop/__init__.py", line 96, in run
+(APIServer pid=471864)     return __asyncio.run(
+(APIServer pid=471864)            ^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/asyncio/runners.py", line 195, in run
+(APIServer pid=471864)     return runner.run(main)
+(APIServer pid=471864)            ^^^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/asyncio/runners.py", line 118, in run
+(APIServer pid=471864)     return self._loop.run_until_complete(task)
+(APIServer pid=471864)            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+(APIServer pid=471864)   File "/home/jasonc/venvs/vllm-karmic/lib/python3.12/site-packages/uvloop/__init__.py", line 48, in wrapper
+(APIServer pid=471864)     return await main
+(APIServer pid=471864)            ^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/launchers/api_server/entry.py", line 176, in run_server
+(APIServer pid=471864)     await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/launchers/api_server/entry.py", line 190, in run_server_worker
+(APIServer pid=471864)     async with build_async_engine_client(
+(APIServer pid=471864)                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/contextlib.py", line 210, in __aenter__
+(APIServer pid=471864)     return await anext(self.gen)
+(APIServer pid=471864)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/launchers/api_server/entry.py", line 58, in build_async_engine_client
+(APIServer pid=471864)     async with build_async_engine_client_from_engine_args(
+(APIServer pid=471864)                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/contextlib.py", line 210, in __aenter__
+(APIServer pid=471864)     return await anext(self.gen)
+(APIServer pid=471864)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/launchers/api_server/entry.py", line 94, in build_async_engine_client_from_engine_args
+(APIServer pid=471864)     async_llm = AsyncLLM.from_vllm_config(
+(APIServer pid=471864)                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/async_llm.py", line 235, in from_vllm_config
+(APIServer pid=471864)     return cls(
+(APIServer pid=471864)            ^^^^
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/async_llm.py", line 169, in __init__
+(APIServer pid=471864)     self.engine_core = EngineCoreClient.make_async_mp_client(
+(APIServer pid=471864)                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=471864)     return func(*args, **kwargs)
+(APIServer pid=471864)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core_client.py", line 163, in make_async_mp_client
+(APIServer pid=471864)     return AsyncMPClient(
+(APIServer pid=471864)            ^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=471864)     return func(*args, **kwargs)
+(APIServer pid=471864)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core_client.py", line 1086, in __init__
+(APIServer pid=471864)     super().__init__(
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core_client.py", line 676, in __init__
+(APIServer pid=471864)     with launch_core_engines(
+(APIServer pid=471864)          ^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=471864)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/contextlib.py", line 144, in __exit__
+(APIServer pid=471864)     next(self.gen)
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/utils.py", line 1240, in launch_core_engines
+(APIServer pid=471864)     wait_for_engine_startup(
+(APIServer pid=471864)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/utils.py", line 1320, in wait_for_engine_startup
+(APIServer pid=471864)     raise RuntimeError(
+(APIServer pid=471864) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}

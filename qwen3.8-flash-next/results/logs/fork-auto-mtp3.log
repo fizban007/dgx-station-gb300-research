@@ -1,0 +1,271 @@
+INFO 09-24 20:10:48 [__init__.py:112] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+(APIServer pid=811181) INFO 09-24 20:10:49 [api_utils.py:347] 
+(APIServer pid=811181) INFO 09-24 20:10:49 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=811181) INFO 09-24 20:10:49 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.1.dev21505+ge77be2251.d20260924
+(APIServer pid=811181) INFO 09-24 20:10:49 [api_utils.py:347]   █▄█▀ █     █     █     █  model   /home/jasonc/models/Qwen3.8-Flash-Next-NVFP4
+(APIServer pid=811181) INFO 09-24 20:10:49 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=811181) INFO 09-24 20:10:49 [api_utils.py:347] 
+(APIServer pid=811181) INFO 09-24 20:10:49 [api_utils.py:286] non-default args: {'model_tag': '/home/jasonc/models/Qwen3.8-Flash-Next-NVFP4', 'enable_auto_tool_choice': True, 'tool_call_parser': 'qwen3_xml', 'enable_prompt_tokens_details': True, 'enable_force_include_usage': True, 'host': '0.0.0.0', 'port': 30006, 'model': '/home/jasonc/models/Qwen3.8-Flash-Next-NVFP4', 'dtype': 'bfloat16', 'max_model_len': 262144, 'quantization': 'modelopt_mixed', 'served_model_name': ['qwen38-flash-next'], 'generation_config': 'vllm', 'load_format': 'safetensors', 'reasoning_parser': 'qwen3', 'block_size': 16, 'gpu_memory_utilization': 0.85, 'kv_cache_dtype': 'bfloat16', 'enable_prefix_caching': True, 'recurrent_checkpoint_policy': 'aligned', 'mamba_cache_mode': 'align', 'limit_mm_per_prompt': {'image': 0, 'video': 0}, 'mm_processor_cache_gb': 0.0, 'max_num_batched_tokens': 8192, 'max_num_seqs': 128, 'enable_chunked_prefill': True, 'async_scheduling': True, 'speculative_config': {'method': 'mtp', 'num_speculative_tokens': 3}, 'compilation_config': {'mode': None, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': [], 'ir_enable_torch_wrap': None, 'splitting_ops': None, 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': None, 'compile_ranges_endpoints': None, 'inductor_compile_config': {'triton.autotune_at_compile_time': False, 'combo_kernels': False, 'benchmark_combo_kernel': False, 'enable_auto_functionalized_v2': False}, 'inductor_passes': {}, 'cudagraph_mode': None, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': None, 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': None, 'pass_config': {}, 'max_cudagraph_capture_size': None, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': None, 'static_all_moe_layers': []}}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) INFO 09-24 20:10:49 [model.py:693] Resolved architecture: Qwen3_8FlashNextForConditionalGeneration
+(APIServer pid=811181) INFO 09-24 20:10:49 [model.py:2054] Using max model len 262144
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) INFO 09-24 20:10:50 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(APIServer pid=811181) INFO 09-24 20:10:50 [model.py:901] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=811181) INFO 09-24 20:10:50 [model.py:693] Resolved architecture: Qwen4ExpMTP
+(APIServer pid=811181) INFO 09-24 20:10:50 [model.py:2054] Using max model len 262144
+(APIServer pid=811181) WARNING 09-24 20:10:50 [speculative.py:1497] Enabling num_speculative_tokens > 1 will run multiple times of forward on same MTP layer,which may result in lower acceptance rate
+(APIServer pid=811181) INFO 09-24 20:10:50 [scheduler.py:385] Chunked prefill is enabled with max_num_batched_tokens=8192.
+(APIServer pid=811181) INFO 09-24 20:10:50 [kernel.py:430] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=811388) INFO 09-24 20:10:58 [__init__.py:112] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+(EngineCore pid=811388) INFO 09-24 20:10:58 [core.py:123] Initializing a V1 LLM engine (v0.1.dev21505+ge77be2251.d20260924) with config: model='/home/jasonc/models/Qwen3.8-Flash-Next-NVFP4', speculative_config=SpeculativeConfig(method='mtp', model='/home/jasonc/models/Qwen3.8-Flash-Next-NVFP4', num_spec_tokens=3), tokenizer='/home/jasonc/models/Qwen3.8-Flash-Next-NVFP4', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=262144, download_dir=None, load_format=safetensors, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=modelopt_mixed, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=bfloat16, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='qwen3', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=qwen38-flash-next, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'triton.autotune_at_compile_time': False, 'combo_kernels': False, 'benchmark_combo_kernel': False, 'enable_auto_functionalized_v2': False}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512, 528, 544, 560, 576, 592, 608, 624, 640, 656, 672, 688, 704, 720, 736, 752, 768, 784, 800, 816, 832, 848, 864, 880, 896, 912, 928, 944, 960, 976, 992, 1008, 1024], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 1024, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_b12x_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(EngineCore pid=811388) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(EngineCore pid=811388) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(EngineCore pid=811388) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(EngineCore pid=811388) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(EngineCore pid=811388) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(EngineCore pid=811388) INFO 09-24 20:10:59 [registry.py:146] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(EngineCore pid=811388) INFO 09-24 20:10:59 [parallel_state.py:1859] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_22a63f5be298480c950ec21d1a3b3cfb backend=nccl
+(EngineCore pid=811388) INFO 09-24 20:10:59 [parallel_state.py:2299] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank 0, EPLB rank N/A
+(EngineCore pid=811388) INFO 09-24 20:10:59 [gpu_worker.py:472] Using V2 Model Runner
+(EngineCore pid=811388) INFO 09-24 20:10:59 [model_runner.py:412] Loading model from scratch...
+(EngineCore pid=811388) INFO 09-24 20:11:00 [__init__.py:923] Using FlashInferCutedslMxfp8LinearKernel for MXFP8 GEMM
+(EngineCore pid=811388) INFO 09-24 20:11:00 [cuda.py:597] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(EngineCore pid=811388) INFO 09-24 20:11:00 [mm_encoder_attention.py:372] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(EngineCore pid=811388) INFO 09-24 20:11:00 [__init__.py:1137] Using FlashInferCuteDslNvFp4W4A16LinearKernel for NVFP4 GEMM
+(EngineCore pid=811388) INFO 09-24 20:11:00 [qwen_gdn_linear_attn.py:425] Using FlashInfer GDN prefill kernel (requested=auto, head_k_dim=128).
+(EngineCore pid=811388) INFO 09-24 20:11:00 [qwen_gdn_linear_attn.py:821] GDN decode kernel: cuda
+(EngineCore pid=811388) INFO 09-24 20:11:00 [nvfp4.py:304] Using 'FLASHINFER_TRTLLM' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUTLASS', 'VLLM_CUTLASS', 'MARLIN', 'HUMMING', 'EMULATION'].
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482] EngineCore failed to start.
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482] Traceback (most recent call last):
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 1444, in run_engine_core
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     return func(*args, **kwargs)
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 1201, in __init__
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     super().__init__(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 134, in __init__
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     self.model_executor = executor_class(vllm_config)
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     return func(*args, **kwargs)
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/executor/abstract.py", line 148, in __init__
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     self._init_executor()
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/executor/uniproc_executor.py", line 74, in _init_executor
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     self.driver_worker.load_model()
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/worker/gpu_worker.py", line 535, in load_model
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     self.model_runner.load_model(load_dummy_weights=load_dummy_weights)
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/v1/worker/gpu/model_runner.py", line 416, in load_model
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     self.model = model_loader.load_model(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]                  ^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     return func(*args, **kwargs)
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/model_executor/model_loader/base_loader.py", line 68, in load_model
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     model = self.create_model(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]             ^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/model_executor/model_loader/base_loader.py", line 46, in create_model
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     model = initialize_model(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]             ^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     return func(*args, **kwargs)
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/model_executor/model_loader/utils.py", line 59, in initialize_model
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     model = model_class(vllm_config=vllm_config, prefix=prefix)
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/model.py", line 996, in __init__
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     self.language_model = Qwen4ExpForCausalLM(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]                           ^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/model.py", line 696, in __init__
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     self.model = Qwen4ExpModel(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]                  ^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/model.py", line 467, in __init__
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     self.start_layer, self.end_layer, self.layers = make_layers(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]                                                     ^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/model_executor/models/utils.py", line 881, in make_layers
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     + get_offloader().wrap_modules(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/model_executor/offloader/base.py", line 119, in wrap_modules
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     return list(modules_generator)
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]            ^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/model_executor/models/utils.py", line 882, in <genexpr>
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     layer_fn(prefix=f"{prefix}.{idx}") for idx in range(start_layer, end_layer)
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/model.py", line 460, in get_layer
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     return Qwen4ExpDecoderLayer(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/model.py", line 226, in __init__
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     self.ple = Qwen4ExpPLELayer(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]                ^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/ple_layer.py", line 150, in __init__
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     self.ple_embedding = Qwen4ExpNGramEmbedding(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]                          ^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/ngram_embedding.py", line 645, in __init__
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     embedding_quant_method = Qwen4ExpPLEEmbeddingMethod.from_quant_config(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/ngram_embedding.py", line 163, in from_quant_config
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482]     raise NotImplementedError(
+(EngineCore pid=811388) ERROR 09-24 20:11:00 [core.py:1482] NotImplementedError: PLE format 'nvfp4' requires the b12x execution backend
+(EngineCore pid=811388) Process EngineCore:
+(EngineCore pid=811388) Traceback (most recent call last):
+(EngineCore pid=811388)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+(EngineCore pid=811388)     self.run()
+(EngineCore pid=811388)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/multiprocessing/process.py", line 108, in run
+(EngineCore pid=811388)     self._target(*self._args, **self._kwargs)
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 1486, in run_engine_core
+(EngineCore pid=811388)     raise e
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 1444, in run_engine_core
+(EngineCore pid=811388)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=811388)                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=811388)     return func(*args, **kwargs)
+(EngineCore pid=811388)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 1201, in __init__
+(EngineCore pid=811388)     super().__init__(
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core.py", line 134, in __init__
+(EngineCore pid=811388)     self.model_executor = executor_class(vllm_config)
+(EngineCore pid=811388)                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=811388)     return func(*args, **kwargs)
+(EngineCore pid=811388)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/v1/executor/abstract.py", line 148, in __init__
+(EngineCore pid=811388)     self._init_executor()
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/v1/executor/uniproc_executor.py", line 74, in _init_executor
+(EngineCore pid=811388)     self.driver_worker.load_model()
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/v1/worker/gpu_worker.py", line 535, in load_model
+(EngineCore pid=811388)     self.model_runner.load_model(load_dummy_weights=load_dummy_weights)
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/v1/worker/gpu/model_runner.py", line 416, in load_model
+(EngineCore pid=811388)     self.model = model_loader.load_model(
+(EngineCore pid=811388)                  ^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=811388)     return func(*args, **kwargs)
+(EngineCore pid=811388)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/model_executor/model_loader/base_loader.py", line 68, in load_model
+(EngineCore pid=811388)     model = self.create_model(
+(EngineCore pid=811388)             ^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/model_executor/model_loader/base_loader.py", line 46, in create_model
+(EngineCore pid=811388)     model = initialize_model(
+(EngineCore pid=811388)             ^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=811388)     return func(*args, **kwargs)
+(EngineCore pid=811388)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/model_executor/model_loader/utils.py", line 59, in initialize_model
+(EngineCore pid=811388)     model = model_class(vllm_config=vllm_config, prefix=prefix)
+(EngineCore pid=811388)             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/model.py", line 996, in __init__
+(EngineCore pid=811388)     self.language_model = Qwen4ExpForCausalLM(
+(EngineCore pid=811388)                           ^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/model.py", line 696, in __init__
+(EngineCore pid=811388)     self.model = Qwen4ExpModel(
+(EngineCore pid=811388)                  ^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/model.py", line 467, in __init__
+(EngineCore pid=811388)     self.start_layer, self.end_layer, self.layers = make_layers(
+(EngineCore pid=811388)                                                     ^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/model_executor/models/utils.py", line 881, in make_layers
+(EngineCore pid=811388)     + get_offloader().wrap_modules(
+(EngineCore pid=811388)       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/model_executor/offloader/base.py", line 119, in wrap_modules
+(EngineCore pid=811388)     return list(modules_generator)
+(EngineCore pid=811388)            ^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/model_executor/models/utils.py", line 882, in <genexpr>
+(EngineCore pid=811388)     layer_fn(prefix=f"{prefix}.{idx}") for idx in range(start_layer, end_layer)
+(EngineCore pid=811388)     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/model.py", line 460, in get_layer
+(EngineCore pid=811388)     return Qwen4ExpDecoderLayer(
+(EngineCore pid=811388)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/model.py", line 226, in __init__
+(EngineCore pid=811388)     self.ple = Qwen4ExpPLELayer(
+(EngineCore pid=811388)                ^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/ple_layer.py", line 150, in __init__
+(EngineCore pid=811388)     self.ple_embedding = Qwen4ExpNGramEmbedding(
+(EngineCore pid=811388)                          ^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/ngram_embedding.py", line 645, in __init__
+(EngineCore pid=811388)     embedding_quant_method = Qwen4ExpPLEEmbeddingMethod.from_quant_config(
+(EngineCore pid=811388)                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=811388)   File "/home/jasonc/vllm-karmic/vllm/models/qwen4_exp/nvidia/ngram_embedding.py", line 163, in from_quant_config
+(EngineCore pid=811388)     raise NotImplementedError(
+(EngineCore pid=811388) NotImplementedError: PLE format 'nvfp4' requires the b12x execution backend
+[rank0]:[W924 20:11:01.917972478 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(APIServer pid=811181) INFO 09-24 20:11:01 [utils.py:632] [shutdown] Process manager: send sigterm to process EngineCore
+(APIServer pid=811181) Traceback (most recent call last):
+(APIServer pid=811181)   File "<frozen runpy>", line 198, in _run_module_as_main
+(APIServer pid=811181)   File "<frozen runpy>", line 88, in _run_code
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/cli/main.py", line 112, in <module>
+(APIServer pid=811181)     main()
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/cli/main.py", line 106, in main
+(APIServer pid=811181)     args.dispatch_function(args)
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/cli/serve.py", line 179, in cmd
+(APIServer pid=811181)     uvloop.run(run_server(args))
+(APIServer pid=811181)   File "/home/jasonc/venvs/vllm-karmic/lib/python3.12/site-packages/uvloop/__init__.py", line 96, in run
+(APIServer pid=811181)     return __asyncio.run(
+(APIServer pid=811181)            ^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/asyncio/runners.py", line 195, in run
+(APIServer pid=811181)     return runner.run(main)
+(APIServer pid=811181)            ^^^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/asyncio/runners.py", line 118, in run
+(APIServer pid=811181)     return self._loop.run_until_complete(task)
+(APIServer pid=811181)            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+(APIServer pid=811181)   File "/home/jasonc/venvs/vllm-karmic/lib/python3.12/site-packages/uvloop/__init__.py", line 48, in wrapper
+(APIServer pid=811181)     return await main
+(APIServer pid=811181)            ^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/launchers/api_server/entry.py", line 176, in run_server
+(APIServer pid=811181)     await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/launchers/api_server/entry.py", line 190, in run_server_worker
+(APIServer pid=811181)     async with build_async_engine_client(
+(APIServer pid=811181)                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/contextlib.py", line 210, in __aenter__
+(APIServer pid=811181)     return await anext(self.gen)
+(APIServer pid=811181)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/launchers/api_server/entry.py", line 58, in build_async_engine_client
+(APIServer pid=811181)     async with build_async_engine_client_from_engine_args(
+(APIServer pid=811181)                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/contextlib.py", line 210, in __aenter__
+(APIServer pid=811181)     return await anext(self.gen)
+(APIServer pid=811181)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/entrypoints/launchers/api_server/entry.py", line 94, in build_async_engine_client_from_engine_args
+(APIServer pid=811181)     async_llm = AsyncLLM.from_vllm_config(
+(APIServer pid=811181)                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/async_llm.py", line 235, in from_vllm_config
+(APIServer pid=811181)     return cls(
+(APIServer pid=811181)            ^^^^
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/async_llm.py", line 169, in __init__
+(APIServer pid=811181)     self.engine_core = EngineCoreClient.make_async_mp_client(
+(APIServer pid=811181)                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=811181)     return func(*args, **kwargs)
+(APIServer pid=811181)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core_client.py", line 163, in make_async_mp_client
+(APIServer pid=811181)     return AsyncMPClient(
+(APIServer pid=811181)            ^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=811181)     return func(*args, **kwargs)
+(APIServer pid=811181)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core_client.py", line 1086, in __init__
+(APIServer pid=811181)     super().__init__(
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/core_client.py", line 676, in __init__
+(APIServer pid=811181)     with launch_core_engines(
+(APIServer pid=811181)          ^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=811181)   File "/home/jasonc/.local/share/uv/python/cpython-3.12.14-linux-aarch64-gnu/lib/python3.12/contextlib.py", line 144, in __exit__
+(APIServer pid=811181)     next(self.gen)
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/utils.py", line 1240, in launch_core_engines
+(APIServer pid=811181)     wait_for_engine_startup(
+(APIServer pid=811181)   File "/home/jasonc/vllm-karmic/vllm/v1/engine/utils.py", line 1320, in wait_for_engine_startup
+(APIServer pid=811181)     raise RuntimeError(
+(APIServer pid=811181) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}

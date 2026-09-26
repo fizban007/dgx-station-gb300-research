@@ -1,0 +1,9 @@
+e8c77bdea18b6922e2250b841f547b9d3873105adb581a7eca88b930388b47e8
+launched qwen-up (MTP=3 RUST_MP=0)
+Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 1.0, 'top_k': 20, 'top_p': 0.95}`. If 
+mp-only pass 1 C1  TTFT p50   149 ms  p90   150 ms     325.0 tok/s
+mp-only pass 1 C8  TTFT p50   333 ms  p90   486 ms    1510.0 tok/s
+mp-only pass 1 C16  TTFT p50   380 ms  p90   661 ms    2319.3 tok/s
+mp-only pass 2 C1  TTFT p50   148 ms  p90   149 ms     325.0 tok/s
+mp-only pass 2 C8  TTFT p50   333 ms  p90   489 ms    1510.1 tok/s
+mp-only pass 2 C16  TTFT p50   345 ms  p90   664 ms    2318.5 tok/s

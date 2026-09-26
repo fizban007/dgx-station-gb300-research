@@ -1,0 +1,61 @@
+MoE benchmark (Pre-routed MoE kernel only)
+Qwen3.8 Flash Next  TP=1, K=2560, I_tp=640, E=512, top_k=10
+Model path: /home/jasonc/models/Qwen3.8-Flash-Next-NVFP4
+Layer: 0
+Activation: silu
+Quant mode: nvfp4
+Routing source: synthetic
+Routing workload: default
+Batch-size profile: micro -> [1, 2, 3, 4, 8, 16, 32, 64, 128, 1024, 4096, 8192]
+Backend: b12x
+Reference: flashinfer
+Scale contract: shared
+Validation: oracle
+Fast math: on
+L2 flush: on (231.0 MiB per launch)
+Graph mode: single-op
+Graph only: no
+Timing passes per batch size: 5 x 20 iterations
+Timed region: backend launch only
+Oracle mode: nvfp4
+
+  Loading 512 experts... done.
+Source format: modelopt_nvfp4
+  Precomputing oracle outputs before destructive weight preparation... done.
+  Preparing b12x declarations...Traceback (most recent call last):
+  File "/home/jasonc/b12x-exp/benchmarks/benchmark_moe.py", line 4603, in <module>
+    main()
+  File "/home/jasonc/b12x-exp/benchmarks/benchmark_moe.py", line 4599, in main
+    bench_e2e()
+  File "/home/jasonc/b12x-exp/benchmarks/benchmark_moe.py", line 3887, in bench_e2e
+    warmup_execution = prepare_moe_execution(
+                       ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jasonc/b12x-exp/benchmarks/benchmark_moe.py", line 2930, in prepare_moe_execution
+    session.prepare((
+  File "/home/jasonc/b12x-exp/b12x/preparation/session.py", line 368, in prepare
+    state = job.advance(**authorization)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jasonc/b12x-exp/b12x/preparation/session.py", line 646, in advance
+    return self._advance(collective_key=collective_key, tuning=tuning, cache=cache)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jasonc/b12x-exp/b12x/preparation/session.py", line 728, in _advance
+    signal = self._steps.send(send_value)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jasonc/b12x-exp/b12x/preparation/session.py", line 1485, in _run
+    obligations = yield from self._configure(groups)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jasonc/b12x-exp/b12x/preparation/session.py", line 903, in _configure
+    configuration = plan.contract.configure(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jasonc/b12x-exp/b12x/preparation/tuning.py", line 271, in configure
+    default = override if override is not None else self.default_config(query, device)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jasonc/b12x-exp/b12x/moe/fused_moe/_tuning.py", line 369, in _default_config
+    return backend.heuristic(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jasonc/b12x-exp/b12x/moe/fused_moe/_sm103.py", line 62, in heuristic
+    validate_policy(query, config)
+  File "/home/jasonc/b12x-exp/b12x/moe/fused_moe/_sm103.py", line 92, in validate_policy
+    raise UnsupportedArchitectureError(
+b12x._lib.architecture.UnsupportedArchitectureError: SM103 NVFP4 projection requires K and N divisible by 256
+exit 1

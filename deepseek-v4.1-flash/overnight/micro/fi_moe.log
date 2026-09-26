@@ -1,0 +1,8 @@
+{"tokens": 1, "full_us": 36.768000572919846, "split_us": 44.99199986457825, "unique_experts": 6, "weight_gbps": 3067.989508330286, "tok_per_s": 27197.562674553326}
+{"tokens": 8, "full_us": 149.77599680423737, "split_us": 164.08000141382217, "unique_experts": 45, "weight_gbps": 5648.627403934358, "tok_per_s": 53413.09803103023}
+{"tokens": 64, "full_us": 742.2239780426025, "split_us": 762.8960013389587, "unique_experts": 247, "weight_gbps": 6256.545486776844, "tok_per_s": 86227.34092851754}
+{"tokens": 256, "full_us": 1128.7840008735657, "split_us": 1181.5999746322632, "unique_experts": 375, "weight_gbps": 6245.87165883271, "tok_per_s": 226792.7254478108}
+{"tokens": 1024, "full_us": 1701.2640237808228, "split_us": 1472.4640250205994, "unique_experts": 384, "weight_gbps": 4243.577515943578, "tok_per_s": 601905.3983897822}
+{"tokens": 4096, "full_us": 2452.895998954773, "split_us": 1881.0720443725586, "unique_experts": 384, "weight_gbps": 2943.2335341883013, "tok_per_s": 1669862.8893134426}
+[2026-09-23 21:32:36.119] [info] TRT-LLM fused MoE cooperative launch SM allocation: 144 SMs used for MoE, 8 SMs reserved for overlapping kernels (total SMs: 152)
+{"tokens": 16384, "full_us": 5370.703935623169, "split_us": 5373.296022415161, "unique_experts": 384, "weight_gbps": 1344.2270969573228, "tok_per_s": 3050624.3122669817}

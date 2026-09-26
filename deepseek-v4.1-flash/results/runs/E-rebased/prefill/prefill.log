@@ -1,0 +1,7 @@
+target=http://127.0.0.1:30000 points=3 warmup=1 flush_cache=True timeout=1800s seed=1234 output=/home/jasonc/ds41f-exp/runs/E-rebased/prefill/prefill.jsonl label='E-rebased'
+server: (no /get_model_info or /get_server_info)
+    isl conc    n   wall_s  agg_tok/s ttft_mean  ttft_p50  ttft_p99 req_tok/s util%      W metrics_prompt_d err
+  16384    1    4    45.47     1441.3    11.367    11.367    11.372    1441.3   100    254            65536   0
+  65536    1    4   185.34     1414.4    46.335    46.333    46.342    1414.4   100    256           262144   0
+ 131072    1    4   379.32     1382.2    94.830    94.829    94.837    1382.2   100    259           524288   0
+done.

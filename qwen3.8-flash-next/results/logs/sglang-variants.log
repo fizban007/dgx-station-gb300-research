@@ -1,0 +1,62 @@
+=== sglang-mega-mtp3 (MOE=flashinfer_megamoe)   22:11:21
+sglang-mega-mtp3: server exited
+[2026-09-25 02:12:02] Scheduler hit an exception: Traceback (most recent call last):
+    raise NotImplementedError(
+NotImplementedError: Runner backend MoeRunnerBackend.FLASHINFER_MEGAMOE requires a fused func for a2a backend none, but none is registered.
+=== sglang-rs-mtp3 (MOE=auto) --enable-linear-replayssm-spec  22:12:08
+[2026-09-25 02:12:25] Use flashinfer_trtllm as MoE runner backend on sm100 for Qwen4ExpForConditionalGeneration
+[2026-09-25 02:14:13] Mamba Cache is allocated. max_mamba_cache_size: 330, conv_state size: 0.68GB, ssm_state size: 34.91GB intermediate_ssm_state_cache size: 0.00GB intermediate_conv_window_cache size: 0.28GB 
+[2026-09-25 02:14:23] Linear attention kernel backend: decode=triton, prefill=triton, verify=triton
+[2026-09-25 02:15:00] max_total_num_tokens=3588416, chunked_prefill_size=16384, max_prefill_tokens=16384, max_running_requests=66, context_len=262144, available_gpu_mem=33.28 GB
+sanity: 391
+qwen-sglang-rs-mtp3: GSM8K 193/200 = 96.5%
+C1 rc=0
+C2 rc=0
+C4 rc=0
+C8 rc=0
+C16 rc=0
+C32 rc=0
+C64 rc=0
+decode                                  1      337.0      369.7      185ms    2.70ms    2.45    0
+decode                                  2      585.6      314.6      197ms    3.18ms    2.74    0
+decode                                  4      928.5      251.0      195ms    3.98ms    2.56    0
+decode                                  8    1,391.8      184.1      205ms    5.43ms    2.44    0
+decode                                 16    1,943.6      125.0      345ms    8.00ms    2.45    0
+decode                                 32    2,687.2       86.5      353ms   11.56ms    2.43    0
+decode                                 64    3,489.7       55.2      384ms   18.11ms    2.53    0
+   8192    1    4     0.89    36848.7     0.222     0.223     0.223   36853.0    55    393            32768   0
+  32768    1    4     3.25    40366.9     0.812     0.812     0.812   40368.2    94    990           131072   0
+  65536    1    4     6.77    38726.6     1.692     1.692     1.693   38727.2    96    985           262144   0
+ 131072    1    4    15.35    34157.4     3.837     3.837     3.838   34157.7    96    925           524288   0
+=== sglang-rs-fipre-mtp3 (MOE=auto) --enable-linear-replayssm-spec --linear-attn-prefill-backend flashinfer  22:23:40
+[2026-09-25 02:23:58] Use flashinfer_trtllm as MoE runner backend on sm100 for Qwen4ExpForConditionalGeneration
+[2026-09-25 02:25:47] Mamba Cache is allocated. max_mamba_cache_size: 330, conv_state size: 0.68GB, ssm_state size: 34.91GB intermediate_ssm_state_cache size: 0.00GB intermediate_conv_window_cache size: 0.28GB 
+[2026-09-25 02:25:48] Linear attention kernel backend: decode=triton, prefill=flashinfer, verify=triton
+[2026-09-25 02:26:06] max_total_num_tokens=3588416, chunked_prefill_size=16384, max_prefill_tokens=16384, max_running_requests=66, context_len=262144, available_gpu_mem=33.28 GB
+sanity: 391
+qwen-sglang-rs-fipre-mtp3: GSM8K 194/200 = 97.0%
+C1 rc=0
+C2 rc=0
+C4 rc=0
+C8 rc=0
+C16 rc=0
+C32 rc=0
+C64 rc=0
+decode                                  1      336.9      363.1      173ms    2.75ms    2.33    0
+decode                                  2      585.4      320.3      185ms    3.12ms    2.27    0
+decode                                  4      928.3      247.5      185ms    4.04ms    2.77    0
+decode                                  8    1,403.8      191.5      328ms    5.22ms    2.67    0
+decode                                 16    1,978.6      127.7      341ms    7.83ms    2.66    0
+decode                                 32    2,803.3       90.6      336ms   11.04ms    2.61    0
+decode                                 64    3,555.4       56.0      366ms   17.87ms    2.65    0
+   8192    1    4     0.79    41571.8     0.197     0.198     0.198   41577.3    92    371            32768   0
+  32768    1    4     2.87    45703.6     0.717     0.717     0.718   45705.1    97    999           131072   0
+  65536    1    4     6.01    43623.4     1.502     1.503     1.503   43624.1    96   1004           262144   0
+ 131072    1    4    13.83    37912.8     3.457     3.457     3.460   37913.2    95    932           524288   0
+=== sglang-fi-mtp3 (MOE=auto) --linear-attn-backend flashinfer  22:34:32
+[2026-09-25 02:34:51] Use flashinfer_trtllm as MoE runner backend on sm100 for Qwen4ExpForConditionalGeneration
+sglang-fi-mtp3: server exited
+Traceback (most recent call last):
+AssertionError: no_buffer only supports page_size=1.
+./sglang-variants.sh: line 37: syntax error near unexpected token `)'
+./sglang-variants.sh: line 37: `['message']['content'])"'

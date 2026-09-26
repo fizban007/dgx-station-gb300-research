@@ -1,0 +1,182 @@
+[
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 1,
+  "mega_us": 72.6,
+  "fi_us": 58.4,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 37.0
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 4,
+  "mega_us": 106.1,
+  "fi_us": 110.5,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 90.2
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 8,
+  "mega_us": 157.3,
+  "fi_us": 165.7,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 143.8
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 16,
+  "mega_us": 277.6,
+  "fi_us": 286.9,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 265.5
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 32,
+  "mega_us": 456.2,
+  "fi_us": 462.2,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 442.6
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 64,
+  "mega_us": 746.6,
+  "fi_us": 759.4,
+  "fi_shared_backend": "cudnn",
+  "fi_routed_only_us": 734.8
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 256,
+  "mega_us": 1129.4,
+  "fi_us": 1129.2,
+  "fi_shared_backend": "cudnn",
+  "fi_routed_only_us": 1103.5
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 1024,
+  "mega_us": 1264.2,
+  "fi_us": 1745.0,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 1699.0
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 4096,
+  "mega_us": 1542.2,
+  "fi_us": 2382.5,
+  "fi_shared_backend": "cudnn",
+  "fi_routed_only_us": 2522.1
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 8192,
+  "mega_us": 2090.9,
+  "fi_us": 2766.4,
+  "fi_shared_backend": "cudnn",
+  "fi_routed_only_us": 2794.6
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 1,
+  "mega_us": 60.7,
+  "fi_us": 57.6,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 35.4
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 4,
+  "mega_us": 101.1,
+  "fi_us": 108.1,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 87.6
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 8,
+  "mega_us": 156.4,
+  "fi_us": 164.9,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 143.6
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 16,
+  "mega_us": 265.7,
+  "fi_us": 276.5,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 255.0
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 32,
+  "mega_us": 431.4,
+  "fi_us": 439.6,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 418.1
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 64,
+  "mega_us": 639.9,
+  "fi_us": 656.7,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 632.4
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 256,
+  "mega_us": 912.6,
+  "fi_us": 927.3,
+  "fi_shared_backend": "cudnn",
+  "fi_routed_only_us": 902.2
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 1024,
+  "mega_us": 1021.5,
+  "fi_us": 1301.4,
+  "fi_shared_backend": "cudnn",
+  "fi_routed_only_us": 1260.5
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 4096,
+  "mega_us": 1322.6,
+  "fi_us": 1560.0,
+  "fi_shared_backend": "cudnn",
+  "fi_routed_only_us": 1546.0
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 8192,
+  "mega_us": 2004.7,
+  "fi_us": 2292.3,
+  "fi_shared_backend": "cute-dsl",
+  "fi_routed_only_us": 3066.2
+ }
+]

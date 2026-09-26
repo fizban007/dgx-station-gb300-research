@@ -1,0 +1,8 @@
+check: 40 unseen sizes, 0 new DeepGEMM kernels, slowest 932 tokens in 1.59s
+  wait check C8: 797.8 tok/s, 15.88 ms/pass, GB300 wait 0.11 ms/pass
+  wait check C16: 1307.1 tok/s, 19.1 ms/pass, GB300 wait 0.12 ms/pass
+decode                                  1      204.9      211.3      158ms    4.73ms    2.55    0
+decode                                  4      575.2      150.7      180ms    6.63ms    2.58    0
+decode                                  8      835.8      107.5      302ms    9.31ms    1.70    0
+decode                                 16    1,328.7       85.6      311ms   11.68ms    1.71    0
+  6000 buckets: {'1': 73.8, '2': 89.3, '4': 96.9, '8': 114.2, '16': 151.1, '32': 192.2, '64': 293.0}

@@ -1,0 +1,10 @@
+190684ac35de491600708b4b9091e1b89e2aa8a22096e3b9def7d4302abb3389
+launched qwen-up (MTP=3 RUST_MP=0)
+[0;36m(RustFrontend pid=358)[0m [33mWARNING[0m [90m09-25 15:07:31[0m [90m[unsupported.rs:67][0m argument 'structured_outputs_config' currently
+Launching Rust frontend: /usr/local/lib/python3.12/dist-packages/vllm/vllm-rs frontend --listen-fd 32 --input-address ipc:///tmp/bc1928ad-b4f0-4a79-af
+rust-uni pass 1 C1  TTFT p50   148 ms  p90   149 ms     340.0 tok/s
+rust-uni pass 1 C8  TTFT p50   327 ms  p90   462 ms    1552.3 tok/s
+rust-uni pass 1 C16  TTFT p50   402 ms  p90   789 ms    2326.7 tok/s
+rust-uni pass 2 C1  TTFT p50   141 ms  p90   143 ms     339.8 tok/s
+rust-uni pass 2 C8  TTFT p50   233 ms  p90   456 ms    1551.0 tok/s
+rust-uni pass 2 C16  TTFT p50   467 ms  p90   795 ms    2285.9 tok/s

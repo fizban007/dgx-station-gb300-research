@@ -1,0 +1,22 @@
+create a stuninng tetris games with all the extras in html5:
+
+Classic 7 tetromino pieces (I, O, T, S, Z, J, L) with standard colors
+Smooth movement and rotation (SRS - Super Rotation System)
+Hold piece functionality
+Next piece preview queue
+Hard drop, soft drop
+Ghost piece (shows where piece will land)
+Line clearing with animations
+T-spin detection
+Score system with combo tracking
+Levels with increasing speed
+Particle effects for line clears
+Background music and sound effects (using Web Audio API)
+Modern UI with gradients and animations
+Pause functionality
+Game over screen with restart
+Stats tracking (lines, level, score, time)
+Beautiful visual effects and glow
+Mobile touch controls
+
+Make it looks as a real PS4 Tetris game!

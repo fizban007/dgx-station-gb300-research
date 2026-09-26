@@ -1,0 +1,49 @@
+{
+ "tag": "3tier-v2-dev",
+ "model": "mimo26-pro",
+ "n": 600,
+ "wall_s": 939,
+ "errors": 0,
+ "suite": "dev",
+ "ctk": null,
+ "strict": false,
+ "maxtok": 2048,
+ "conc": 8,
+ "simple_python": {
+  "n": 400,
+  "ok": 374,
+  "acc": 0.935,
+  "no_call": 1,
+  "multi_call": 1,
+  "fail_kinds": {
+   "value": 25,
+   "no_call": 1
+  }
+ },
+ "multiple": {
+  "n": 200,
+  "ok": 183,
+  "acc": 0.915,
+  "no_call": 2,
+  "multi_call": 6,
+  "fail_kinds": {
+   "value": 12,
+   "name": 2,
+   "missing": 1,
+   "no_call": 2
+  }
+ },
+ "all": {
+  "n": 600,
+  "ok": 557,
+  "acc": 0.9283,
+  "no_call": 3,
+  "multi_call": 7,
+  "fail_kinds": {
+   "value": 37,
+   "no_call": 3,
+   "name": 2,
+   "missing": 1
+  }
+ }
+}

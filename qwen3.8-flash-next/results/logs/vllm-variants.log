@@ -1,0 +1,22 @@
+=== vllm-cutedsl-mtp3 (--moe-backend flashinfer_cutedsl)  07:52:32
+Using 'FLASHINFER_CUTEDSL' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CU
+vllm-cutedsl-mtp3: server exited
+(EngineCore pid=361)     raise ValueError(
+(EngineCore pid=361) ValueError: moe_backend='flashinfer_cutedsl' is not supported for FP8 MoE. Expected one of ['triton', 'deep_gemm', 'cutlass', 'flashinfer_trtllm', 'flashinfer_cutlass', 'marlin', 'humming', 'aiter', 'hpc'].
+(APIServer pid=1)     raise RuntimeError(
+(APIServer pid=1) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+=== vllm-ficutlass-mtp3 (--moe-backend flashinfer_cutlass)  07:55:00
+Using 'FLASHINFER_CUTLASS' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CU
+vllm-ficutlass-mtp3: server exited
+(EngineCore pid=361)     raise ValueError(_make_log_unsupported(backend, reason))
+(EngineCore pid=361) ValueError: FP8 MoE backend FLASHINFER_CUTLASS does not support the deployment configuration since kernel does not support quantization scheme QuantKey(f8e4m3fn,scale(f32,static,GroupShape(row=128, col=128)),symmetric)xQuantKey(f8e4m3fn,scale(f32,dynamic,GroupShape(row=1, col=12
+(APIServer pid=1)     raise RuntimeError(
+(APIServer pid=1) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+=== vllm-cutlass-mtp3 (--moe-backend cutlass)  07:57:26
+Using 'VLLM_CUTLASS' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUTLASS'
+vllm-cutlass-mtp3: server exited
+(EngineCore pid=361)     raise ValueError(
+(EngineCore pid=361) ValueError: vLLM CUTLASS FP8 MoE backend is disabled for this configuration.
+(APIServer pid=1)     raise RuntimeError(
+(APIServer pid=1) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+=== done 07:59:48

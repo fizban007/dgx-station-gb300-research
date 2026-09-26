@@ -1,0 +1,6 @@
+=== presence_penalty 0  10:10:05
+qwen-pp0: GSM8K 192/200 = 96.0%
+pp0 run1 C1/128K ok 278.8 tok/s
+pp0 run1 C8/128K ok 1526.5 tok/s
+pp0 run2 C1/128K ok 286.6 tok/s
+pp0 run2 C8/128K ok 1504.2 tok/s

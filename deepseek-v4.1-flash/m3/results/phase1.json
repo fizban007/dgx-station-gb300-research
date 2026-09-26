@@ -1,0 +1,162 @@
+[
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 1,
+  "mega_us": 57.9,
+  "fi_us": 36.6,
+  "rel_diff": 0.0475
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 4,
+  "mega_us": 109.0,
+  "fi_us": 87.0,
+  "rel_diff": 0.0447
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 8,
+  "mega_us": 168.1,
+  "fi_us": 144.0,
+  "rel_diff": 0.2329
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 16,
+  "mega_us": 301.7,
+  "fi_us": 267.1,
+  "rel_diff": 0.0439
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 32,
+  "mega_us": 524.6,
+  "fi_us": 463.3,
+  "rel_diff": 0.0435
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 64,
+  "mega_us": 828.3,
+  "fi_us": 745.6,
+  "rel_diff": 0.0443
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 256,
+  "mega_us": 1263.2,
+  "fi_us": 1135.5,
+  "rel_diff": 0.0438
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 1024,
+  "mega_us": 1350.0,
+  "fi_us": 1685.3,
+  "rel_diff": 0.0438
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 4096,
+  "mega_us": 1649.7,
+  "fi_us": 2595.8,
+  "rel_diff": 0.0439
+ },
+ {
+  "case": "all",
+  "experts": 384,
+  "tokens": 8192,
+  "mega_us": 2148.1,
+  "fi_us": 2632.9,
+  "rel_diff": 0.0438
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 1,
+  "mega_us": 52.2,
+  "fi_us": 37.1,
+  "rel_diff": 0.0397
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 4,
+  "mega_us": 100.0,
+  "fi_us": 80.6,
+  "rel_diff": 0.043
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 8,
+  "mega_us": 165.5,
+  "fi_us": 143.3,
+  "rel_diff": 0.0439
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 16,
+  "mega_us": 273.4,
+  "fi_us": 242.0,
+  "rel_diff": 0.0432
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 32,
+  "mega_us": 469.5,
+  "fi_us": 416.7,
+  "rel_diff": 0.0432
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 64,
+  "mega_us": 657.3,
+  "fi_us": 592.3,
+  "rel_diff": 0.0443
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 256,
+  "mega_us": 983.3,
+  "fi_us": 901.3,
+  "rel_diff": 0.0438
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 1024,
+  "mega_us": 1093.3,
+  "fi_us": 1262.9,
+  "rel_diff": 0.0439
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 4096,
+  "mega_us": 1431.2,
+  "fi_us": 1535.4,
+  "rel_diff": 0.0439
+ },
+ {
+  "case": "hot",
+  "experts": 295,
+  "tokens": 8192,
+  "mega_us": 2046.6,
+  "fi_us": 2822.9,
+  "rel_diff": 0.0439
+ }
+]

@@ -1,0 +1,5 @@
+target=http://127.0.0.1:30000 points=1 warmup=1 flush_cache=True timeout=1800s seed=1234 output=/home/jasonc/ds41f-exp/runs/pr-validate/prefill/prefill.jsonl label='pr-validate'
+server: (no /get_model_info or /get_server_info)
+    isl conc    n   wall_s  agg_tok/s ttft_mean  ttft_p50  ttft_p99 req_tok/s util%      W metrics_prompt_d err
+  16384    1    4   176.88      370.5    44.219    44.241    44.335     370.5   100    431            65536   0
+done.

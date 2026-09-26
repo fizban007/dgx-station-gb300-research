@@ -1,0 +1,7 @@
+C1 rc=0
+C8 rc=0
+C16 rc=0
+run                                     C  agg tok/s user tok/s  TTFT p50  ITL p50  accept  err
+decode                                  1      117.9      135.2      398ms    7.40ms    2.46    0
+decode                                  8      335.3       43.6      488ms   22.95ms    2.30    0
+decode                                 16      420.9       27.1      551ms   36.94ms    2.32    0

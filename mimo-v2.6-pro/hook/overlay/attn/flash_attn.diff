@@ -1,0 +1,13 @@
+--- overlay/attn/flash_attn.orig.py	2026-09-25 19:43:17.454061018 -0400
++++ overlay/attn/flash_attn.py	2026-09-25 19:43:17.557922742 -0400
+@@ -1180,7 +1180,9 @@
+             self.kv_cache_dtype,
+             requires_alibi=alibi_slopes is not None,
+             head_size=head_size,
+-            head_size_v=head_size,
++            # DiffKV subclasses (MiMo: 192/128) report their real V head size; checking 192/192 rejects FA4 and
++            # then FP8 KV on Blackwell even though FA4 serves 192/128 with an FP8 cache.
++            head_size_v=getattr(self, "_head_size_v_for_checks", head_size),
+             has_sinks=sinks is not None,
+             requires_softcap=bool(self.logits_soft_cap),
+             supports_fa4_hd256=True,

@@ -1,0 +1,31 @@
+  mem l1 weights: 1.93 GiB
+  mem l1 prepare_weights: 1.93 GiB
+  mem l1 plan_execution: 1.93 GiB
+  mem l1 session.prepare: 4.73 GiB
+  mem l1 after gc: 4.73 GiB
+  shared_scratch: {1: [1], 2: [2], 4: [4], 8: [9], 16: [11], 32: [12], 64: [14], 128: [19], 256: [37], 512: [54], 1024: [88], 2048: [176], 4096: [311], 8192: [582], 16384: [1164]}
+layer 1: 78 peer experts prepared, 4.7 GiB allocated, 2s
+  mem l2 weights: 6.08 GiB
+  mem l2 prepare_weights: 6.08 GiB
+  mem l2 plan_execution: 6.08 GiB
+  mem l2 session.prepare: 6.08 GiB
+  mem l2 after gc: 6.08 GiB
+  shared_scratch: {1: [1], 2: [2], 4: [4], 8: [9], 16: [11], 32: [12], 64: [14], 128: [19], 256: [37], 512: [54], 1024: [88], 2048: [176], 4096: [311], 8192: [582], 16384: [1164]}
+  mem l3 weights: 7.57 GiB
+  mem l3 prepare_weights: 7.57 GiB
+  mem l3 plan_execution: 7.57 GiB
+  mem l3 session.prepare: 10.01 GiB
+  mem l3 after gc: 10.01 GiB
+  shared_scratch: {1: [1], 2: [2], 4: [4], 8: [9], 16: [12], 32: [13], 64: [15], 128: [19], 256: [38], 512: [55], 1024: [89], 2048: [177], 4096: [312], 8192: [583], 16384: [1166]}
+  mem l4 weights: 11.81 GiB
+  mem l4 prepare_weights: 11.81 GiB
+  mem l4 plan_execution: 11.81 GiB
+  mem l4 session.prepare: 14.30 GiB
+  mem l4 after gc: 14.30 GiB
+  shared_scratch: {1: [1], 2: [2], 4: [4], 8: [9], 16: [14], 32: [15], 64: [17], 128: [21], 256: [42], 512: [59], 1024: [93], 2048: [186], 4096: [321], 8192: [592], 16384: [1183]}
+layer 4: 96 peer experts prepared, 14.3 GiB allocated, 4s
+prepared 4 layers (326 experts) in 4s; 14.3 GiB allocated
+captured 60 graphs; 14.3 GiB allocated, 79.6 GiB free
+selftest layer 1 rows 3: cos 0.99978 rel 0.0225
+selftest layer 1 rows 100: cos 0.99998 rel 0.0070
+serving

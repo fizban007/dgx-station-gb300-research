@@ -1,0 +1,36 @@
+=== C1-adaptive  schedule [[1,4,5],[5,24,1]]  extra ',"enable_adaptive_verification":true'
+check: 40 unseen sizes, 0 new DeepGEMM kernels, slowest 2604 tokens in 1.07s
+  wait check C8: 830.0 tok/s, 15.44 ms/pass, GB300 wait 0.07 ms/pass
+  wait check C16: 1003.9 tok/s, 15.94 ms/pass, GB300 wait 0.11 ms/pass
+decode                                  1      200.9      210.9      148ms    4.74ms    2.51    0
+decode                                  4      623.8      165.8      281ms    6.03ms    2.46    0
+decode                                  8      840.1      108.6      287ms    9.21ms    1.71    0
+decode                                 16    1,022.5       65.8      439ms   15.20ms    1.01    0
+  6000 buckets: {'1': 74.4, '2': 89.5, '4': 97.1, '8': 115.1, '16': 146.3, '32': 188.9, '64': 277.4}
+=== C2-adaptive-k2  schedule [[1,4,5],[5,24,2]]  extra ',"enable_adaptive_verification":true'
+check: 40 unseen sizes, 0 new DeepGEMM kernels, slowest 1510 tokens in 1.11s
+  wait check C8: 854.2 tok/s, 15.53 ms/pass, GB300 wait 0.12 ms/pass
+  wait check C16: 944.4 tok/s, 20.55 ms/pass, GB300 wait 0.14 ms/pass
+decode                                  1      211.4      220.3      155ms    4.54ms    2.65    0
+decode                                  4      605.4      163.6      178ms    6.11ms    2.44    0
+decode                                  8      862.4      114.4      223ms    8.74ms    1.81    0
+decode                                 16    1,251.3       80.4      277ms   12.44ms    1.53    0
+  6000 buckets: {'1': 74.5, '2': 89.5, '4': 97.2, '8': 114.8, '16': 150.1, '32': 197.6, '64': 273.1}
+=== C3-adaptive-k3  schedule [[1,4,5],[5,24,3]]  extra ',"enable_adaptive_verification":true'
+check: 40 unseen sizes, 0 new DeepGEMM kernels, slowest 3060 tokens in 1.12s
+  wait check C8: 871.0 tok/s, 15.32 ms/pass, GB300 wait 0.1 ms/pass
+  wait check C16: 1043.5 tok/s, 22.17 ms/pass, GB300 wait 0.12 ms/pass
+decode                                  1      211.4      220.0      147ms    4.55ms    2.61    0
+decode                                  4      614.4      162.7      169ms    6.15ms    2.46    0
+decode                                  8      890.8      116.5      282ms    8.58ms    1.83    0
+decode                                 16    1,453.6       94.2      277ms   10.62ms    2.02    0
+  6000 buckets: {'1': 74.5, '2': 89.5, '4': 97.0, '8': 114.2, '16': 150.8, '32': 204.5, '64': 266.3}
+=== C4-k2-to-8  schedule [[1,4,5],[5,8,2],[9,24,1]]  extra ''
+check: 40 unseen sizes, 0 new DeepGEMM kernels, slowest 834 tokens in 1.60s
+  wait check C8: 905.4 tok/s, 16.63 ms/pass, GB300 wait 0.09 ms/pass
+  wait check C16: 1313.2 tok/s, 19.19 ms/pass, GB300 wait 0.11 ms/pass
+decode                                  1      211.5      219.1      149ms    4.56ms    2.61    0
+decode                                  4      583.6      153.3      170ms    6.52ms    2.58    0
+decode                                  8      926.4      120.9      198ms    8.27ms    2.14    0
+decode                                 16    1,333.4       85.1      290ms   11.75ms    1.71    0
+  6000 buckets: {'1': 74.6, '2': 89.4, '4': 96.7, '8': 114.7, '16': 152.4, '32': 191.1, '64': 282.3}

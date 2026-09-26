@@ -1,0 +1,32 @@
+=== vllm-rust-mp-mtp3 (--moe-backend flashinfer_trtllm, MTP 3) --distributed-executor-backend mp VLLM_USE_RUST_FRONTEND=1  08:50:12
+Launching Rust frontend: /usr/local/lib/python3.12/dist-packages/vllm/vllm-rs frontend --listen-fd 32 --input-address ipc:///tmp/728ad55b-e368-4b3a-a7c9-9e0248e
+Initializing a V1 LLM engine (v0.30.1rc1.dev48+g7f1a5398e) with config: model='/models/Qwen3.8-Flash-Next-NVFP4-nvidia', speculative_config=SpeculativeConfig(me
+Using 'FLASHINFER_TRTLLM' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUT
+Using FLASHINFER_TRTLLM Fp8 MoE backend out of potential backends: ['AITER', 'FLASHINFER_TRTLLM', 'FLASHINFER_CUTLASS', 'DEEPGEMM', 'VLLM_CUTLASS', 'TRITON', 'M
+GPU KV cache size: 4,976,485 tokens, Maximum concurrency for 262,144 tokens per request: 18.98x
+Using FlashInfer autotune cache file: /root/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/103a/d964b0c22dfc6a05b8c0f5c370d178c959ca98cfff3e03e10c93b096e367
+(Worker pid=611) 2026-09-25 12:53:45,691 - INFO - autotuner.py:972 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096
+(Worker pid=611) 2026-09-25 12:54:51,392 - INFO - autotuner.py:995 - flashinfer.jit: [Autotuner]: Autotuning process ends
+(Worker pid=611) 2026-09-25 12:54:51,399 - INFO - autotuner.py:2652 - flashinfer.jit: [Autotuner]: Saved 42 configs to /root/.cache/vllm/flashinfer_autotune_cac
+sanity: 391
+qwen-vllm-rust-mp-mtp3: GSM8K 193/200 = 96.5%
+C1 rc=0
+C2 rc=0
+C4 rc=0
+C8 rc=0
+C16 rc=0
+C32 rc=0
+C64 rc=0
+decode                                  1      313.2      334.6      174ms    2.99ms    2.50    0
+decode                                  2      550.3      310.0      194ms    3.23ms    2.55    0
+decode                                  4      925.1      250.0      166ms    4.00ms    2.56    0
+decode                                  8    1,492.0      195.8      173ms    5.11ms    2.55    0
+decode                                 16    2,197.7      142.2      179ms    7.03ms    2.56    0
+decode                                 32    3,181.2      102.6      311ms    9.74ms    2.55    0
+decode                                 64    4,332.8       69.0      346ms   14.49ms    2.55    0
+   8192    1    4     1.04    31402.5     0.261     0.261     0.262   31406.4    72    594            32768   0
+  32768    1    4     2.86    45844.5     0.715     0.715     0.716   45846.4   100    971           131072   0
+  65536    1    4     5.64    46446.3     1.411     1.411     1.411   46447.2    93   1014           262144   0
+ 131072    1    4    11.52    45529.8     2.879     2.873     2.896   45530.8    96   1021           524288   0
+=== done 09:02:53

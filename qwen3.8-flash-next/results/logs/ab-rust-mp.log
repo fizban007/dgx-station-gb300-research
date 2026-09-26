@@ -1,0 +1,35 @@
+=== ab-base-1  09:11:39
+sanity: 391
+qwen-ab-base-1: GSM8K 48/50 = 96.0%
+decode                                  1      332.4      352.0      157ms    2.84ms    2.54    0
+decode                                  2      579.6      307.3      181ms    3.25ms    2.61    0
+decode                                  4      943.4      251.5      315ms    3.98ms    2.54    0
+decode                                  8    1,529.1      200.2      323ms    4.99ms    2.59    0
+decode                                 16    2,203.3      146.1      394ms    6.84ms    2.55    0
+decode                                 32    3,170.8      104.2      359ms    9.60ms    2.55    0
+=== ab-rustmp-1  09:20:51
+sanity: 391
+qwen-ab-rustmp-1: GSM8K 49/50 = 98.0%
+decode                                  1      333.9      349.5      140ms    2.86ms    2.54    0
+decode                                  2      565.7      302.2      165ms    3.31ms    2.56    0
+decode                                  4      936.0      250.4      167ms    3.99ms    2.56    0
+decode                                  8    1,479.3      195.2      171ms    5.12ms    2.55    0
+decode                                 16    2,227.2      146.8      180ms    6.81ms    2.56    0
+decode                                 32    3,122.3      102.2      311ms    9.79ms    2.56    0
+=== ab-base-2  09:29:39
+sanity: 391
+decode                                  1      332.9      357.0      150ms    2.80ms    2.56    0
+decode                                  2      571.7      301.8      181ms    3.31ms    2.57    0
+decode                                  4      943.8      250.7      177ms    3.99ms    2.56    0
+decode                                  8    1,488.2      197.7      190ms    5.06ms    2.57    0
+decode                                 16    2,235.2      146.5      334ms    6.83ms    2.58    0
+decode                                 32    3,253.5      105.7      350ms    9.46ms    2.56    0
+=== ab-rustmp-2  09:38:29
+sanity: 391
+decode                                  1      339.7      356.2      132ms    2.81ms    2.59    0
+decode                                  2      565.8      298.3      163ms    3.35ms    2.52    0
+decode                                  4      925.8      245.3      161ms    4.08ms    2.54    0
+decode                                  8    1,521.6      198.7      168ms    5.03ms    2.58    0
+decode                                 16    2,243.7      147.2      177ms    6.79ms    2.55    0
+decode                                 32    3,109.4       98.8      311ms   10.12ms    2.56    0
+=== done 09:47:19

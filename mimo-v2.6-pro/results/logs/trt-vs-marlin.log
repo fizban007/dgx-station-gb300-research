@@ -1,0 +1,39 @@
+bank: 96 experts, 1.79 GiB raw
+INFO 09-25 22:10:36 [scheduler.py:308] Chunked prefill is enabled with max_num_batched_tokens=2048.
+INFO 09-25 22:10:36 [kernel.py:408] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+INFO 09-25 22:10:40 [kernel.py:408] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+2026-09-25 22:10:42,563 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+/w/bench_trt_vs_marlin.py:91: DeprecationWarning: Calling a trtllm-gen block-scale MoE op with a `hidden_states_scale` but without `hidden_states_scale_layout` is deprecated; the layout is being inferred as SfLayout.layout_linear. The layout cannot actually be recovered from the tensor -- a 128x4-swizzled buffer has exactly the linear numel whenever num_tokens % 128 == 0 (see #3455) -- so pass `hidden_states_scale_layout=flashinfer.tllm_enums.SfLayout.layout_linear` explicitly. Both the inference and the parameter's optionality are deprecated: the parameter is scheduled to become required and the inference to be removed in a future release.
+  flashinfer.trtllm_fp4_block_scale_routed_moe(
+[AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:   0%|          | 0/21 [00:00<?, ?profile/s][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:   5%|▍         | 1/21 [00:09<03:01,  9.07s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  10%|▉         | 2/21 [00:28<04:44, 14.98s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  14%|█▍        | 3/21 [00:38<03:54, 13.01s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  19%|█▉        | 4/21 [00:53<03:50, 13.57s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  24%|██▍       | 5/21 [01:12<04:07, 15.47s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  29%|██▊       | 6/21 [01:33<04:20, 17.37s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  33%|███▎      | 7/21 [01:56<04:28, 19.20s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  38%|███▊      | 8/21 [02:23<04:44, 21.89s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  43%|████▎     | 9/21 [02:36<03:47, 19.00s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  48%|████▊     | 10/21 [02:43<02:47, 15.26s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  52%|█████▏    | 11/21 [02:51<02:09, 12.94s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  57%|█████▋    | 12/21 [02:51<01:23,  9.26s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  62%|██████▏   | 13/21 [02:52<00:53,  6.66s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  67%|██████▋   | 14/21 [02:53<00:34,  4.88s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  71%|███████▏  | 15/21 [02:53<00:20,  3.47s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  76%|███████▌  | 16/21 [02:53<00:12,  2.49s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  81%|████████  | 17/21 [02:54<00:07,  1.84s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  86%|████████▌ | 18/21 [02:54<00:04,  1.40s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  90%|█████████ | 19/21 [02:54<00:02,  1.09s/profile][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe:  95%|█████████▌| 20/21 [02:55<00:00,  1.16profile/s][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe: 100%|██████████| 21/21 [02:55<00:00,  1.28profile/s][AutoTuner]: Tuning flashinfer::trtllm_fp4_block_scale_moe: 100%|██████████| 21/21 [02:55<00:00,  8.37s/profile]
+2026-09-25 22:13:39,110 - INFO - autotuner.py:1069 - flashinfer.jit: [Autotuner]: Autotuning process ends
+/w/bench_trt_vs_marlin.py:91: DeprecationWarning: Calling a trtllm-gen block-scale MoE op with a `hidden_states_scale` but without `hidden_states_scale_layout` is deprecated; the layout is being inferred as SfLayout.layout_linear. The layout cannot actually be recovered from the tensor -- a 128x4-swizzled buffer has exactly the linear numel whenever num_tokens % 128 == 0 (see #3455) -- so pass `hidden_states_scale_layout=flashinfer.tllm_enums.SfLayout.layout_linear` explicitly. Both the inference and the parameter's optionality are deprecated: the parameter is scheduled to become required and the inference to be removed in a future release.
+  flashinfer.trtllm_fp4_block_scale_routed_moe(
+T=    1 distinct=  5: Marlin     61.5 us ( 1.63 TB/s)  TRT     36.4 us ( 2.75 TB/s)  speedup 1.69x  cos 0.99955
+2026-09-25 22:13:56,944 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-09-25 22:13:56,948 - INFO - autotuner.py:1069 - flashinfer.jit: [Autotuner]: Autotuning process ends
+T=    2 distinct= 10: Marlin     88.7 us ( 2.26 TB/s)  TRT     53.5 us ( 3.75 TB/s)  speedup 1.66x  cos 0.99971
+2026-09-25 22:13:56,957 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-09-25 22:13:56,960 - INFO - autotuner.py:1069 - flashinfer.jit: [Autotuner]: Autotuning process ends
+T=    4 distinct= 19: Marlin    134.1 us ( 2.84 TB/s)  TRT     78.4 us ( 4.86 TB/s)  speedup 1.71x  cos 0.99955
+2026-09-25 22:13:56,972 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-09-25 22:13:56,974 - INFO - autotuner.py:1069 - flashinfer.jit: [Autotuner]: Autotuning process ends
+T=    8 distinct= 33: Marlin    220.5 us ( 3.00 TB/s)  TRT    122.5 us ( 5.40 TB/s)  speedup 1.80x  cos 0.99973
+2026-09-25 22:13:56,991 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-09-25 22:13:56,994 - INFO - autotuner.py:1069 - flashinfer.jit: [Autotuner]: Autotuning process ends
+T=   16 distinct= 56: Marlin    351.6 us ( 3.19 TB/s)  TRT    194.9 us ( 5.76 TB/s)  speedup 1.80x  cos 0.99936
+2026-09-25 22:13:57,019 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-09-25 22:13:57,022 - INFO - autotuner.py:1069 - flashinfer.jit: [Autotuner]: Autotuning process ends
+T=   32 distinct= 77: Marlin    479.0 us ( 3.22 TB/s)  TRT    288.5 us ( 5.35 TB/s)  speedup 1.66x  cos 0.99965
+2026-09-25 22:13:57,062 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-09-25 22:13:57,065 - INFO - autotuner.py:1069 - flashinfer.jit: [Autotuner]: Autotuning process ends
+T=  128 distinct= 96: Marlin    691.6 us ( 2.78 TB/s)  TRT    338.9 us ( 5.68 TB/s)  speedup 2.04x  cos 0.99944
+2026-09-25 22:13:57,149 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-09-25 22:13:57,292 - INFO - autotuner.py:1069 - flashinfer.jit: [Autotuner]: Autotuning process ends
+T=  512 distinct= 96: Marlin   1324.6 us ( 1.45 TB/s)  TRT    376.2 us ( 5.12 TB/s)  speedup 3.52x  cos 0.99952
+2026-09-25 22:13:57,547 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-09-25 22:13:57,550 - INFO - autotuner.py:1069 - flashinfer.jit: [Autotuner]: Autotuning process ends
+T= 2048 distinct= 96: Marlin   3362.7 us ( 0.57 TB/s)  TRT    611.2 us ( 3.15 TB/s)  speedup 5.50x  cos 0.99961
+2026-09-25 22:13:58,433 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-09-25 22:13:58,436 - INFO - autotuner.py:1069 - flashinfer.jit: [Autotuner]: Autotuning process ends
+T= 8192 distinct= 96: Marlin  10306.0 us ( 0.19 TB/s)  TRT   1610.5 us ( 1.20 TB/s)  speedup 6.40x  cos 0.99936

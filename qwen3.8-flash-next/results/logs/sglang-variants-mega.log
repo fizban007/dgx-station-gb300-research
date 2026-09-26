@@ -1,0 +1,25 @@
+=== sglang-mega-rsfp-mtp3 (MOE=flashinfer_megamoe) --enable-linear-replayssm-spec --linear-attn-prefill-backend flashinfer --moe-a2a-backend flashinfer_megamoe --speculative-moe-runner-backend flashinfer_trtllm --speculative-moe-a2a-backend none  07:09:54
+[2026-09-25 11:11:57] Mamba Cache is allocated. max_mamba_cache_size: 330, conv_state size: 0.68GB, ssm_state size: 34.91GB intermediate_ssm_state_cache size: 0.00GB intermediate_conv_window_cache size: 0.28GB 
+[2026-09-25 11:11:58] Linear attention kernel backend: decode=triton, prefill=flashinfer, verify=triton
+[2026-09-25 11:12:42] max_total_num_tokens=3588352, chunked_prefill_size=16384, max_prefill_tokens=16384, max_running_requests=66, context_len=262144, available_gpu_mem=26.50 GB
+sanity: 391
+qwen-sglang-mega-rsfp-mtp3: GSM8K 193/200 = 96.5%
+C1 rc=0
+C2 rc=0
+C4 rc=0
+C8 rc=0
+C16 rc=0
+C32 rc=0
+C64 rc=0
+decode                                  1      106.9      109.7      199ms    9.11ms    2.45    0
+decode                                  2      201.1      105.7      221ms    9.47ms    2.25    0
+decode                                  4      367.1       95.4      222ms   10.48ms    2.41    0
+decode                                  8      667.0       87.2      363ms   11.47ms    2.64    0
+decode                                 16    1,078.7       71.0      253ms   14.08ms    2.56    0
+decode                                 32    1,756.5       56.2      377ms   17.80ms    2.58    0
+decode                                 64    2,558.3       40.9      423ms   24.43ms    2.64    0
+   8192    1    4     0.95    34418.4     0.238     0.240     0.241   34434.0    95    402            32768   0
+  32768    1    4     3.29    39892.8     0.821     0.824     0.824   39895.1    96    965           131072   0
+  65536    1    4     6.79    38631.0     1.696     1.699     1.699   38632.0    96    953           262144   0
+ 131072    1    4    15.31    34246.7     3.827     3.830     3.831   34247.1    97    896           524288   0
+=== done 07:26:29

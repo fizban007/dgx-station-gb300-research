@@ -1,0 +1,3670 @@
+The user wants a stunning Tetris game in HTML5 that looks like a PS4 Tetris game. Let me create a comprehensive, visually stunning Tetris game with all the requested features.
+
+Let me plan this out:
+
+1. **Visual Design**: Dark theme with neon/glow effects, gradients, animations - PS4 style
+2. **Game Logic**: SRS rotation, wall kicks, hold, next queue, ghost piece, T-spin detection
+3. **Audio**: Web Audio API for music and sound effects
+4. **Particles**: Line clear particle effects
+5. **Mobile**: Touch controls
+6. **UI**: Modern with gradients, animations
+
+Let me build this step by step.
+
+I'll create a single HTML file with embedded CSS and JavaScript.
+
+Key components:
+- Game canvas for the playfield
+- Hold piece display
+- Next piece queue (3 pieces)
+- Score/level/lines display
+- Particle system
+- Sound system
+- Touch controls
+- Pause/Game over screens
+
+Let me write this comprehensive game.
+
+For the SRS system, I need:
+- Standard tetromino shapes with rotation states
+- Wall kick tables for JLSTZ and I pieces
+- Proper rotation logic
+
+For T-spin detection:
+- Check if last move was a rotation
+- Check if 3 or more corners of the T piece bounding box are occupied
+
+Let me code this up:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/* PS4 style dark theme with neon accents */
+</style>
+</head>
+<body>
+<!-- Game UI -->
+<canvas id="gameCanvas"></canvas>
+<script>
+// Complete Tetris game
+</script>
+</body>
+</html>
+```
+
+Let me write the full implementation now. This is going to be quite long but comprehensive.
+
+I need to think about the layout:
+- Center: Playfield (10x20)
+- Left: Hold piece + Next pieces
+- Right: Score, Level, Lines, Time
+- Bottom: Controls info
+
+Actually, let me think about a more PS4-like layout:
+- Playfield in the center
+- Next queue to the right (vertical)
+- Hold to the left
+- Stats below or to the side
+
+For the colors matching PS4 Tetris:
+- I: Cyan (#00F0F0)
+- O: Yellow (#F0F000)
+- T: Purple (#A000F0)
+- S: Green (#00F000)
+- Z: Red (#F00000)
+- J: Blue (#0000F0)
+- L: Orange (#F0A000)
+
+These are standard Tetris colors but with a more vibrant/neon look.
+
+Let me write the complete game now.
+
+For audio, I'll use Web Audio API to generate sounds:
+- Move sound
+- Rotate sound
+- Drop sound
+- Line clear sound
+- Level up sound
+- Background music (simple generated melody)
+
+Let me structure the code carefully:
+
+```javascript
+const PIECES = {
+  I: { color: '#00f5ff', shape: [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]] },
+  O: { color: '#ffd900', shape: [[1,1],[1,1]] },
+  T: { color: '#b829f4', shape: [[0,1,0],[1,1,1],[0,0,0]] },
+  S: { color: '#00e640', shape: [[0,1,1],[1,1,0],[0,0,0]] },
+  Z: { color: '#ff3333', shape: [[1,1,0],[0,1,1],[0,0,0]] },
+  J: { color: '#2955ff', shape: [[1,0,0],[1,1,1],[0,0,0]] },
+  L: { color: '#ff9100', shape: [[0,0,1],[1,1,1],[0,0,0]] },
+};
+```
+
+For SRS rotation, I'll define all 4 rotation states for each piece and wall kick data.
+
+Actually, for SRS, the standard approach is:
+- Define spawn rotation (state 0)
+- For clockwise rotation, rotate the matrix 90° clockwise
+- Apply wall kick offsets from the SRS kick tables
+
+The SRS kick tables:
+
+JLSTZ piece kicks (for CW rotation from state R-0→R, etc.):
+```
+(0,0) (-1,0) (-1,+1) (0,-2) (-1,-2)
+
+(0,0) (+1,0) (+1,-1) (0,+2) (+1,+2)
+
+(0,0) (+1,0) (+1,+1) (0,-2) (+1,-2)
+
+(0,0) (-1,0) (-1,-1) (0,+2) (-1,+2)
+```
+
+Wait, let me get the SRS wall kick data right.
+
+The standard SRS wall kick data (offsets to test when rotating):
+
+For S, T, Z, J, L pieces:
+
+```
+0->R: (0,0), (-1,0), (-1,-1), (0,2), (-1,2)
+R->2: (0,0), (1,0), (1,1), (0,-2), (1,-2)
+2->L: (0,0), (1,0), (1,-1), (0,2), (1,2)
+L->0: (0,0), (-1,0), (-1,1), (0,-2), (-1,-2)
+```
+
+For I piece:
+
+```
+0->R: (0,0), (-2,0), (1,0), (-2,-1), (1,2)
+R->2: (0,0), (-1,0), (2,0), (-1,2), (2,-1)
+2->L: (0,0), (2,0), (-1,0), (2,1), (-1,-2)
+L->0: (0,0), (1,0), (-2,0), (1,-2), (-2,1)
+```
+
+Note: In SRS, the y-axis is inverted (up is positive). But in our game, y increases downward. So I need to flip the y-coordinates.
+
+Actually, let me think about this more carefully. The SRS kick tables are defined with y going UP. In our game, y goes DOWN. So I should negate the y values.
+
+Wait, let me re-derive:
+
+Standard SRS kick data (as used in most implementations):
+
+```
+// From state 0 to state R (clockwise)
+const kicks_0_R = [[0,0], [-1,0], [-1,1], [0,-2], [-1,-2]];
+
+// From state R to state 2 (clockwise)
+const kicks_R_2 = [[0,0], [1,0], [1,-1], [0,2], [1,2]];
+
+// From state 2 to state L (clockwise)
+const kicks_2_L = [[0,0], [1,0], [1,1], [0,-2], [1,-2]];
+
+// From state L to state 0 (clockwise)
+const kicks_L_0 = [[0,0], [-1,0], [-1,-1], [0,2], [-1,2]];
+```
+
+These are with y-axis pointing up. Since our y-axis points down, I need to negate y.
+
+Hmm, actually many implementations just use these as-is with y pointing down. Let me check...
+
+Actually, the convention matters. In the original SRS, positions are measured in cell units where (0,0) is the top-left of the playfield, x increases right, y increases down (like screen coordinates). The kick offsets are also in this coordinate system.
+
+So kicks are applied as: `newX = x + kick[0]; newY = y + kick[1];` where positive y is downward.
+
+Let me use the standard tables from the Tetris guideline:
+
+For S, T, Z, J, L pieces (tested in order):
+
+```
+0->1 (CW from spawn):
+(+0,+0), (-1,+0), (-1,-1), (+0,+2), (-1,+2)
+
+1->2 (CW from right):
+(+0,+0), (+1,+0), (+1,+1), (+0,-2), (+1,-2)
+
+2->3 (CW from 180):
+(+0,+0), (+1,+0), (+1,-1), (+0,+2), (+1,+2)
+
+3->0 (CW from left):
+(+0,+0), (-1,+0), (-1,+1), (+0,-2), (-1,-2)
+```
+
+For CCW (counter-clockwise), reverse the direction:
+```
+0->3 (CCW from spawn):
+(+0,+0), (+1,+0), (+1,+1), (+0,-2), (+1,-2)
+
+3->2 (CCW from left):
+(+0,+0), (+1,+0), (+1,-1), (+0,+2), (+1,+2)
+
+2->1 (CCW from 180):
+(+0,+0), (-1,+0), (-1,+1), (+0,-2), (-1,-2)
+
+1->0 (CCW from right):
+(+0,+0), (-1,+0), (-1,-1), (+0,+2), (-1,+2)
+```
+
+For I piece:
+
+CW:
+```
+0->1: (+0,+0), (-2,+0), (+1,+0), (-2,+1), (+1,-2)
+1->2: (+0,+0), (-1,+0), (+2,+0), (-1,-2), (+2,+1)
+2->3: (+0,+0), (+2,+0), (-1,+0), (+2,-1), (-1,+2)
+3->0: (+0,+0), (+1,+0), (-2,+0), (+1,+2), (-2,-1)
+```
+
+CCW:
+```
+0->3: (+0,+0), (-1,+0), (+2,+0), (-1,-2), (+2,+1)
+3->2: (+0,+0), (-2,+0), (+1,+0), (-2,+1), (+1,-2)
+2->1: (+0,+0), (+1,+0), (-2,+0), (+1,+2), (-2,-1)
+1->0: (+0,+0), (+2,+0), (-1,+0), (+2,-1), (-1,+2)
+```
+
+OK, this is getting complex. Let me simplify by defining the kick tables more clearly.
+
+Actually, let me just use a well-known implementation approach. I'll define the wall kicks as:
+
+```javascript
+const WALL_KICKS = {
+  // JLSTZ kicks
+  'JLSTZ': [
+    // 0->R (CW)
+    [[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
+    // R->2 (CW)
+    [[0,0],[1,0],[1,1],[0,-2],[1,-2]],
+    // 2->L (CW)
+    [[0,0],[1,0],[1,-1],[0,2],[1,2]],
+    // L->0 (CW)
+    [[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
+    // 0->L (CCW)
+    [[0,0],[1,0],[1,1],[0,-2],[1,-2]],
+    // L->2 (CCW)
+    [[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
+    // 2->R (CCW)
+    [[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
+    // R->0 (CCW)
+    [[0,0],[1,0],[1,-1],[0,2],[1,2]],
+  ],
+  // I piece kicks
+  'I': [
+    // 0->R (CW)
+    [[0,0],[-2,0],[1,0],[-2,-1],[1,2]],
+    // R->2 (CW)
+    [[0,0],[-1,0],[2,0],[-1,2],[2,-1]],
+    // 2->L (CW)
+    [[0,0],[2,0],[-1,0],[2,1],[-1,-2]],
+    // L->0 (CW)
+    [[0,0],[1,0],[-2,0],[1,-2],[-2,1]],
+    // 0->L (CCW)
+    [[0,0],[-1,0],[2,0],[-1,2],[2,-1]],
+    // L->2 (CCW)
+    [[0,0],[-2,0],[1,0],[-2,-1],[1,2]],
+    // 2->R (CCW)
+    [[0,0],[1,0],[-2,0],[1,-2],[-2,1]],
+    // R->0 (CCW)
+    [[0,0],[2,0],[-1,0],[2,1],[-1,-2]],
+  ],
+};
+```
+
+Wait, I'm overcomplicating this. The y direction convention in SRS is... let me think again.
+
+In the original Tetris Company documentation for SRS:
+- The grid has origin at bottom-left
+- x increases to the right, y increases UPWARD
+
+But in screen rendering, y increases DOWNWARD.
+
+So if a kick says (0, -1), it means move 1 cell DOWN in SRS terms, which in screen coordinates means... well, it depends on how we interpret it.
+
+Most JS implementations I've seen use screen coordinates (y down) and negate the y from the SRS spec, OR they use y-up and convert when rendering.
+
+Let me just use a common convention. I'll use y increasing downward (screen coordinates) and adjust the kick tables accordingly.
+
+Actually, you know what, let me just use the tables as they are commonly published for screen coordinates (y down). Most modern implementations use this.
+
+Let me look at this from a different angle. Let me use the tables as defined in the Tetris Wiki (which uses y-up), and when applying to screen coordinates, I'll negate y.
+
+Tetris Wiki SRS Wall Kicks (y-up):
+
+JLSTZ:
+```
+0->R: (0,0), (-1,0), (-1,+1), (0,-2), (-1,-2)
+R->2: (0,0), (+1,0), (+1,-1), (0,+2), (+1,+2)
+2->L: (0,0), (+1,0), (+1,+1), (0,-2), (+1,-2)
+L->0: (0,0), (-1,0), (-1,-1), (0,+2), (-1,+2)
+```
+
+CCW (0->L): reverse of L->0 applied CW from L to 0, but reversed:
+```
+0->L: (0,0), (+1,0), (+1,-1), (0,+2), (+1,+2)
+L->2: (0,0), (-1,0), (-1,+1), (0,-2), (-1,-2)
+2->R: (0,0), (-1,0), (-1,-1), (0,+2), (-1,+2)
+R->0: (0,0), (+1,0), (+1,+1), (0,-2), (+1,-2)
+```
+
+I:
+```
+0->R: (0,0), (-2,0), (+1,0), (-2,-1), (+1,+2)
+R->2: (0,0), (-1,0), (+2,0), (-1,+2), (+2,-1)
+2->L: (0,0), (+2,0), (-1,0), (+2,+1), (-1,-2)
+L->0: (0,0), (+1,0), (-2,0), (+1,-2), (-2,+1)
+```
+
+CCW:
+```
+0->L: (0,0), (-1,0), (+2,0), (-1,+2), (+2,-1)
+L->2: (0,0), (-2,0), (+1,0), (-2,-1), (+1,+2)
+2->R: (0,0), (+1,0), (-2,0), (+1,-2), (-2,+1)
+R->0: (0,0), (+2,0), (-1,0), (+2,+1), (-1,-2)
+```
+
+Now, to convert to screen coordinates (y down), I negate all y values:
+
+JLSTZ (screen coords, y down):
+```
+CW:
+0->R: (0,0), (-1,0), (-1,-1), (0,+2), (-1,+2)
+R->2: (0,0), (+1,0), (+1,+1), (0,-2), (+1,-2)
+2->L: (0,0), (+1,0), (+1,-1), (0,+2), (+1,+2)
+L->0: (0,0), (-1,0), (-1,+1), (0,-2), (-1,-2)
+
+CCW:
+0->L: (0,0), (+1,0), (+1,+1), (0,-2), (+1,-2)
+L->2: (0,0), (-1,0), (-1,-1), (0,+2), (-1,+2)
+2->R: (0,0), (-1,0), (-1,+1), (0,-2), (-1,-2)
+R->0: (0,0), (+1,0), (+1,-1), (0,+2), (+1,+2)
+```
+
+I (screen coords, y down):
+```
+CW:
+0->R: (0,0), (-2,0), (+1,0), (-2,+1), (+1,-2)
+R->2: (0,0), (-1,0), (+2,0), (-1,-2), (+2,+1)
+2->L: (0,0), (+2,0), (-1,0), (+2,-1), (-1,+2)
+L->0: (0,0), (+1,0), (-2,0), (+1,+2), (-2,-1)
+
+CCW:
+0->L: (0,0), (-1,0), (+2,0), (-1,-2), (+2,+1)
+L->2: (0,0), (-2,0), (+1,0), (-2,+1), (+1,-2)
+2->R: (0,0), (+1,0), (-2,0), (+1,+2), (-2,-1)
+R->0: (0,0), (+2,0), (-1,0), (+2,-1), (-1,+2)
+```
+
+OK this is getting really tedious. Let me just hardcode it and test. I'll use screen coordinates (y down) directly.
+
+Actually, let me simplify the approach. I'll define rotation states as pre-rotated matrices, and use a simpler kick table approach.
+
+For the rotation states, instead of computing rotations, I'll just define them:
+
+Piece I:
+- State 0: [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]]
+- State R: [[0,0,1,0],[0,0,1,0],[0,0,1,0],[0,0,1,0]]
+- State 2: [[0,0,0,0],[0,0,0,0],[1,1,1,1],[0,0,0,0]]
+- State L: [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]
+
+Piece J:
+- State 0: [[1,0,0],[1,1,1],[0,0,0]]
+- State R: [[0,1,1],[0,1,0],[0,1,0]]
+- State 2: [[0,0,0],[1,1,1],[0,0,1]]
+- State L: [[0,1,0],[0,1,0],[1,1,0]]
+
+Piece L:
+- State 0: [[0,0,1],[1,1,1],[0,0,0]]
+- State R: [[0,1,0],[0,1,0],[0,1,1]]
+- State 2: [[0,0,0],[1,1,1],[1,0,0]]
+- State L: [[1,1,0],[0,1,0],[0,1,0]]
+
+Piece O:
+- All states: [[1,1],[1,1]]
+
+Piece S:
+- State 0: [[0,1,1],[1,1,0],[0,0,0]]
+- State R: [[0,1,0],[0,1,1],[0,0,1]]
+- State 2: [[0,0,0],[0,1,1],[1,1,0]]
+- State L: [[1,0,0],[1,1,0],[0,1,0]]
+
+Piece T:
+- State 0: [[0,1,0],[1,1,1],[0,0,0]]
+- State R: [[0,1,0],[0,1,1],[0,1,0]]
+- State 2: [[0,0,0],[1,1,1],[0,1,0]]
+- State L: [[0,1,0],[1,1,0],[0,1,0]]
+
+Piece Z:
+- State 0: [[1,1,0],[0,1,1],[0,0,0]]
+- State R: [[0,0,1],[0,1,1],[0,1,0]]
+- State 2: [[0,0,0],[1,1,0],[0,1,1]]
+- State L: [[0,1,0],[1,1,0],[1,0,0]]
+
+Wait, actually this is getting too complex for pre-defined states. Let me just compute rotations by rotating the matrix.
+
+The rotation function for CW: rotate 90° clockwise
+For a matrix `m` of size `n x n`:
+```
+new[i][j] = m[n-1-j][i]
+```
+
+Actually wait, that's for the whole thing. Let me think...
+
+For a 2D array `grid[row][col]` where row is y (down) and col is x (right):
+Rotate 90° CW: `new[i][j] = grid[n-1-j][i]` where n is size.
+
+Hmm, let me verify. If we have:
+```
+0 1 2
+3 4 5
+6 7 8
+```
+After 90° CW:
+```
+6 3 0
+7 4 1
+8 5 2
+```
+
+So `new[0][0] = 6 = grid[2][0] = grid[n-1-0][0]`... 
+Let me check: `new[i][j] = grid[n-1-j][i]`:
+- `new[0][0] = grid[2][0] = 6` ✓
+- `new[0][1] = grid[1][0] = 3` ✓
+- `new[0][2] = grid[0][0] = 0` ✓
+- `new[1][0] = grid[2][1] = 7` ✓
+
+Yes, that works for CW rotation.
+
+OK, let me just build the game now. I'll keep it relatively straightforward.
+
+Let me think about the overall structure:
+
+```javascript
+// Game state
+const COLS = 10;
+const ROWS = 20;
+const BLOCK_SIZE = 30;
+let board = []; // 2D array of {color} or null
+let currentPiece = {type, x, y, rotation, matrix};
+let holdPiece = null;
+let nextQueue = [];
+let score = 0;
+let level = 1;
+let lines = 0;
+let combo = -1;
+let time = 0;
+let isGameOver = false;
+let isPaused = false;
+
+// Game loop
+let dropInterval = 1000;
+let lastDrop = 0;
+```
+
+Let me now write the complete code. I'll make it a single HTML file.
+
+For the visual design (PS4 style):
+- Dark background with subtle gradient
+- Neon glow on the playfield border
+- Slick HUD elements with glass-morphism effects
+- Animated score popups
+- Particle effects for line clears
+- Smooth animations throughout
+
+Let me code this up properly now. This is going to be a large file.
+
+I'll structure it as:
+1. HTML structure
+2. CSS styling (PS4 theme)
+3. JavaScript game engine
+
+Let me start writing:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>TETRIS - PS4 Style</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0a0a1a;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+}
+/* ... extensive CSS ... */
+</style>
+</head>
+<body>
+<!-- Game layout -->
+<script>
+// Game code
+</script>
+</body>
+</html>
+```
+
+Let me write this comprehensively. I'll use canvas for the game rendering and HTML/CSS for the UI elements.
+
+Actually, for a cleaner approach, let me use canvas for everything - the playfield, hold, next pieces, etc. And HTML overlay for score, stats, menus.
+
+Hmm, actually let me use a hybrid approach:
+- Main canvas for playfield
+- Smaller canvases or HTML elements for hold/next
+- HTML overlay for score/stats/menus
+- Separate canvas or same canvas for particles
+
+Actually, the cleanest approach for a stunning look: Use a single large canvas for everything and render all UI elements on it. This gives more control over visual effects.
+
+But HTML/CSS gives better text rendering and easier layout. Let me use:
+- Canvas for game elements (playfield, pieces, particles, effects)
+- HTML/CSS for surrounding UI (score panel, menus, stats)
+
+Let me design the layout:
+```
++------------------------------------------+
+|  [HOLD]  |     GAMEPLAY      | [NEXT]    |
+|          |     (Canvas)      | [NEXT1]   |
+|          |                   | [NEXT2]   |
+|          |                   | [NEXT3]   |
+|          |                   |           |
+|  SCORE   |                   |  LEVEL    |
+|  LINES   |                   |  COMBO    |
+|  TIME    |                   |  PING     |
++------------------------------------------+
+```
+
+Or more PS4-like:
+```
++--------------------------------------------------+
+|  TETRIS                                           |
+|                                                   |
+|  [HOLD] |  1 2 3 4 5 6 7 8 9 10 |  NEXT         |
+|         |  ...GAME FIELD...     |  [ ]           |
+|         |  ...20 rows...        |  [ ]           |
+|         |                       |  [ ]           |
+|  SCORE: 0                       |  [ ]           |
+|  LEVEL: 1    LINES: 0           |               |
+|  COMBO: 0    TIME: 0:00         |               |
++--------------------------------------------------+
+```
+
+OK let me just start coding. I'll make the playfield canvas, and use absolutely positioned HTML elements for the rest.
+
+Let me write the complete game now. I'll be thorough.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>TETRIS</title>
+<style>
+/* Reset and base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+
+body {
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a2a 100%);
+  overflow: hidden;
+  font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+  color: #fff;
+  user-select: none;
+  -webkit-user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Background effects */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(0, 100, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(255, 0, 100, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 0%, rgba(0, 255, 200, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.game-container {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  z-index: 1;
+}
+
+/* Side panels */
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 150px;
+}
+
+.panel-box {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.panel-box h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.panel-box .value {
+  font-family: 'Orbitron', monospace;
+  font-size: 24px;
+  font-weight: 900;
+  background: linear-gradient(180deg, #fff, #8af);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Hold box */
+.hold-box canvas, .next-box canvas {
+  display: block;
+  margin: 0 auto;
+  image-rendering: pixelated;
+}
+
+/* Next pieces */
+.next-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Playfield container */
+.playfield-container {
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 
+    0 0 30px rgba(0, 150, 255, 0.1),
+    0 0 60px rgba(0, 150, 255, 0.05),
+    inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.playfield-container canvas {
+  display: block;
+}
+
+/* Particle canvas overlay */
+.particle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Stats panel */
+.stats-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-family: 'Orbitron', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Combo display */
+.combo-display {
+  font-family: 'Orbitron', monospace;
+  font-size: 28px;
+  font-weight: 900;
+  color: #ff6600;
+  text-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.combo-display.active {
+  opacity: 1;
+}
+
+/* Overlays */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  backdrop-filter: blur(5px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.overlay h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  background: linear-gradient(180deg, #fff, #0af);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+.overlay .btn {
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  letter-spacing: 4px;
+  padding: 12px 40px;
+  background: linear-gradient(180deg, rgba(0, 150, 255, 0.3), rgba(0, 100, 255, 0.1));
+  border: 1px solid rgba(0, 150, 255, 0.5);
+  color: #fff;
+  cursor: pointer;
+  border-radius: 6px;
+  text-transform: uppercase;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.overlay .btn:hover {
+  background: linear-gradient(180deg, rgba(0, 200, 255, 0.5), rgba(0, 150, 255, 0.3));
+  box-shadow: 0 0 20px rgba(0, 150, 255, 0.3);
+  transform: scale(1.05);
+}
+
+/* Score popup animation */
+.score-popup {
+  position: absolute;
+  font-family: 'Orbitron', monospace;
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 20px currentColor;
+  pointer-events: none;
+  animation: scoreFloat 1.5s ease-out forwards;
+  z-index: 60;
+}
+
+@keyframes scoreFloat {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-80px) scale(1.5); }
+}
+
+/* Line clear flash */
+.line-flash {
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: white;
+  box-shadow: 0 0 20px white, 0 0 40px white;
+  animation: flashFade 0.5s ease-out forwards;
+  pointer-events: none;
+  z-index: 40;
+}
+
+@keyframes flashFade {
+  0% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1.5); }
+}
+
+/* Level up animation */
+.level-up {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Orbitron', monospace;
+  font-size: 32px;
+  font-weight: 900;
+  color: #0f0;
+  text-shadow: 0 0 30px #0f0;
+  animation: levelUp 2s ease-out forwards;
+  z-index: 60;
+  pointer-events: none;
+}
+
+@keyframes levelUp {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  20% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+  40% { transform: translate(-50%, -50%) scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Touch controls */
+.touch-controls {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  gap: 8px;
+}
+
+@media (max-width: 768px) or (pointer: coarse) {
+  .touch-controls { display: flex; }
+  
+  .game-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .side-panel {
+    flex-direction: row;
+    width: auto;
+    gap: 8px;
+  }
+}
+
+.touch-btn {
+  width: 55px;
+  height: 55px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all 0.1s;
+}
+
+.touch-btn:active {
+  background: rgba(0, 150, 255, 0.3);
+  transform: scale(0.9);
+}
+
+/* T-spin indicator */
+.tspin-badge {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  padding: 4px 16px;
+  background: linear-gradient(180deg, rgba(255, 200, 0, 0.3), rgba(255, 150, 0, 0.1));
+  border: 1px solid rgba(255, 200, 0, 0.5);
+  border-radius: 4px;
+  color: #ffc800;
+  text-shadow: 0 0 10px rgba(255, 200, 0, 0.5);
+  z-index: 60;
+  pointer-events: none;
+  animation: tspinShow 2s ease-out forwards;
+}
+
+@keyframes tspinShow {
+  0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+  15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+}
+
+/* Score multiplier effects */
+.score-mult {
+  font-weight: 900;
+}
+.score-mult.double { color: #0af; }
+.score-mult.triple { color: #a0f; }
+.score-mult.tetris { color: #0f8; text-shadow: 0 0 20px #0f8; }
+.score-mult.tspin { color: #ff0; text-shadow: 0 0 20px #ff0; }
+
+/* Hold indicator */
+.hold-box.holding {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Pause button */
+.pause-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 35px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 45;
+  transition: all 0.3s;
+}
+
+.pause-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.pause-btn::after {
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: #fff;
+  box-shadow: 6px 0 0 #fff;
+}
+
+/* Game over specific */
+.game-over-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.game-over-stats .stat-item {
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.game-over-stats .stat-item .label {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.game-over-stats .stat-item .val {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Best score */
+.best-score {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  color: rgba(255, 215, 0, 0.6);
+  letter-spacing: 2px;
+  margin-top: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-height: 700px) {
+  .game-container { transform: scale(0.85); }
+}
+</style>
+</head>
+<body>
+
+<div class="particle-canvas" id="particleCanvas"></div>
+
+<div class="game-container">
+  <!-- Left panel -->
+  <div class="side-panel">
+    <div class="panel-box hold-box" id="holdBox">
+      <h3>Hold</h3>
+      <canvas id="holdCanvas" width="80" height="80"></canvas>
+    </div>
+    <div class="panel-box stats-panel" id="leftStats">
+      <div class="stat-row">
+        <span class="stat-label">Score</span>
+        <span class="stat-value" id="scoreDisplay">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Lines</span>
+        <span class="stat-value" id="linesDisplay">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Level</span>
+        <span class="stat-value" id="levelDisplay">1</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Time</span>
+        <span class="stat-value" id="timeDisplay">0:00</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Best</span>
+        <span class="stat-value" id="bestDisplay">0</span>
+      </div>
+    </div>
+    <div class="combo-display" id="comboDisplay">COMBO x0</div>
+  </div>
+
+  <!-- Playfield -->
+  <div class="playfield-container" id="playfieldContainer">
+    <canvas id="gameCanvas"></canvas>
+    
+    <div class="overlay active" id="startOverlay">
+      <h1>TETRIS</h1>
+      <button class="btn" id="startBtn">START GAME</button>
+      <div class="best-score" id="startBestScore">BEST: 0</div>
+    </div>
+    
+    <div class="overlay" id="pauseOverlay">
+      <h1>PAUSED</h1>
+      <button class="btn" id="resumeBtn">RESUME</button>
+      <button class="btn" id="restartBtn">RESTART</button>
+    </div>
+    
+    <div class="overlay" id="gameOverOverlay">
+      <h1>GAME OVER</h1>
+      <div class="game-over-stats">
+        <div class="stat-item">
+          <span class="label">SCORE </span>
+          <span class="val" id="finalScore">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="label">LEVEL </span>
+          <span class="val" id="finalLevel">1</span>
+        </div>
+        <div class="stat-item">
+          <span class="label">LINES </span>
+          <span class="val" id="finalLines">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="label">TIME </span>
+          <span class="val" id="finalTime">0:00</span>
+        </div>
+      </div>
+      <button class="btn" id="restartBtn2">PLAY AGAIN</button>
+      <div class="best-score" id="gameOverBestScore">BEST: 0</div>
+    </div>
+
+    <button class="pause-btn" id="pauseBtn" style="display:none"></button>
+  </div>
+
+  <!-- Right panel - Next pieces -->
+  <div class="side-panel">
+    <div class="panel-box next-box">
+      <h3>Next</h3>
+      <canvas id="nextCanvas0" width="80" height="60"></canvas>
+      <canvas id="nextCanvas1" width="80" height="60"></canvas>
+      <canvas id="nextCanvas2" width="80" height="60"></canvas>
+    </div>
+    <div class="panel-box" id="rightInfo">
+      <div class="stat-row">
+        <span class="stat-label">Combo</span>
+        <span class="stat-value" id="comboVal">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">B2B</span>
+        <span class="stat-value" id="b2bVal">-</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Touch Controls -->
+<div class="touch-controls" id="touchControls">
+  <div class="touch-btn" id="btnLeft">◀</div>
+  <div class="touch-btn" id="btnRight">▶</div>
+  <div class="touch-btn" id="btnRotateCW">↻</div>
+  <div class="touch-btn" id="btnRotateCCW">↺</div>
+  <div class="touch-btn" id="btnDown">▼</div>
+  <div class="touch-btn" id="btnHardDrop">⤓</div>
+  <div class="touch-btn" id="btnHold">H</div>
+</div>
+
+<script>
+// ==========================================
+// TETRIS GAME ENGINE
+// ==========================================
+
+const COLS = 10;
+const ROWS = 20;
+const BLOCK_SIZE = 30;
+const HIDDEN_ROWS = 4; // Rows above visible area for spawning
+
+// ... rest of game code
+</script>
+
+</body>
+</html>
+```
+
+Hmm, this is getting quite complex. Let me write the full JavaScript engine now.
+
+Let me plan the JS code structure:
+
+1. Constants and piece definitions
+2. Audio system (Web Audio API)
+3. Particle system
+4. Game state management
+5. SRS rotation system
+6. Game logic (move, rotate, drop, hold, clear)
+7. Rendering
+8. Input handling (keyboard + touch)
+9. Game loop
+10. UI updates
+11. Initialize
+
+Let me write this all out now. I need to be careful to make it work correctly.
+
+For the audio system, I'll create simple synthesized sounds:
+
+```javascript
+class AudioSystem {
+  constructor() {
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.musicGain = this.ctx.createGain();
+    this.sfxGain = this.ctx.createGain();
+    this.musicGain.gain.value = 0.3;
+    this.sfxGain.gain.value = 0.5;
+    this.musicGain.connect(this.ctx.destination);
+    this.sfxGain.connect(this.ctx.destination);
+    this.musicPlaying = false;
+  }
+  
+  playMove() { /* short blip */ }
+  playRotate() { /* whoosh */ }
+  playDrop() { /* thud */ }
+  playClear(numLines) { /* ascending tone based on lines */ }
+  playLevelUp() { /* fanfare */ }
+  playHold() { /* click */ }
+  startMusic() { /* generate music */ }
+  stopMusic() { /* stop music */ }
+}
+```
+
+For background music, I'll create a simple looping melody using oscillators.
+
+For the particle system:
+
+```javascript
+class Particle {
+  constructor(x, y, color) {
+    this.x = x;
+    this.y = y;
+    this.vx = (Math.random() - 0.5) * 10;
+    this.vy = (Math.random() - 0.5) * 10 - 5;
+    this.color = color;
+    this.life = 1;
+    this.decay = 0.02 + Math.random() * 0.03;
+    this.size = 3 + Math.random() * 5;
+  }
+  
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.vy += 0.2; // gravity
+    this.life -= this.decay;
+  }
+  
+  draw(ctx) {
+    ctx.globalAlpha = this.life;
+    ctx.fillStyle = this.color;
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur = 10;
+    ctx.fillRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+  }
+}
+```
+
+OK let me now write the complete, working code. I'll be very thorough.
+
+For the piece definitions, I'll use a standard approach:
+
+```javascript
+const PIECES = {
+  I: {
+    color: '#00f5ff',
+    glowColor: '#00f5ff',
+    matrix: [
+      [0, 0, 0, 0],
+      [1, 1, 1, 1],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0]
+    ]
+  },
+  O: {
+    color: '#ffd700',
+    glowColor: '#ffd700',
+    matrix: [
+      [1, 1],
+      [1, 1]
+    ]
+  },
+  T: {
+    color: '#b829f4',
+    glowColor: '#d060ff',
+    matrix: [
+      [0, 1, 0],
+      [1, 1, 1],
+      [0, 0, 0]
+    ]
+  },
+  S: {
+    color: '#00e640',
+    glowColor: '#40ff80',
+    matrix: [
+      [0, 1, 1],
+      [1, 1, 0],
+      [0, 0, 0]
+    ]
+  },
+  Z: {
+    color: '#ff3333',
+    glowColor: '#ff6666',
+    matrix: [
+      [1, 1, 0],
+      [0, 1, 1],
+      [0, 0, 0]
+    ]
+  },
+  J: {
+    color: '#2955ff',
+    glowColor: '#5580ff',
+    matrix: [
+      [1, 0, 0],
+      [1, 1, 1],
+      [0, 0, 0]
+    ]
+  },
+  L: {
+    color: '#ff9100',
+    glowColor: '#ffb040',
+    matrix: [
+      [0, 0, 1],
+      [1, 1, 1],
+      [0, 0, 0]
+    ]
+  }
+};
+
+const PIECE_TYPES = ['I', 'O', 'T', 'S', 'Z', 'J', 'L'];
+```
+
+For the SRS rotation, I need to rotate matrices. Let me define the rotation function:
+
+```javascript
+function rotateMatrix(matrix, direction) {
+  const n = matrix.length;
+  const result = [];
+  for (let i = 0; i < n; i++) {
+    result[i] = [];
+    for (let j = 0; j < n; j++) {
+      if (direction === 'CW') {
+        result[i][j] = matrix[n - 1 - j][i];
+      } else {
+        result[i][j] = matrix[j][n - 1 - i];
+      }
+    }
+  }
+  return result;
+}
+```
+
+Wait, for CCW rotation: `new[i][j] = matrix[j][n-1-i]`?
+
+Let me verify. For matrix:
+```
+0 1 2
+3 4 5
+6 7 8
+```
+
+CW: `new[i][j] = old[n-1-j][i]`:
+```
+6 3 0
+7 4 1
+8 5 2
+```
+✓ (that's 90° CW)
+
+CCW: `new[i][j] = old[j][n-1-i]`:
+```
+2 5 8
+1 4 7
+0 3 6
+```
+✓ (that's 90° CCW)
+
+Great.
+
+For SRS wall kicks, let me use the standard data in screen coordinates (y down):
+
+Actually, you know what, let me use the approach from well-known Tetris implementations. The SRS kick tables in screen coordinates (y down):
+
+I'll define them as:
+
+```javascript
+const KICKS_JLSTZ = {
+  // CW rotations: fromState -> toState
+  '0>1': [[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
+  '1>2': [[0,0],[1,0],[1,1],[0,-2],[1,-2]],
+  '2>3': [[0,0],[1,0],[1,-1],[0,2],[1,2]],
+  '3>0': [[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
+  // CCW rotations
+  '0>3': [[0,0],[1,0],[1,1],[0,-2],[1,-2]],
+  '3>2': [[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
+  '2>1': [[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
+  '1>0': [[0,0],[1,0],[1,-1],[0,2],[1,2]],
+};
+
+const KICKS_I = {
+  '0>1': [[0,0],[-2,0],[1,0],[-2,-1],[1,2]],
+  '1>2': [[0,0],[-1,0],[2,0],[-1,2],[2,-1]],
+  '2>3': [[0,0],[2,0],[-1,0],[2,1],[-1,-2]],
+  '3>0': [[0,0],[1,0],[-2,0],[1,-2],[-2,1]],
+  '0>3': [[0,0],[-1,0],[2,0],[-1,2],[2,-1]],
+  '3>2': [[0,0],[-2,0],[1,0],[-2,-1],[1,2]],
+  '2>1': [[0,0],[1,0],[-2,0],[1,-2],[-2,1]],
+  '1>0': [[0,0],[2,0],[-1,0],[2,1],[-1,-2]],
+};
+```
+
+Hmm wait, I keep going back and forth on the y-direction convention. Let me just pick one and test it.
+
+Let me use the convention where:
+- y increases downward (screen coordinates)
+- kick offsets are in screen coordinates
+
+I'll use the SRS kick data as published in the Tetris Wiki, but with y negated (since the wiki uses y-up).
+
+Actually, let me look at this from a practical perspective. A very common implementation approach is to just use these values directly with y-down:
+
+For JLSTZ, CW:
+```
+0->1: (0,0), (-1,0), (-1,+1), (0,-2), (-1,-2)
+1->2: (0,0), (+1,0), (+1,-1), (0,+2), (+1,+2)
+2->3: (0,0), (+1,0), (+1,+1), (0,-2), (+1,-2)
+3->0: (0,0), (-1,0), (-1,-1), (0,+2), (-1,+2)
+```
+
+Wait, I've seen various implementations use different signs. Let me just go with what looks correct intuitively and matches common implementations.
+
+You know what, I'm going to look at this from first principles.
+
+The SRS wall kick data from the Tetris Company (y-up convention):
+
+From state 0 to state R (clockwise):
+Test offsets in order: (0,0), (-1,0), (-1,+1), (0,-2), (-1,-2)
+
+Converting to y-down: negate y:
+(0,0), (-1,0), (-1,-1), (0,+2), (-1,+2)
+
+From state R to state 2 (clockwise):
+Test offsets: (0,0), (+1,0), (+1,-1), (0,+2), (+1,+2)
+
+Converting to y-down: negate y:
+(0,0), (+1,0), (+1,+1), (0,-2), (+1,-2)
+
+From state 2 to state L (clockwise):
+Test offsets: (0,0), (+1,0), (+1,+1), (0,-2), (+1,-2)
+
+Converting to y-down: negate y:
+(0,0), (+1,0), (+1,-1), (0,+2), (+1,+2)
+
+From state L to state 0 (clockwise):
+Test offsets: (0,0), (-1,0), (-1,-1), (0,+2), (-1,+2)
+
+Converting to y-down: negate y:
+(0,0), (-1,0), (-1,+1), (0,-2), (-1,-2)
+
+OK so in y-down screen coordinates, CW rotations for JLSTZ:
+
+```javascript
+'0>1': [[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
+'1>2': [[0,0],[1,0],[1,1],[0,-2],[1,-2]],
+'2>3': [[0,0],[1,0],[1,-1],[0,2],[1,2]],
+'3>0': [[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
+```
+
+For CCW, reverse the direction:
+'0>3' is the reverse of '3>0' CW... Actually no.
+
+For CCW rotation from state 0 to state L (state 3):
+The kick data for CCW from 0 to 3 should mirror the CW data from 3 to 0.
+
+Hmm, actually the SRS spec provides specific data for CCW too. Let me just define both directions.
+
+CW: 0->R, R->2, 2->L, L->0
+CCW: 0->L, L->2, 2->R, R->0
+
+For CCW JLSTZ (from y-up wiki data):
+
+0->L (CCW): (0,0), (+1,0), (+1,-1), (0,+2), (+1,+2)
+L->2 (CCW): (0,0), (-1,0), (-1,+1), (0,-2), (-1,-2)
+2->R (CCW): (0,0), (-1,0), (-1,-1), (0,+2), (-1,+2)
+R->0 (CCW): (0,0), (+1,0), (+1,+1), (0,-2), (+1,-2)
+
+Converting to y-down (negate y):
+
+'0>3': [[0,0],[1,0],[1,1],[0,-2],[1,-2]],
+'3>2': [[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
+'2>1': [[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
+'1>0': [[0,0],[1,0],[1,-1],[0,2],[1,2]],
+
+For I piece CW (from y-up wiki):
+
+0->R: (0,0), (-2,0), (+1,0), (-2,-1), (+1,+2)
+R->2: (0,0), (-1,0), (+2,0), (-1,+2), (+2,-1)
+2->L: (0,0), (+2,0), (-1,0), (+2,+1), (-1,-2)
+L->0: (0,0), (+1,0), (-2,0), (+1,-2), (-2,+1)
+
+Converting to y-down (negate y):
+
+'0>1': [[0,0],[-2,0],[1,0],[-2,1],[1,-2]],
+'1>2': [[0,0],[-1,0],[2,0],[-1,-2],[2,1]],
+'2>3': [[0,0],[2,0],[-1,0],[2,-1],[-1,2]],
+'3>0': [[0,0],[1,0],[-2,0],[1,2],[-2,-1]],
+
+I piece CCW (from y-up wiki):
+
+0->L: (0,0), (-1,0), (+2,0), (-1,+2), (+2,-1)
+L->2: (0,0), (-2,0), (+1,0), (-2,-1), (+1,+2)
+2->R: (0,0), (+1,0), (-2,0), (+1,-2), (-2,+1)
+R->0: (0,0), (+2,0), (-1,0), (+2,+1), (-1,-2)
+
+Converting to y-down (negate y):
+
+'0>3': [[0,0],[-1,0],[2,0],[-1,-2],[2,1]],
+'3>2': [[0,0],[-2,0],[1,0],[-2,1],[1,-2]],
+'2>1': [[0,0],[1,0],[-2,0],[1,2],[-2,-1]],
+'1>0': [[0,0],[2,0],[-1,0],[2,-1],[-1,2]],
+
+OK, I have all the kick tables now. Let me code them up.
+
+Now let me think about the piece representation:
+
+```javascript
+class Piece {
+  constructor(type) {
+    this.type = type;
+    this.matrix = PIECES[type].matrix.map(row => [...row]);
+    this.x = Math.floor(COLS / 2) - Math.floor(this.matrix[0].length / 2);
+    this.y = type === 'I' ? -2 : -1; // Spawn above the visible area... hmm
+    this.rotation = 0; // 0, 1, 2, 3
+    this.holdUsed = false;
+  }
+}
+```
+
+Actually, for spawn position: the piece should spawn in the center top of the field. In most Tetris implementations, the spawn position is:
+- x = 3 (for 3-wide pieces), x = 3 for I (4-wide, but centered)
+- y = 0 (top of visible field) or y = -1 (slightly above)
+
+Actually, in modern Tetris, pieces spawn with their bottom row at row 1 (0-indexed from top). For pieces with a 4th row (like I in spawn), the 4th row is above the visible area.
+
+Let me think about this differently. The I piece matrix is 4x4 with the actual blocks in row 1 (0-indexed). So if I place the piece at y=0, the blocks appear in row 1 of the board.
+
+For other pieces (3x3), the blocks are in row 0 or row 0-1. So placing at y=0 puts them in row 0-1.
+
+In standard Tetris:
+- Spawn x: 3 (for all pieces, centering the piece)
+- Spawn y: 0 for non-I pieces (blocks in rows 0-1), y=0 for I (blocks in row 1)
+
+Actually, let me just pick reasonable values:
+- Spawn x = 3
+- Spawn y = 0
+
+And for the I piece in its 4x4 matrix with blocks in row 1:
+- Piece at y=0 means blocks appear in board row 1. That's fine.
+
+For other pieces with blocks in row 0 of their matrix (like the bottom row of T, S, Z, J, L pieces), the piece at y=0 puts blocks in board rows 0-1. That's also fine.
+
+Wait, let me reconsider. The standard matrices have:
+```
+T spawn:
+0 1 0
+1 1 1
+0 0 0
+```
+Blocks are in rows 0-1. At y=0, they'd be in board rows 0-1. But we want them to be visible from the start. Row 0 is the top of the board, so yes, they'd be visible.
+
+Actually, in standard Tetris, pieces spawn partly above the field. The T piece spawn has its middle row at row 1 (0-indexed). So y=1? No...
+
+OK, I think the simplest approach is:
+- Spawn all pieces at position (3, 0) where (3, 0) is the top-left of the piece's bounding box
+- The board has some hidden rows above (like 2-4 rows above the visible area)
+
+Let me use:
+- Board has 20 visible rows + 4 hidden rows above = 24 total rows internally
+- Pieces spawn at row 4 (which is the top visible row, index 0 visible = row 4 internal)
+- Or... I just use 20 visible rows and spawn pieces at y=-1 or y=0 with the understanding that rows above 0 are "above the field"
+
+Actually, the simplest approach for collision detection: 
+- Board is 20 rows (visible) 
+- Pieces can be at y=-1 or y=-2 (partially above)
+- Collision checks: y < 0 is OK (above field), as long as x is in bounds and y < ROWS
+
+Wait no. If y < 0, we need to check that we don't collide with walls (x bounds) or floor (y >= ROWS), but negative y is fine because it's above the field.
+
+Let me implement it this way:
+- Board is `Array(ROWS).fill().map(() => Array(COLS).fill(null))`
+- A cell at (x, y) is valid if: 0 <= x < COLS and y < ROWS (y can be negative)
+- Collision with board: only check cells where y >= 0
+- Game over: if piece is at y < 0 after spawn and can't move down
+
+Actually, let me just use the standard approach: 
+- Board has some hidden rows. Let's say 4 hidden rows above the 20 visible ones.
+- Internal board: 24 rows, but only rows 4-23 are visible.
+- Pieces spawn at internal y = 2 or 3 (in the hidden area)
+
+Hmm, this is getting complicated. Let me simplify:
+
+- Total rows = 24 (4 hidden + 20 visible)
+- Visible portion starts at row index 4
+- Pieces spawn at y = 2 (in hidden area)
+- Rendering: skip the first 4 rows
+
+Or even simpler:
+- Board rows = 20
+- Pieces spawn at y = 0, but the piece matrices have padding rows above the actual blocks
+- For pieces where the top row of blocks is in row 1 of the matrix (like I piece), spawning at y=0 puts blocks in row 1 - visible
+- For pieces where blocks start at row 0 of the matrix (like T piece), spawning at y=0 puts blocks at row 0 - visible
+- Game over check: if a new piece can't be placed at spawn position, game over
+
+Actually wait, this doesn't work because we need to check if the piece overlaps with existing blocks at spawn position. If a block is at row 0 and the new piece spawns with blocks at row 0, that's a collision = game over. But the piece should be allowed to spawn even if row 0 is partially filled.
+
+OK, I think the cleanest approach is:
+
+1. Have hidden rows above the visible field
+2. Board has ROWS_TOTAL = ROWS + HIDDEN_ROWS rows
+3. Render only rows HIDDEN_ROWS onwards
+4. Pieces spawn at y = 0 (in hidden area)
+5. Game over if spawn position has blocks (in the row the piece would appear in visible area)
+
+Let me go with:
+- ROWS = 20 (visible)
+- HIDDEN_ROWS = 4
+- Total board = 24 rows
+- Render from row 4 to row 23
+- Spawn y = 0
+
+Let me go with this approach.
+
+```javascript
+const COLS = 10;
+const ROWS = 20;
+const HIDDEN = 4;
+const TOTAL_ROWS = ROWS + HIDDEN; // 24
+
+let board = Array.from({length: TOTAL_ROWS}, () => Array(COLS).fill(null));
+
+function spawnPosition(type) {
+  const matrix = PIECES[type].matrix;
+  const x = Math.floor((COLS - matrix[0].length) / 2);
+  const y = 0; // Top of hidden area
+  return {x, y};
+}
+```
+
+For rendering:
+```javascript
+for (let y = HIDDEN; y < TOTAL_ROWS; y++) {
+  for (let x = 0; x < COLS; x++) {
+    if (board[y][x]) {
+      drawBlock(x * BLOCK_SIZE, (y - HIDDEN) * BLOCK_SIZE, board[y][x]);
+    }
+  }
+}
+```
+
+For collision detection with the playing piece:
+```javascript
+function canPlace(matrix, px, py) {
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[0].length; x++) {
+      if (matrix[y][x]) {
+        const bx = px + x;
+        const by = py + y;
+        if (bx < 0 || bx >= COLS || by >= TOTAL_ROWS) return false;
+        if (by >= 0 && board[by][bx]) return false;
+      }
+    }
+  }
+  return true;
+}
+```
+
+OK, now let me write the complete JavaScript. I'll try to be comprehensive but also practical.
+
+Let me also think about the bag system for piece distribution (7-bag randomizer):
+
+```javascript
+function getNewBag() {
+  const bag = [...PIECE_TYPES];
+  // Fisher-Yates shuffle
+  for (let i = bag.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [bag[i], bag[j]] = [bag[j], bag[i]];
+  }
+  return bag;
+}
+```
+
+And the next queue management:
+```javascript
+let bag = [];
+function getNextPiece() {
+  if (bag.length === 0) {
+    bag = getNewBag();
+  }
+  return bag.shift();
+}
+```
+
+For line clearing:
+```javascript
+function clearLines() {
+  let cleared = [];
+  for (let y = TOTAL_ROWS - 1; y >= 0; y--) {
+    if (board[y].every(cell => cell !== null)) {
+      cleared.push(y);
+      // Remove line
+      board.splice(y, 1);
+      board.unshift(Array(COLS).fill(null));
+      y++; // Check same index again (now a different line)
+    }
+  }
+  return cleared.length;
+}
+```
+
+For T-spin detection:
+- The last action was a rotation (not a move or drop)
+- The piece is a T piece
+- 3 or more of the 4 corners of the T's bounding box are occupied (by wall or other blocks)
+
+```javascript
+function checkTSpin() {
+  if (lastAction !== 'rotate' || currentPiece.type !== 'T') return 0;
+  
+  // Get T piece corners (using the 3x3 matrix corners)
+  const cx = currentPiece.x;
+  const cy = currentPiece.y;
+  
+  // The 4 corners of the 3x3 T matrix
+  const corners = [
+    [cx, cy],           // top-left
+    [cx + 2, cy],       // top-right
+    [cx, cy + 2],       // bottom-left
+    [cx + 2, cy + 2]    // bottom-right
+  ];
+  
+  let occupied = 0;
+  for (const [x, y] of corners) {
+    if (x < 0 || x >= COLS || y >= TOTAL_ROWS) occupied++;
+    else if (y >= 0 && board[y][x]) occupied++;
+  }
+  
+  return occupied >= 3 ? 1 : 0;
+}
+```
+
+For scoring:
+```javascript
+const LINE_SCORES = [0, 100, 300, 500, 800]; // 0, 1, 2, 3, 4 lines
+const TSPIN_SCORES = [400, 800, 1200, 1600]; // T-spin no lines, 1, 2, 3 lines
+const COMBO_BONUS = 50;
+
+function calculateScore(linesCleared, tspin, combo, level, b2b) {
+  let base = 0;
+  
+  if (tspin) {
+    base = TSPIN_SCORES[linesCleared] || 400;
+    if (b2b && linesCleared > 0) base = Math.floor(base * 1.5);
+  } else if (linesCleared > 0) {
+    base = LINE_SCORES[linesCleared];
+    if (b2b && linesCleared === 4) base = Math.floor(base * 1.5);
+  }
+  
+  // Combo bonus
+  if (combo > 0 && linesCleared > 0) {
+    base += COMBO_BONUS * combo;
+  }
+  
+  return base * level;
+}
+```
+
+Wait, actually the scoring in Tetris is more nuanced. Let me keep it simpler but still accurate:
+
+```javascript
+function calculateScore(lines, tspin, combo, level, b2b) {
+  let points = 0;
+  
+  if (tspin) {
+    if (lines === 0) points = 400;
+    else if (lines === 1) points = 800;
+    else if (lines === 2) points = 1200;
+    else if (lines === 3) points = 1600;
+    if (b2b && lines > 0) points = Math.floor(points * 1.5);
+  } else {
+    if (lines === 1) points = 100;
+    else if (lines === 2) points = 300;
+    else if (lines === 3) points = 500;
+    else if (lines === 4) points = 800;
+    if (b2b && lines === 4) points = Math.floor(points * 1.5);
+  }
+  
+  // Combo bonus
+  if (combo > 0) {
+    points += 50 * combo;
+  }
+  
+  // Soft drop bonus: 1 point per cell
+  // Hard drop bonus: 2 points per cell
+  
+  return points * level;
+}
+```
+
+For speed, the standard Tetris gravity (frames per cell drop):
+
+In the Tetris guideline, the speed table is:
+```
+Level 1: 1000ms per cell (actually 600ms in some versions)
+Level 2: 793ms
+...
+```
+
+Or using the formula: `dropInterval = Math.max(20, 1000 * Math.pow(0.8, level - 1))` or similar.
+
+Let me use a simple approach:
+```javascript
+function getDropSpeed(level) {
+  // Level 1: 1000ms, decreasing with level
+  return Math.max(50, 1000 - (level - 1) * 80);
+}
+```
+
+Actually, for a more standard feel:
+```javascript
+function getDropSpeed(level) {
+  const speeds = [
+    1000, 793, 618, 473, 355, 262, 190, 135, 94, 64,
+    43, 28, 18, 13, 8, 6, 4, 3, 2, 1
+  ];
+  return speeds[Math.min(level - 1, speeds.length - 1)] || 1000;
+}
+```
+
+OK, let me now write the complete code. I'll focus on making it work correctly and look great.
+
+Let me structure the complete JavaScript:
+
+```javascript
+// ========== CONSTANTS ==========
+const COLS = 10;
+const ROWS = 20;
+const HIDDEN = 4;
+const TOTAL_ROWS = ROWS + HIDDEN;
+const BLOCK_SIZE = 30;
+
+// ========== PIECE DEFINITIONS ==========
+const PIECES = { /* ... */ };
+const PIECE_TYPES = ['I', 'O', 'T', 'S', 'Z', 'J', 'L'];
+
+// ========== SRS KICK TABLES ==========
+const KICKS_JLSTZ_CW = { /* ... */ };
+const KICKS_JLSTZ_CCW = { /* ... */ };
+const KICKS_I_CW = { /* ... */ };
+const KICKS_I_CCW = { /* ... */ };
+
+// ========== AUDIO SYSTEM ==========
+class AudioSystem { /* ... */ }
+
+// ========== PARTICLE SYSTEM ==========
+class Particle { /* ... */ }
+const particles = [];
+
+// ========== GAME STATE ==========
+let board;
+let currentPiece;
+let holdPiece;
+let holdUsed;
+let nextQueue;
+let bag;
+let score, level, lines, combo, b2b;
+let gameState; // 'start', 'playing', 'paused', 'gameover'
+let dropTimer, lastTime;
+let startTime;
+let lastAction; // for T-spin detection
+let bestScore;
+
+// ========== CORE GAME FUNCTIONS ==========
+function initBoard() { /* ... */ }
+function createBag() { /* ... */ }
+function getNextPiece() { /* ... */ }
+function spawnPiece(type) { /* ... */ }
+function canPlace(matrix, px, py) { /* ... */ }
+function movePiece(dx, dy) { /* ... */ }
+function rotatePiece(direction) { /* ... */ }
+function getWallKicks(type, fromState, direction) { /* ... */ }
+function hardDrop() { /* ... */ }
+function softDrop() { /* ... */ }
+function ghostY() { /* ... */ }
+function holdCurrentPiece() { /* ... */ }
+function clearLines() { /* ... */ }
+function checkTSpin() { /* ... */ }
+function calculateScore(...) { /* ... */ }
+function levelUpCheck() { /* ... */ }
+
+// ========== RENDERING ==========
+function render() { /* ... */ }
+function renderPlayfield() { /* ... */ }
+function renderGhost() { /* ... */ }
+function renderCurrentPiece() { /* ... */ }
+function renderHold() { /* ... */ }
+function renderNext() { /* ... */ }
+function drawBlock(ctx, x, y, color, glow) { /* ... */ }
+
+// ========== UI UPDATES ==========
+function updateUI() { /* ... */ }
+function showScorePopup(points, lineName) { /* ... */ }
+function showLineFlash(y) { /* ... */ }
+
+// ========== PARTICLES ==========
+function spawnParticles(x, y, color) { /* ... */ }
+function updateParticles() { /* ... */ }
+function renderParticles() { /* ... */ }
+
+// ========== INPUT ==========
+function setupKeyboard() { /* ... */ }
+function setupTouch() { /* ... */ }
+
+// ========== GAME LOOP ==========
+function gameLoop(timestamp) { /* ... */ }
+function startGame() { /* ... */ }
+function pauseGame() { /* ... */ }
+function gameOver() { /* ... */ }
+
+// ========== INIT ==========
+function init() { /* ... */ }
+```
+
+OK I think I have a solid plan. Let me now write the full code. This will be long but comprehensive.
+
+Let me also think about the visual style more carefully for the PS4 Tetris look:
+
+The PS4 Tetris has:
+- Clean, dark background
+- Blocks with 3D beveled look (lighter top-left, darker bottom-right)
+- Neon glow effects
+- Clean sans-serif typography
+- Glass-morphism panels
+- Smooth animations
+
+For drawing blocks, I'll create a nice beveled effect:
+
+```javascript
+function drawBlock(ctx, x, y, color, size = BLOCK_SIZE, alpha = 1) {
+  const s = size;
+  const gap = 2;
+  const inner = s - gap * 2;
+  
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  
+  // Outer glow
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 8;
+  
+  // Block background with gradient
+  const gradient = ctx.createLinearGradient(x, y, x + s, y + s);
+  gradient.addColorStop(0, lighten(color, 40));
+  gradient.addColorStop(0.3, color);
+  gradient.addColorStop(1, darken(color, 30));
+  
+  ctx.fillStyle = gradient;
+  ctx.fillRect(x + gap, y + gap, inner, inner);
+  
+  // Inner highlight (bevel effect)
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = `rgba(255, 255, 255, 0.3)`;
+  ctx.fillRect(x + gap, y + gap, inner, 3);
+  ctx.fillRect(x + gap, y + gap, 3, inner);
+  
+  // Inner shadow
+  ctx.fillStyle = `rgba(0, 0, 0, 0.3)`;
+  ctx.fillRect(x + gap, y + gap + inner - 3, inner, 3);
+  ctx.fillRect(x + gap + inner - 3, y + gap, 3, inner);
+  
+  // Center shine
+  ctx.fillStyle = `rgba(255, 255, 255, 0.15)`;
+  ctx.fillRect(x + gap + 4, y + gap + 4, inner - 8, inner - 8);
+  
+  ctx.restore();
+}
+```
+
+Actually, for simplicity and performance, let me pre-render block images or use a simpler but still attractive rendering:
+
+```javascript
+function drawBlock(ctx, px, py, color, size = BLOCK_SIZE) {
+  const gap = 1;
+  const s = size;
+  
+  ctx.save();
+  
+  // Main block with gradient
+  const grad = ctx.createLinearGradient(px, py, px + s, py + s);
+  grad.addColorStop(0, lightenColor(color, 50));
+  grad.addColorStop(0.5, color);
+  grad.addColorStop(1, darkenColor(color, 30));
+  
+  ctx.fillStyle = grad;
+  ctx.fillRect(px + gap, py + gap, s - gap*2, s - gap*2);
+  
+  // Top-left bevel
+  ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  ctx.fillRect(px + gap, py + gap, s - gap*2, 2);
+  ctx.fillRect(px + gap, py + gap, 2, s - gap*2);
+  
+  // Bottom-right bevel
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.fillRect(px + gap, py + s - gap - 2, s - gap*2, 2);
+  ctx.fillRect(px + s - gap - 2, py + gap, 2, s - gap*2);
+  
+  // Inner shine
+  ctx.fillStyle = 'rgba(255,255,255,0.1)';
+  ctx.fillRect(px + gap + 3, py + gap + 3, s - gap*2 - 6, s - gap*2 - 6);
+  
+  ctx.restore();
+}
+```
+
+For color helpers:
+```javascript
+function lightenColor(hex, amount) {
+  const r = Math.min(255, parseInt(hex.slice(1, 3), 16) + amount);
+  const g = Math.min(255, parseInt(hex.slice(3, 5), 16) + amount);
+  const b = Math.min(255, parseInt(hex.slice(5, 7), 16) + amount);
+  return `rgb(${r},${g},${b})`;
+}
+
+function darkenColor(hex, amount) {
+  const r = Math.max(0, parseInt(hex.slice(1, 3), 16) - amount);
+  const g = Math.max(0, parseInt(hex.slice(3, 5), 16) - amount);
+  const b = Math.max(0, parseInt(hex.slice(5, 7), 16) - amount);
+  return `rgb(${r},${g},${b})`;
+}
+```
+
+For the ghost piece, I'll draw an outline version:
+```javascript
+function drawGhostBlock(ctx, px, py, color, size = BLOCK_SIZE) {
+  const gap = 2;
+  ctx.save();
+  ctx.globalAlpha = 0.3;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.strokeRect(px + gap, py + gap, size - gap*2, size - gap*2);
+  ctx.fillStyle = color;
+  ctx.globalAlpha = 0.1;
+  ctx.fillRect(px + gap, py + gap, size - gap*2, size - gap*2);
+  ctx.restore();
+}
+```
+
+Now, for the background music, I'll create a simple looping melody using Web Audio API:
+
+```javascript
+startMusic() {
+  if (this.musicPlaying) return;
+  this.musicPlaying = true;
+  
+  const notes = [
+    // A simple Tetris-inspired melody
+    {freq: 659, time: 0, dur: 0.2},  // E5
+    {freq: 494, time: 0.2, dur: 0.2},  // B4
+    {freq: 523, time: 0.4, dur: 0.2},  // C5
+    {freq: 587, time: 0.6, dur: 0.4},  // D5
+    {freq: 523, time: 1.0, dur: 0.2},  // C5
+    {freq: 494, time: 1.2, dur: 0.4},  // B4
+    {freq: 440, time: 1.6, dur: 0.4},  // A4
+    {freq: 440, time: 2.0, dur: 0.2},  // A4
+    {freq: 523, time: 2.2, dur: 0.2},  // C5
+    {freq: 659, time: 2.4, dur: 0.2},  // E5
+    {freq: 587, time: 2.6, dur: 0.4},  // D5
+    {freq: 494, time: 3.0, dur: 0.8},  // B4
+    // ... more notes
+  ];
+  
+  // Schedule notes
+  const startTime = this.ctx.currentTime;
+  notes.forEach(note => {
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.value = note.freq;
+    gain.gain.setValueAtTime(0.1, startTime + note.time);
+    gain.gain.exponentialRampToValueAtTime(0.01, startTime + note.time + note.dur);
+    osc.connect(gain);
+    gain.connect(this.musicGain);
+    osc.start(startTime + note.time);
+    osc.stop(startTime + note.time + note.dur);
+  });
+  
+  // Loop
+  this.musicLoop = setTimeout(() => this.startMusic(), totalDuration * 1000);
+}
+```
+
+Actually, for the Tetris theme, the iconic melody is "Korobeiniki". Let me use a simple version of it.
+
+The Korobeiniki melody (Kern's note names):
+E5 B4 C5 D5 C5 B4 A4 A4 C5 E5 D5 C5 B4 B4 C5 D5 E5 C5 A4 A4
+
+In frequencies:
+E5=659.26, B4=493.88, C5=523.25, D5=587.33, A4=440.00
+
+Let me create the complete melody:
+
+Actually, for the music let me just do a simple bass line + melody approach, keeping it simple since we're generating with Web Audio API.
+
+OK, let me also think about what sound effects I need:
+
+1. Move left/right: Short click/blip
+2. Rotate: Quick whoosh/tick
+3. Soft drop: Short blip
+4. Hard drop: Thud + impact
+5. Line clear: Rising tone, more impressive for Tetris
+6. Level up: Triumphant chord
+7. Hold: Quick click
+8. Game over: Descending tone
+9. T-spin: Special sound
+10. Combo: Rising pitch with each combo
+
+Let me define these:
+
+```javascript
+class AudioSystem {
+  constructor() {
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.masterGain = this.ctx.createGain();
+    this.masterGain.gain.value = 0.5;
+    this.masterGain.connect(this.ctx.destination);
+    this.musicGain = this.ctx.createGain();
+    this.musicGain.gain.value = 0.3;
+    this.musicGain.connect(this.masterGain);
+    this.sfxGain = this.ctx.createGain();
+    this.sfxGain.gain.value = 0.6;
+    this.sfxGain.connect(this.masterGain);
+    this.musicPlaying = false;
+    this.musicTimeout = null;
+  }
+  
+  playTone(freq, duration, type = 'square', volume = 0.3, dest = null) {
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+    gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(dest || this.sfxGain);
+    osc.start();
+    osc.stop(this.ctx.currentTime + duration);
+  }
+  
+  playMove() {
+    this.playTone(200, 0.05, 'square', 0.1);
+  }
+  
+  playRotate() {
+    this.playTone(400, 0.05, 'triangle', 0.15);
+    setTimeout(() => this.playTone(500, 0.05, 'triangle', 0.1), 30);
+  }
+  
+  playSoftDrop() {
+    this.playTone(300, 0.03, 'square', 0.08);
+  }
+  
+  playHardDrop() {
+    this.playTone(100, 0.15, 'square', 0.3);
+    this.playTone(80, 0.2, 'sawtooth', 0.2);
+  }
+  
+  playClear(lines) {
+    const base = 400 + lines * 100;
+    for (let i = 0; i < lines; i++) {
+      setTimeout(() => {
+        this.playTone(base + i * 100, 0.15, 'square', 0.2);
+        this.playTone((base + i * 100) * 1.5, 0.1, 'triangle', 0.1);
+      }, i * 80);
+    }
+  }
+  
+  playTSpin() {
+    this.playTone(800, 0.1, 'sine', 0.3);
+    setTimeout(() => this.playTone(1000, 0.15, 'sine', 0.3), 50);
+    setTimeout(() => this.playTone(1200, 0.2, 'sine', 0.2), 100);
+  }
+  
+  playLevelUp() {
+    const notes = [523, 659, 784, 1047];
+    notes.forEach((f, i) => {
+      setTimeout(() => this.playTone(f, 0.3, 'triangle', 0.2), i * 100);
+    });
+  }
+  
+  playHold() {
+    this.playTone(350, 0.08, 'triangle', 0.15);
+  }
+  
+  playGameOver() {
+    const notes = [440, 392, 349, 294, 262];
+    notes.forEach((f, i) => {
+      setTimeout(() => this.playTone(f, 0.4, 'sawtooth', 0.2), i * 200);
+    });
+  }
+  
+  playCombo(combo) {
+    this.playTone(300 + combo * 50, 0.1, 'square', 0.15);
+  }
+  
+  startMusic() {
+    if (this.musicPlaying) return;
+    this.musicPlaying = true;
+    this.playMusicLoop();
+  }
+  
+  playMusicLoop() {
+    if (!this.musicPlaying) return;
+    
+    // Simple Korobeiniki melody
+    const melody = [
+      [659, 0, 0.3], [494, 0.3, 0.15], [523, 0.45, 0.15],
+      [587, 0.6, 0.45], [523, 1.05, 0.15], [494, 1.2, 0.3],
+      [440, 1.5, 0.45], [440, 1.95, 0.15], [523, 2.1, 0.15],
+      [659, 2.25, 0.15], [587, 2.4, 0.45], [494, 2.85, 0.45],
+      [523, 3.3, 0.15], [494, 3.45, 0.15], [440, 3.6, 0.45],
+      [330, 4.05, 0.45], [370, 4.5, 0.45], [392, 4.95, 0.45],
+      [440, 5.4, 0.75], [330, 6.15, 0.15], [440, 6.3, 0.15],
+      [494, 6.45, 0.6], [440, 7.05, 0.15], [440, 7.2, 0.15],
+      [440, 7.35, 0.45], [392, 7.8, 0.15], [440, 7.95, 0.15],
+      [494, 8.1, 0.6],
+      // Second half
+      [659, 8.7, 0.3], [494, 9.0, 0.15], [523, 9.15, 0.15],
+      [587, 9.3, 0.45], [523, 9.75, 0.15], [494, 9.9, 0.3],
+      [440, 10.2, 0.45], [440, 10.65, 0.15], [523, 10.8, 0.15],
+      [659, 10.95, 0.15], [587, 11.1, 0.45], [494, 11.55, 0.45],
+      [523, 12.0, 0.45], [494, 12.45, 0.45], [440, 12.9, 0.75],
+    ];
+    
+    const startTime = this.ctx.currentTime + 0.1;
+    const totalDuration = 14; // seconds
+    
+    melody.forEach(([freq, offset, dur]) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.value = freq;
+      
+      const t = startTime + offset;
+      gain.gain.setValueAtTime(0.06, t);
+      gain.gain.setValueAtTime(0.06, t + dur * 0.7);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      
+      osc.connect(gain);
+      gain.connect(this.musicGain);
+      osc.start(t);
+      osc.stop(t + dur);
+    });
+    
+    // Add bass line
+    const bassNotes = [
+      [330, 0, 0.45], [330, 0.45, 0.45], [330, 0.9, 0.45],
+      [330, 1.35, 0.45], [330, 1.8, 0.45], [330, 2.25, 0.45],
+      [262, 2.7, 0.45], [262, 3.15, 0.45],
+      [262, 3.6, 0.45], [262, 4.05, 0.45],
+      [220, 4.5, 0.45], [220, 4.95, 0.45],
+      [220, 5.4, 0.45], [220, 5.85, 0.45],
+      [175, 6.3, 0.45], [175, 6.75, 0.45],
+      [175, 7.2, 0.45], [175, 7.65, 0.45],
+      [196, 8.1, 0.45], [196, 8.55, 0.45],
+      // Repeat bass for second half
+      [330, 8.7, 0.45], [330, 9.15, 0.45], [330, 9.6, 0.45],
+      [330, 10.05, 0.45], [330, 10.5, 0.45], [330, 10.95, 0.45],
+      [262, 11.4, 0.45], [262, 11.85, 0.45],
+      [220, 12.3, 0.45], [220, 12.75, 0.45],
+      [196, 13.2, 0.75],
+    ];
+    
+    bassNotes.forEach(([freq, offset, dur]) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      
+      const t = startTime + offset;
+      gain.gain.setValueAtTime(0.1, t);
+      gain.gain.setValueAtTime(0.1, t + dur * 0.7);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      
+      osc.connect(gain);
+      gain.connect(this.musicGain);
+      osc.start(t);
+      osc.stop(t + dur);
+    });
+    
+    // Schedule next loop
+    this.musicTimeout = setTimeout(() => this.playMusicLoop(), totalDuration * 1000);
+  }
+  
+  stopMusic() {
+    this.musicPlaying = false;
+    if (this.musicTimeout) {
+      clearTimeout(this.musicTimeout);
+    }
+  }
+  
+  resumeMusic() {
+    if (!this.musicPlaying) {
+      this.startMusic();
+    }
+  }
+}
+```
+
+Hmm wait, for the music when paused, I should just mute it rather than stop it. Let me handle pause by adjusting the gain:
+
+```javascript
+pauseMusic() {
+  this.musicGain.gain.value = 0;
+}
+
+resumeMusic() {
+  this.musicGain.gain.value = 0.3;
+}
+```
+
+That's simpler.
+
+OK, I think I've planned enough. Let me now write the complete, working code. I'll be thorough and make sure everything works together.
+
+One more thing: the input handling. For keyboard:
+
+- Arrow Left: Move left
+- Arrow Right: Move right
+- Arrow Down: Soft drop
+- Arrow Up or X: Rotate CW
+- Z or Ctrl: Rotate CCW
+- Space: Hard drop
+- C or Shift: Hold
+- P or Escape: Pause
+
+With key repeat handling (DAS - Delayed Auto Shift):
+- Initial delay: 170ms
+- Repeat rate: 50ms
+
+```javascript
+const DAS_DELAY = 170;
+const DAS_REPEAT = 50;
+
+let dasTimer = null;
+let dasDirection = 0;
+let softDropTimer = null;
+```
+
+For soft drop: while holding down, drop faster (every 50ms or so).
+
+Actually, let me handle input in the game loop for smooth DAS:
+
+```javascript
+// In game loop:
+if (keys['ArrowLeft'] || keys['ArrowRight']) {
+  // Handle DAS
+}
+if (keys['ArrowDown']) {
+  // Handle soft drop
+}
+```
+
+Let me implement it properly with DAS.
+
+OK, I'll track key states and handle them in the game loop.
+
+Let me now write the COMPLETE code. I'll start from the top.
+
+Actually, I realize I should also handle the case where the game canvas dimensions need to be set properly. The playfield canvas should be:
+- Width: COLS * BLOCK_SIZE = 10 * 30 = 300
+- Height: ROWS * BLOCK_SIZE = 20 * 30 = 600
+
+But for the particles, I'll use a separate full-screen canvas.
+
+Let me also handle DPI scaling for crisp rendering on high-DPI displays:
+```javascript
+const dpr = window.devicePixelRatio || 1;
+canvas.width = width * dpr;
+canvas.height = height * dpr;
+canvas.style.width = width + 'px';
+canvas.style.height = height + 'px';
+ctx.scale(dpr, dpr);
+```
+
+Actually for simplicity, let me skip DPI for now and just use standard resolution. It'll look fine.
+
+Wait, for a "stunning" look, I should handle this. But it adds complexity. Let me just use BLOCK_SIZE = 30 and not worry about DPI. Most people will see it fine.
+
+Alright, let me write the complete code now. This is going to be one big file.
+
+Let me think about the rendering order:
+1. Background (grid, subtle grid lines)
+2. Ghost piece
+3. Fixed blocks on board
+4. Current piece
+5. Particle effects (separate canvas overlay)
+6. Line clear animations (overlay on playfield canvas)
+
+For the grid background:
+```javascript
+function drawGrid(ctx) {
+  ctx.fillStyle = 'rgba(255,255,255,0.03)';
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE - 1, BLOCK_SIZE - 1);
+    }
+  }
+  // Or just draw lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x <= COLS; x++) {
+    ctx.beginPath();
+    ctx.moveTo(x * BLOCK_SIZE, 0);
+    ctx.lineTo(x * BLOCK_SIZE, ROWS * BLOCK_SIZE);
+    ctx.stroke();
+  }
+  for (let y = 0; y <= ROWS; y++) {
+    ctx.beginPath();
+    ctx.moveTo(0, y * BLOCK_SIZE);
+    ctx.lineTo(COLS * BLOCK_SIZE, y * BLOCK_SIZE);
+    ctx.stroke();
+  }
+}
+```
+
+For the line clear animation, when lines are cleared:
+1. Flash the lines white
+2. Shrink them
+3. Drop the blocks above
+4. Spawn particles from the cleared blocks
+
+I can implement this with a simple animation timer:
+```javascript
+let clearingLines = []; // indices of lines being cleared
+let clearAnimationTimer = 0;
+const CLEAR_ANIMATION_DURATION = 300; // ms
+```
+
+During the clear animation, the game pauses and we render the clearing lines with effects.
+
+OK let me just write the complete code now. I've planned enough.
+
+Actually, one more consideration: I need to handle the case where clearing lines takes the board indices. The approach:
+
+1. Detect full lines
+2. Store which lines are full
+3. Animate them (flash, particles)
+4. After animation, remove them and drop everything above
+
+```javascript
+function startLineClear(fullLines) {
+  clearingLines = fullLines;
+  clearAnimationStart = Date.now();
+  isClearing = true;
+  
+  // Spawn particles
+  for (const y of fullLines) {
+    for (let x = 0; x < COLS; x++) {
+      const color = board[y][x] || '#fff';
+      spawnParticles(x * BLOCK_SIZE + BLOCK_SIZE/2, 
+                     (y - HIDDEN) * BLOCK_SIZE + BLOCK_SIZE/2, 
+                     color);
+    }
+  }
+}
+
+function finishLineClear() {
+  // Remove cleared lines from top to bottom
+  const sorted = clearingLines.sort((a, b) => a - b);
+  for (const y of sorted) {
+    board.splice(y, 1);
+    board.unshift(Array(COLS).fill(null));
+  }
+  
+  // Update score, etc.
+  const linesCleared = clearingLines.length;
+  // ... scoring logic
+  
+  isClearing = false;
+  clearingLines = [];
+}
+```
+
+Wait, when I splice and unshift for each line, the indices shift. So I need to process from top to bottom (smaller y first) and adjust.
+
+Actually, since I'm removing a line and adding a blank at the top, the y indices of lines above the removed one decrease by... no wait.
+
+If I remove row 5 and unshift a blank, then:
+- Row 0 becomes blank (index 0 is the new blank)
+- Old row 0 becomes row 1
+- Old row 1 becomes row 2
+- ...
+- Old row 4 becomes row 5
+- Old row 6 becomes row 7
+
+So removing row 5 shifts everything above down by... no, they go up:
+- Old row 4 → row 5 (wait, that's going down)
+
+Hmm, let me think again:
+- `board.splice(y, 1)` removes row y
+- After removal, row y+1 becomes row y, row y+2 becomes y+1, etc.
+- `board.unshift(blank)` adds a blank at row 0
+- Everything shifts down by 1: old row 0 → row 1, old row 1 → row 2, etc.
+
+So after removing and unshifting:
+- The line at original index y is gone
+- Everything above y shifts down by 1
+- Everything below y stays the same... wait no.
+
+Let me trace through:
+Original: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (indices)
+Remove index 3: [0, 1, 2, 4, 5, 6, 7, 8, 9]
+Unshift blank: [blank, 0, 1, 2, 4, 5, 6, 7, 8, 9]
+
+So the line that was at index 3 is gone. The lines above (0, 1, 2) shifted to 1, 2, 3. The lines below (4, 5, 6, 7, 8, 9) are now at 5, 6, 7, 8, 9, 10.
+
+Wait that doesn't seem right either. Let me re-check:
+After splice(3, 1): [0, 1, 2, 4, 5, 6, 7, 8, 9] - length 9
+After unshift: [_, 0, 1, 2, 4, 5, 6, 7, 8, 9] - length 10
+
+Lines above index 3 (0, 1, 2) are now at indices 1, 2, 3 - they moved DOWN by 1.
+Lines below index 3 (4, 5, ...) are now at 5, 6, ... - they also moved DOWN by 1.
+
+Wait, they both moved down? No:
+
+Original indices: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+After removing 3 and prepending _: 
+Index 0: _ (new)
+Index 1: was 0
+Index 2: was 1  
+Index 3: was 2
+Index 4: was 4
+Index 5: was 5
+...
+
+So yes, everything moved down by 1 (higher index), which means they visually moved UP (if y increases downward, then higher index = lower on screen).
+
+Wait no. If y=0 is the top and y=19 is the bottom:
+- Splicing out a line at y=5 means removing the row at position 5
+- Unshifting adds a row at position 0
+- Everything that was at position 0-4 shifts to position 1-5 (moves DOWN visually... wait, position 0 is top, position 1 is below it)
+
+Hmm, this is confusing. Let me think about it differently.
+
+If we remove a line from the bottom (y=19), everything above stays in place. Nothing shifts.
+If we remove a line from y=10, everything from y=0 to y=9 needs to shift DOWN by 1 (to y=1 to y=10), and then a blank goes at y=0.
+
+Wait no. The approach of splice + unshift:
+- splice(10, 1): removes row 10. Now row 11 is at index 10, row 12 at 11, etc. Rows 0-9 are still at 0-9.
+- unshift(blank): adds a row at index 0. Now old row 0 is at 1, old row 1 at 2, ..., old row 9 at 10, old row 11 at 11, old row 12 at 12, etc.
+
+So old row 10 is gone, and old rows 0-9 shifted down by 1. That's correct for line clearing! The cleared row disappears, and everything above drops down by one.
+
+But wait, for the BOTTOM rows (y=11, 12, ...), they didn't shift. That's also correct - rows below the cleared line stay in place.
+
+Actually wait: old row 11 was at index 11. After removing row 10:
+- splice(10, 1) removes index 10
+- Everything at index 11+ shifts to 10+
+- So old row 11 (was at index 11) is now at index 10
+- unshift: everything shifts down by 1 again
+- Old row 11 (now at index 10) shifts to index 11
+
+Hmm, so old row 11 ends up back at index 11. Let me verify with a small example:
+
+Original: [A, B, C, D, E] (indices 0-4)
+Remove index 2 (C): [A, B, D, E]
+Unshift _: [_, A, B, D, E]
+
+Now:
+- Index 0: _ (new)
+- Index 1: A (was 0)
+- Index 2: B (was 1)
+- Index 3: D (was 3)
+- Index 4: E (was 4)
+
+So A and B (above the removed line) moved down by 1 position. D and E (below) stayed at their original indices. C is gone. This is correct!
+
+Wait, D was at index 3, now it's at index 3. E was at 4, now at 4. So they DID stay the same. And A was at 0, now at 1; B was at 1, now at 2. So above moved down by 1. That's exactly what we want for line clearing: remove the line, everything above drops down.
+
+But when clearing MULTIPLE lines, we need to be careful about index shifting. If we clear lines 3 and 5:
+
+Original: [0, 1, 2, 3*, 4, 5*, 6, 7] (* = to be cleared)
+
+If we process from top to bottom:
+1. Remove index 3: [0, 1, 2, 4, 5*, 6, 7]
+   Unshift: [_, 0, 1, 2, 4, 5*, 6, 7]
+   Now line 5* is at index 5 (was at 5 before? Let me check: after splice, it was at index 4. After unshift, index 5. Hmm.
+
+Actually wait: original index 5, after removing index 3 and unshifting:
+- splice(3): [0, 1, 2, 4, 5*, 6, 7] - 5* is now at index 4
+- unshift: [_, 0, 1, 2, 4, 5*, 6, 7] - 5* is now at index 5
+
+2. Remove index 5 (5*): [_, 0, 1, 2, 4, 6, 7]
+   Unshift: [_, _, 0, 1, 2, 4, 6, 7]
+
+Final result:
+- Index 0: blank
+- Index 1: blank
+- Index 2: 0
+- Index 3: 1
+- Index 4: 2
+- Index 5: 4
+- Index 6: 6
+- Index 7: 7
+
+Both cleared lines removed, everything above them shifted down. Looks correct!
+
+But actually, there's a subtlety. When we splice and unshift for EACH line, the cumulative effect of unshifting for each removal means we're adding multiple blanks at the top. That's actually correct - each cleared line creates a new empty row.
+
+Hmm wait, but the order matters. Let me process from BOTTOM to TOP instead to avoid index issues:
+
+Original: [0, 1, 2, 3*, 4, 5*, 6, 7]
+Clear index 5 first: [0, 1, 2, 3*, 4, 6, 7] → unshift → [_, 0, 1, 2, 3*, 4, 6, 7]
+Now 3* is at index 4.
+Clear index 4: [_, 0, 1, 2, 4, 6, 7] → unshift → [_, _, 0, 1, 2, 4, 6, 7]
+
+Same result. OK so order doesn't matter much as long as we adjust indices.
+
+Actually, the SIMPLEST approach: collect all full line indices, sort them, then remove them all at once:
+
+```javascript
+function removeLines(fullLines) {
+  const sorted = [...fullLines].sort((a, b) => b - a); // bottom to top
+  for (const y of sorted) {
+    board.splice(y, 1);
+    board.unshift(Array(COLS).fill(null));
+  }
+}
+```
+
+Wait, this has the same issue with index shifting. After removing the bottom line, the top line's index might have shifted.
+
+Let me process from BOTTOM (highest y) to TOP (lowest y):
+
+If lines at y=5 and y=3 need to be removed:
+1. Process y=5: splice(5, 1) → everything below shifts up by 1 (no effect for lines above). unshift blank → everything shifts down by 1.
+   After: lines at y=0..4 are now at y=1..5, original line at y=3 is now at y=4. Line at y=5 (just removed) is gone. Lines below are shifted.
+   
+   Wait this is getting confusing. Let me trace:
+   Original: indices 0-19, lines at 3 and 5 full.
+   Process y=5:
+   - splice(5): removes line at index 5. Now indices: 0,1,2,3,4,6,7,...,19 (now 19 elements)
+   - unshift: prepends blank. Now: _,0,1,2,3,4,6,7,...,19 (20 elements)
+   - The line that was at index 3 is now at index 4. The line that was at index 5 is gone.
+   
+   Now process index 4 (adjusted from 3):
+   - splice(4): removes line at index 4. Now: _,0,1,2,6,7,...,19 (19 elements)
+   - unshift: prepends blank. Now: _,_,0,1,2,6,7,...,19 (20 elements)
+   
+   Final: two blanks at top, then everything else shifted down by 2. Line 3 removed, line 5 removed. Correct!
+
+So the approach: process from bottom to top (high y first), but the indices of upper lines may shift. If I process high to low, then the lower indices (above) haven't been affected yet... wait, they HAVE been affected by the unshift.
+
+Hmm. Let me think more carefully.
+
+After processing y=5 (removing it), the line at y=3 moved to y=4 (because of unshift). So I need to track this.
+
+OK, a cleaner approach:
+
+```javascript
+function removeLines(fullLines) {
+  const set = new Set(fullLines);
+  const newBoard = [];
+  for (let y = 0; y < TOTAL_ROWS; y++) {
+    if (!set.has(y)) {
+      newBoard.push(board[y]);
+    }
+  }
+  // Prepend blanks for each removed line
+  while (newBoard.length < TOTAL_ROWS) {
+    newBoard.unshift(Array(COLS).fill(null));
+  }
+  board = newBoard;
+}
+```
+
+This is much cleaner! Filter out the full lines, then pad the top with blanks.
+
+Great, I'll use this approach.
+
+OK, NOW let me write the complete code. No more planning, let's go.
+
+Actually, one more thing: I need to handle the render for the piece preview (hold and next). I'll draw mini versions of the pieces on small canvases.
+
+For each piece in the preview, I need to:
+1. Find the bounding box of the piece (min/max x and y where there are blocks)
+2. Center it in the preview canvas
+3. Draw it at a smaller scale
+
+```javascript
+function drawPiecePreview(canvas, pieceType) {
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+  
+  if (!pieceType) return;
+  
+  const matrix = PIECES[pieceType].matrix;
+  const color = PIECES[pieceType].color;
+  
+  // Find bounds
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[y].length; x++) {
+      if (matrix[y][x]) {
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y);
+        maxY = Math.max(maxY, y);
+      }
+    }
+  }
+  
+  const pieceWidth = maxX - minX + 1;
+  const pieceHeight = maxY - minY + 1;
+  const blockSize = Math.min(w / pieceWidth, h / pieceHeight, 20);
+  const offsetX = (w - pieceWidth * blockSize) / 2;
+  const offsetY = (h - pieceHeight * blockSize) / 2;
+  
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[y].length; x++) {
+      if (matrix[y][x]) {
+        const px = offsetX + (x - minX) * blockSize;
+        const py = offsetY + (y - minY) * blockSize;
+        drawMiniBlock(ctx, px, py, color, blockSize);
+      }
+    }
+  }
+}
+```
+
+OK let me now write everything. Here's the complete game code:
+
+I'm going to write it all out now, making sure every feature works.
+
+Let me also think about how to handle the mobile layout properly. On mobile:
+- Stack the panels above/below the playfield
+- Touch buttons at the bottom
+- Smaller block size
+
+Let me add some responsive adjustments in CSS.
+
+Alright, writing the complete code now...
+
+Actually, wait. Let me reconsider the overall structure. Since this is a single HTML file, I need to be organized. Let me write it section by section:
+
+1. HTML structure
+2. CSS (all styles)
+3. JavaScript:
+   a. Constants
+   b. Piece definitions  
+   c. SRS kick tables
+   d. Audio system
+   e. Particle system
+   f. Game state
+   g. Game logic functions
+   h. Rendering functions
+   i. UI update functions
+   j. Input handlers
+   k. Game loop
+   l. Initialization
+
+Let me write this carefully. I'll aim for about 1000-1500 lines of well-organized code.
+
+For the HTML, the structure should be:
+
+```html
+<div class="game-container">
+  <!-- Left panel -->
+  <div class="side-panel left-panel">
+    <div class="panel-box hold-panel">
+      <div class="panel-title">HOLD</div>
+      <canvas id="holdCanvas"></canvas>
+    </div>
+    <div class="panel-box stats-panel">
+      <div class="stat-item">
+        <div class="stat-label">SCORE</div>
+        <div class="stat-value" id="scoreValue">0</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">LEVEL</div>
+        <div class="stat-value" id="levelValue">1</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">LINES</div>
+        <div class="stat-value" id="linesValue">0</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">TIME</div>
+        <div class="stat-value" id="timeValue">0:00</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">COMBO</div>
+        <div class="stat-value" id="comboValue">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Playfield -->
+  <div class="playfield-wrapper">
+    <div class="playfield-frame">
+      <canvas id="gameCanvas"></canvas>
+      <!-- Overlays -->
+      <div class="overlay" id="startScreen">...</div>
+      <div class="overlay" id="pauseScreen">...</div>
+      <div class="overlay" id="gameOverScreen">...</div>
+    </div>
+  </div>
+
+  <!-- Right panel -->
+  <div class="side-panel right-panel">
+    <div class="panel-box next-panel">
+      <div class="panel-title">NEXT</div>
+      <canvas id="next0Canvas"></canvas>
+      <canvas id="next1Canvas"></canvas>
+      <canvas id="next2Canvas"></canvas>
+    </div>
+    <div class="panel-box info-panel">
+      <div class="stat-item">
+        <div class="stat-label">BEST</div>
+        <div class="stat-value" id="bestValue">0</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">B2B</div>
+        <div class="stat-value" id="b2bValue">-</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Touch controls -->
+<div class="touch-controls">...</div>
+
+<!-- Particle overlay canvas -->
+<canvas id="particleCanvas"></canvas>
+```
+
+OK now let me really write the full code. I'll be comprehensive and make it beautiful.
+
+Let me now write the complete HTML file from start to finish.
+
+For the particle canvas, I'll position it as a fixed overlay that covers the entire screen, used for particle effects from line clears.
+
+For the block rendering, I want it to look really polished. Here's my plan for the block drawing:
+
+```javascript
+function drawBlock(ctx, x, y, color, size, alpha = 1, glow = false) {
+  const gap = size * 0.05;
+  const s = size - gap * 2;
+  
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  
+  if (glow) {
+    ctx.shadowColor = color;
+    ctx.shadowBlur = size * 0.5;
+  }
+  
+  // Main block
+  const grad = ctx.createLinearGradient(x, y, x + size, y + size);
+  grad.addColorStop(0, adjustColor(color, 30));
+  grad.addColorStop(0.5, color);
+  grad.addColorStop(1, adjustColor(color, -40));
+  
+  ctx.fillStyle = grad;
+  ctx.fillRect(x + gap, y + gap, s, s);
+  
+  // Top-left highlight
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.fillRect(x + gap, y + gap, s, size * 0.07);
+  ctx.fillRect(x + gap, y + gap, size * 0.07, s);
+  
+  // Bottom-right shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillRect(x + gap, y + gap + s - size * 0.07, s, size * 0.07);
+  ctx.fillRect(x + gap + s - size * 0.07, y + gap, size * 0.07, s);
+  
+  // Inner shine
+  ctx.fillStyle = 'rgba(255,255,255,0.15)';
+  ctx.fillRect(x + size * 0.2, y + size * 0.2, s * 0.6, s * 0.6);
+  
+  ctx.restore();
+}
+```
+
+Hmm, the gap and highlight proportions depend on the block size. For 30px blocks, a 1px gap and 2px highlight would look good.
+
+Let me simplify:
+
+```javascript
+function drawBlock(ctx, px, py, color, size = BLOCK_SIZE) {
+  const x = px + 1;
+  const y = py + 1;
+  const w = size - 2;
+  const h = size - 2;
+  
+  // Main fill with gradient
+  const grad = ctx.createLinearGradient(x, y, x + w, y + h);
+  grad.addColorStop(0, lighten(color, 60));
+  grad.addColorStop(0.4, color);
+  grad.addColorStop(1, darken(color, 60));
+  
+  ctx.fillStyle = grad;
+  ctx.fillRect(x, y, w, h);
+  
+  // Top highlight
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.fillRect(x, y, w, 2);
+  
+  // Left highlight
+  ctx.fillRect(x, y, 2, h);
+  
+  // Bottom shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.6)';
+  ctx.fillRect(x, y + h - 2, w, 2);
+  
+  // Right shadow
+  ctx.fillRect(x + w - 2, y, 2, h);
+  
+  // Center shine
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.fillRect(x + 3, y + 3, w - 6, h - 6);
+  
+  // Very center highlight (for 3D effect)
+  ctx.fillStyle = 'rgba(255,255,255,0.1)';
+  ctx.fillRect(x + 5, y + 5, w - 10, h - 10);
+}
+```
+
+Actually, for better performance, I should minimize the number of draw calls per block. But with 200 blocks max (10x20), and modern browsers, this should be fine.
+
+Let me think about a cleaner approach. Maybe I should pre-render block images once and then just blit them:
+
+```javascript
+// Pre-render block sprites
+const blockSprites = {};
+function createBlockSprite(color) {
+  const canvas = document.createElement('canvas');
+  canvas.width = BLOCK_SIZE;
+  canvas.height = BLOCK_SIZE;
+  const ctx = canvas.getContext('2d');
+  drawBlock(ctx, 0, 0, color, BLOCK_SIZE);
+  return canvas;
+}
+
+// Create sprites for all piece colors
+PIECE_TYPES.forEach(type => {
+  blockSprites[type] = createBlockSprite(PIECES[type].color);
+  blockSprites['ghost_' + type] = createGhostSprite(PIECES[type].color);
+});
+```
+
+This is more efficient but adds complexity. For simplicity, let me just draw directly.
+
+OK, I'm going to write the code now. Let me be efficient about it.
+
+Here's my approach: I'll write the complete file, making sure all features work. I'll aim for a beautiful, functional Tetris game.
+
+Let me now write the full code. I'll organize it well with comments.
+
+One thing about the canvas setup: for the main game canvas, I need:
+- width = COLS * BLOCK_SIZE = 300
+- height = ROWS * BLOCK_SIZE = 600
+
+For the hold and next canvases, they're small: 80x60 or so.
+
+For the particle canvas, it should cover the full screen.
+
+Let me finalize BLOCK_SIZE. For a nice look on desktop, 30px is good (300x600 playfield). For mobile, I might need to scale it down. I could use a responsive approach where BLOCK_SIZE is calculated based on screen size.
+
+```javascript
+function calculateBlockSize() {
+  const maxWidth = window.innerWidth * 0.4; // Playfield takes 40% of width
+  const maxHeight = window.innerHeight * 0.8; // 80% of height
+  return Math.floor(Math.min(maxWidth / COLS, maxHeight / ROWS));
+}
+```
+
+Actually, for the CSS layout, if I use fixed pixel values, it might not be responsive. Let me use a CSS-based approach where the playfield container has a fixed aspect ratio (1:2), and the canvas fills it.
+
+Hmm, this is getting complex. Let me just use fixed sizes that work well for most screens:
+- BLOCK_SIZE = 30 on desktop
+- BLOCK_SIZE = 20 on mobile (via responsive JS)
+
+Or better: use CSS to scale the whole game container.
+
+```css
+.game-container {
+  transform: scale(var(--game-scale));
+}
+```
+
+And set `--game-scale` based on screen size.
+
+Actually, the simplest responsive approach: calculate BLOCK_SIZE at load time:
+
+```javascript
+const BLOCK_SIZE = Math.min(
+  Math.floor(Math.min(window.innerWidth, 600) / COLS),
+  Math.floor(Math.min(window.innerHeight, 700) / ROWS)
+);
+```
+
+This ensures the playfield fits on screen. Let me clamp it:
+```javascript
+const BLOCK_SIZE = Math.max(15, Math.min(35, ...));
+```
+
+OK let me just start writing. I'll use BLOCK_SIZE = 30 as a default and adjust if needed.
+
+Let me write the complete HTML file now. I'll aim for ~800-1000 lines of clean, well-structured code.
+
+I'm going to structure it as a single comprehensive HTML file. Here we go:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>TETRIS</title>
+    <style>
+        /* Full CSS here */
+    </style>
+</head>
+<body>
+    <!-- HTML structure -->
+    <script>
+        /* Full JavaScript */
+    </script>
+</body>
+</html>
+```
+
+Let me now write each section carefully.
+
+For the CSS, I want:
+1. Dark gradient background
+2. Glowing playfield border
+3. Glass-morphism panels
+4. Smooth transitions
+5. Neon accent colors
+6. Responsive layout
+7. Touch controls for mobile
+8. Overlay screens (start, pause, game over)
+9. Animation keyframes for various effects
+
+For the JavaScript, I want:
+1. Complete game logic
+2. SRS rotation
+3. All piece types
+4. Hold/Next queue
+5. Ghost piece
+6. Line clear with animation
+7. T-spin detection
+8. Scoring with combos
+9. Levels and speed
+10. Particle effects
+11. Sound effects
+12. Background music
+13. Keyboard input with DAS
+14. Touch controls
+15. Pause/Resume/Restart
+16. Stats tracking
+17. Best score (localStorage)
+
+This is going to be a substantial amount of code. Let me be efficient but thorough.
+
+Here's my final plan for the code structure:
+
+```
+CSS:
+- Reset/base styles
+- Layout (game container, panels, playfield)
+- Panel styling (glass morphism)
+- Overlay styling (start, pause, game over)
+- Animations (keyframes)
+- Responsive (mobile)
+- Touch controls
+
+HTML:
+- Game container
+  - Left panel: hold, stats
+  - Center: playfield + overlays
+  - Right panel: next pieces, info
+- Touch controls bar
+- Particle canvas (full screen overlay)
+
+JavaScript:
+1. Constants
+2. Piece definitions
+3. SRS kick data
+4. Utility functions (color manipulation)
+5. Audio system class
+6. Particle system
+7. Game state object
+8. Game initialization (new game, reset board)
+9. Piece management (bag, spawn, ghost)
+10. Collision detection
+11. Movement (move, rotate, drop, hold)
+12. Line clearing
+13. T-spin detection
+14. Scoring
+15. Level management
+16. Rendering (playfield, pieces, ghost, previews)
+17. UI updates (stats, overlays)
+18. Input handling (keyboard, touch)
+19. Game loop
+20. Event listeners and initialization
+```
+
+OK let me write this now. I'll produce the complete code.
+
+Let me be careful about some edge cases:
+- Soft drop when already at bottom: should trigger lock delay
+- Hard drop: instant lock, maybe brief flash animation
+- Hold: only once per piece placement
+- Rotation near walls: use SRS kick tables
+- Game over: new piece can't be placed at spawn
+- Line clear during hard drop: score the hard drop points first, then process line clear
+- Combo: resets when a piece is placed without clearing lines
+- Level up: after every 10 lines
+
+For lock delay: after a piece reaches the bottom, it doesn't lock immediately. The player has ~500ms to move/rotate it. This is a standard modern Tetris feature.
+
+```javascript
+const LOCK_DELAY = 500; // ms
+const MAX_LOCK_RESETS = 15;
+
+let lockDelayTimer = 0;
+let lockResets = 0;
+let isLocking = false;
+```
+
+When a piece can't move down further:
+- Start lock delay timer
+- If player moves/rotates and piece can still move down, reset timer (up to max resets)
+- After lock delay expires, lock the piece
+
+For the game loop timing:
+```javascript
+function gameLoop(timestamp) {
+  requestAnimationFrame(gameLoop);
+  
+  if (gameState !== 'playing') return;
+  
+  const delta = timestamp - lastTime;
+  lastTime = timestamp;
+  
+  // Accumulate drop timer
+  dropTimer += delta;
+  
+  // Handle DAS
+  handleDAS(delta);
+  
+  // Auto drop
+  if (dropTimer >= getDropSpeed(level)) {
+    dropTimer = 0;
+    if (canMove(0, 1)) {
+      currentPiece.y++;
+      if (!canMove(0, 1)) {
+        startLockDelay();
+      }
+    } else {
+      startLockDelay();
+    }
+  }
+  
+  // Lock delay
+  if (isLocking) {
+    lockDelayTimer += delta;
+    if (lockDelayTimer >= LOCK_DELAY) {
+      lockPiece();
+    }
+  }
+  
+  // Update particles
+  updateParticles();
+  
+  // Update clear animation
+  updateClearAnimation(delta);
+  
+  // Render
+  render();
+  
+  // Update time
+  if (!isClearing) {
+    elapsed += delta;
+    updateUI();
+  }
+}
+```
+
+OK let me also think about how to handle the "clearing lines" state. During line clear animation:
+1. Game is paused (no piece movement, no drop timer)
+2. Visual effect plays (flash, particles)
+3. After animation, remove lines, process scoring, spawn next piece
+
+```javascript
+let clearingState = {
+  active: false,
+  lines: [],
+  timer: 0,
+  duration: 300 // ms
+};
+```
+
+During clearing:
+- No input processing
+- Render the clearing lines with effects
+- After timer expires, finalize
+
+After finalization:
+- Update score, lines, combo, level
+- Spawn next piece
+- Resume normal play
+
+For the visual effect during line clear:
+- Flash the cleared lines white
+- Scale them up slightly
+- Spawn particles
+- After ~300ms, remove them
+
+```javascript
+function renderClearingLines() {
+  if (!clearingState.active) return;
+  
+  const progress = clearingState.timer / clearingState.duration;
+  const flash = Math.sin(progress * Math.PI); // Sine wave flash
+  
+  for (const y of clearingState.lines) {
+    const py = (y - HIDDEN) * BLOCK_SIZE;
+    
+    // Flash effect
+    ctx.save();
+    ctx.globalAlpha = flash;
+    ctx.fillStyle = 'white';
+    ctx.shadowColor = 'white';
+    ctx.shadowBlur = 20;
+    ctx.fillRect(0, py, COLS * BLOCK_SIZE, BLOCK_SIZE);
+    ctx.restore();
+    
+    // Scale effect - blocks scale up then down
+    const scale = 1 + Math.sin(progress * Math.PI) * 0.1;
+    ctx.save();
+    ctx.translate(COLS * BLOCK_SIZE / 2, py + BLOCK_SIZE / 2);
+    ctx.scale(scale, scale);
+    ctx.translate(-COLS * BLOCK_SIZE / 2, -(py + BLOCK_SIZE / 2));
+    // ... draw the line's blocks
+    ctx.restore();
+  }
+}
+```
+
+Actually, the scaling effect might look weird. Let me keep it simpler:
+- Flash white overlay on the cleared lines
+- Blocks fade/shrink during the clear
+
+Let me simplify: just flash + particles + then remove.
+
+```javascript
+function renderClearingLines() {
+  if (!clearingState.active) return;
+  
+  const progress = clearingState.timer / clearingState.duration;
+  
+  for (const y of clearingState.lines) {
+    const py = (y - HIDDEN) * BLOCK_SIZE;
+    const alpha = 1 - progress; // Fade out
+    
+    // Draw blocks with reduced alpha
+    for (let x = 0; x < COLS; x++) {
+      const cell = board[y][x];
+      if (cell) {
+        drawBlock(ctx, x * BLOCK_SIZE, py, cell, BLOCK_SIZE, alpha);
+      }
+    }
+    
+    // Flash overlay
+    const flashAlpha = Math.max(0, 0.8 - progress * 2);
+    ctx.save();
+    ctx.globalAlpha = flashAlpha;
+    ctx.fillStyle = 'white';
+    ctx.shadowColor = 'white';
+    ctx.shadowBlur = 30;
+    ctx.fillRect(0, py, COLS * BLOCK_SIZE, BLOCK_SIZE);
+    ctx.restore();
+  }
+}
+```
+
+OK I think I have a good enough plan. Let me write the complete code now. For real this time.
+
+Let me think about one more thing: the visual style. For the "PS4 Tetris" look, I want:
+
+1. Dark background (#0a0a1a or similar)
+2. Playfield with subtle grid and glowing border
+3. Blocks with 3D bevel and glow
+4. Panels with glass-morphism (blur backdrop, semi-transparent)
+5. Neon accent colors (cyan, blue, purple)
+6. Clean typography (Orbitron for headings, Rajdhani for body)
+7. Smooth animations and transitions
+8. Particles on line clears
+
+Let me also add a subtle animated background - maybe slowly moving colored gradients.
+
+For the font, I'll use Google Fonts. If the network is unavailable, it'll fall back to system fonts.
+
+OK HERE WE GO. Writing the final complete code:
+
+I'll structure the code into clear sections and make sure everything works together.
+
+Let me also double-check: the puzzle piece matrices should be correct.
+
+I piece:
+```
+Spawn (0): 
+0 0 0 0
+1 1 1 1
+0 0 0 0
+0 0 0 0
+```
+```
+Right (R):
+0 0 1 0
+0 0 1 0
+0 0 1 0
+0 0 1 0
+```
+```
+180 (2):
+0 0 0 0
+0 0 0 0
+1 1 1 1
+0 0 0 0
+```
+```
+Left (L):
+0 1 0 0
+0 1 0 0
+0 1 0 0
+0 1 0 0
+```
+
+T piece:
+```
+Spawn:
+0 1 0
+1 1 1
+0 0 0
+```
+```
+R:
+0 1 0
+0 1 1
+0 1 0
+```
+```
+2:
+0 0 0
+1 1 1
+0 1 0
+```
+```
+L:
+0 1 0
+1 1 0
+0 1 0
+```
+
+S piece:
+```
+Spawn:
+0 1 1
+1 1 0
+0 0 0
+```
+```
+R:
+0 1 0
+0 1 1
+0 0 1
+```
+```
+2:
+0 0 0
+0 1 1
+1 1 0
+```
+```
+L:
+1 0 0
+1 1 0
+0 1 0
+```
+
+Z piece:
+```
+Spawn:
+1 1 0
+0 1 1
+0 0 0
+```
+```
+R:
+0 0 1
+0 1 1
+0 1 0
+```
+```
+2:
+0 0 0
+1 1 0
+0 1 1
+```
+```
+L:
+0 1 0
+1 1 0
+1 0 0
+```
+
+J piece:
+```
+Spawn:
+1 0 0
+1 1 1
+0 0 0
+```
+```
+R:
+0 1 1
+0 1 0
+0 1 0
+```
+```
+2:
+0 0 0
+1 1 1
+0 0 1
+```
+```
+L:
+0 1 0
+0 1 0
+1 1 0
+```
+
+L piece:
+```
+Spawn:
+0 0 1
+1 1 1
+0 0 0
+```
+```
+R:
+0 1 0
+0 1 0
+0 1 1
+```
+```
+2:
+0 0 0
+1 1 1
+1 0 0
+```
+```
+L:
+1 1 0
+0 1 0
+0 1 0
+```
+
+O piece (same all rotations):
+```
+1 1
+1 1
+```
+
+I'll compute rotations dynamically using the rotate function rather than hardcoding them. This is cleaner.
+
+Wait, but I need to make sure the rotation matrices are correct. Let me verify by rotating the spawn matrices.
+
+T piece spawn: [[0,1,0],[1,1,1],[0,0,0]]
+CW rotate: new[i][j] = old[n-1-j][i] where n=3
+
+new[0][0] = old[2][0] = 0
+new[0][1] = old[1][0] = 1
+new[0][2] = old[0][0] = 0
+→ Row 0: [0, 1, 0]
+
+new[1][0] = old[2][1] = 0
+new[1][1] = old[1][1] = 1
+new[1][2] = old[0][1] = 1
+→ Row 1: [0, 1, 1]
+
+new[2][0] = old[2][2] = 0
+new[2][1] = old[1][2] = 1
+new[2][2] = old[0][2] = 0
+→ Row 2: [0, 1, 0]
+
+Result R state: [[0,1,0],[0,1,1],[0,1,0]] ✓ (matches expected)
+
+Rotate R state CW again for state 2:
+old = [[0,1,0],[0,1,1],[0,1,0]]
+new[0][0] = old[2][0] = 0
+new[0][1] = old[1][0] = 0
+new[0][2] = old[0][0] = 0
+→ [0,0,0]
+
+new[1][0] = old[2][1] = 1
+new[1][1] = old[1][1] = 1
+new[1][2] = old[0][1] = 1
+→ [1,1,1]
+
+new[2][0] = old[2][2] = 0
+new[2][1] = old[1][2] = 1
+new[2][2] = old[0][2] = 0
+→ [0,1,0]
+
+State 2: [[0,0,0],[1,1,1],[0,1,0]] ✓
+
+Rotate state 2 CW for state L:
+old = [[0,0,0],[1,1,1],[0,1,0]]
+new[0][0] = old[2][0] = 0
+new[0][1] = old[1][0] = 1
+new[0][2] = old[0][0] = 0
+→ [0,1,0]
+
+new[1][0] = old[2][1] = 1
+new[1][1] = old[1][1] = 1
+new[1][2] = old[0][1] = 0
+→ [1,1,0]
+
+new[2][0] = old[2][2] = 0
+new[2][1] = old[1][2] = 1
+new[2][2] = old[0][2] = 0
+→ [0,1,0]
+
+State L: [[0,1,0],[1,1,0],[0,1,0]] ✓
+
+
+
+OK so the CW rotation function works correctly. I'll use it to generate all rotation states.
+
+Now let me write the complete code. I'll produce a single, complete HTML file.
+
+Let me be smart about the code organization. I'll use a clean structure with clear sections.
+
+Here's my final approach for the game loop:
+
+```javascript
+function gameLoop(timestamp) {
+  requestAnimationFrame(gameLoop);
+  
+  const delta = timestamp - lastFrameTime;
+  lastFrameTime = timestamp;
+  
+  if (state === 'playing') {
+    if (clearing.active) {
+      // Update line clear animation
+      clearing.timer += delta;
+      if (clearing.timer >= clearing.duration) {
+        finishLineClear();
+      }
+    } else {
+      // Update game timer
+      elapsed += delta;
+      
+      // Handle input (DAS, repeat)
+      handleInput(delta);
+      
+      // Drop timer
+      dropTimer += delta;
+      const dropSpeed = getDropSpeed(level);
+      if (dropTimer >= dropSpeed) {
+        dropTimer = 0;
+        attemptDrop();
+      }
+      
+      // Lock delay
+      if (locking) {
+        lockTimer += delta;
+        if (lockTimer >= LOCK_DELAY) {
+          lockPiece();
+        }
+      }
+    }
+    
+    // Update particles
+    updateParticles();
+    
+    // Render everything
+    render();
+    renderParticles();
+    updateUI();
+  } else if (state === 'paused' || state === 'gameover' || state === 'start') {
+    // Still render background
+    renderBackground();
+  }
+}
+```
+
+For input handling with DAS:
+
+```javascript
+const DAS_DELAY = 170; // ms before auto-repeat starts
+const DAS_REPEAT = 50; // ms between auto-repeats
+const SOFT_DROP_SPEED = 40; // ms per cell when holding down
+
+let keys = {
+  left: false, right: false, down: false,
+  cw: false, ccw: false, hard: false, hold: false
+};
+
+let das = {
+  direction: 0, // -1 left, 1 right
+  timer: 0,
+  repeating: false,
+  repeatTimer: 0
+};
+
+let softDropTimer = 0;
+
+function handleInput(delta) {
+  // DAS for left/right
+  if (keys.left || keys.right) {
+    const dir = keys.left ? -1 : 1;
+    if (das.direction !== dir) {
+      das.direction = dir;
+      das.timer = 0;
+      das.repeating = false;
+      movePiece(dir, 0);
+    }
+    das.timer += delta;
+    if (das.timer >= DAS_DELAY) {
+      das.repeating = true;
+      das.repeatTimer += delta;
+      while (das.repeatTimer >= DAS_REPEAT) {
+        das.repeatTimer -= DAS_REPEAT;
+        movePiece(dir, 0);
+      }
+    }
+  } else {
+    das.direction = 0;
+    das.timer = 0;
+    das.repeating = false;
+    das.repeatTimer = 0;
+  }
+  
+  // Soft drop
+  if (keys.down) {
+    softDropTimer += delta;
+    while (softDropTimer >= SOFT_DROP_SPEED) {
+      softDropTimer -= SOFT_DROP_SPEED;
+      if (canMove(0, 1)) {
+        movePiece(0, 1);
+        addSoftDropScore();
+      }
+    }
+  } else {
+    softDropTimer = 0;
+  }
+}
+```
+
+Actually, for key rotation and hard drop, these should trigger on keydown (single press), not continuous. Let me separate:
+
+```javascript
+// Continuous (held keys): left, right, down
+// Single press: rotation, hard drop, hold, pause
+
+document.addEventListener('keydown', (e) => {
+  if (e.repeat) return; // Ignore OS key repeat
+  
+  switch (e.key) {
+    case 'ArrowLeft': keys.left = true; break;
+    case 'ArrowRight': keys.right = true; break;
+    case 'ArrowDown': keys.down = true; break;
+    case 'ArrowUp':
+    case 'x': case 'X': rotatePiece('CW'); break;
+    case 'z': case 'Z': case 'Control': rotatePiece('CCW'); break;
+    case ' ': e.preventDefault(); hardDrop(); break;
+    case 'c': case 'C': case 'Shift': holdPiece(); break;
+    case 'p': case 'P': case 'Escape': togglePause(); break;
+  }
+});
+
+document.addEventListener('keyup', (e) => {
+  switch (e.key) {
+    case 'ArrowLeft': keys.left = false; break;
+    case 'ArrowRight': keys.right = false; break;
+    case 'ArrowDown': keys.down = false; break;
+  }

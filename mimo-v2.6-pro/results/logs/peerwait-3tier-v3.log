@@ -1,0 +1,4 @@
+{"C": 1, "tok_s": 32.3, "passes": 256, "ms_per_pass": 30.92, "wait_ms_per_pass": 0.176, "wait_us_per_wait": 3.2, "rows_per_layer": 0.89, "timeouts": 0}
+{"C": 4, "tok_s": 61.0, "passes": 257, "ms_per_pass": 65.32, "wait_ms_per_pass": 0.3, "wait_us_per_wait": 4.4, "rows_per_layer": 3.58, "timeouts": 0}
+{"C": 8, "tok_s": 79.6, "passes": 257, "ms_per_pass": 100.15, "wait_ms_per_pass": 0.363, "wait_us_per_wait": 5.3, "rows_per_layer": 7.18, "timeouts": 0}
+{"C": 16, "tok_s": 100.3, "passes": 257, "ms_per_pass": 158.84, "wait_ms_per_pass": 0.806, "wait_us_per_wait": 11.7, "rows_per_layer": 14.18, "timeouts": 0}

@@ -1,0 +1,29 @@
+DGX Station GB300 serving research
+Copyright 2026 Liquid Gravity AI
+
+Original material in this repository is licensed under the Apache License 2.0 (see LICENSE).
+
+This repository includes files derived from vLLM (Copyright the vLLM contributors, Apache License 2.0,
+https://github.com/vllm-project/vllm): the model files, overlays and backport diffs under
+mimo-v2.6-pro/hook/, mimo-v2.6-pro/backport/ and mimo-v2.6-flash/overlay/, and any other file carrying a
+vLLM SPDX header. Each such file keeps its original header.
+
+This repository includes files from, or derived from, J&M Recipes (Copyright 2026 J&M Recipes, MIT License,
+https://github.com/J-M-Recipes/recipes, commit dffd01cc29fb8dfed9c2a52192ee7e02e753ba26). The full license text
+is in licenses/J-M-Recipes-MIT.txt. These files are:
+  - mimo-v2.6-pro/bench/{ttft_bench.py,knee.sh,prof_decode.py,bfcl_gate.py,longctx_bench.py,agent_fixture.sh}
+    (verbatim)
+  - mimo-v2.6-pro/hook/expert_hist_mix.json (verbatim)
+  - mimo-v2.6-pro/hook/hotsplit.py (modified; hotsplit.from-al-engr.diff shows the changes)
+  - the hotsplit load hook appended to mimo-v2.6-pro/hook/mimo_v2*.29468.py
+  - deepseek-v4.1-flash/m3/hook/rowmap-static-v1.json (verbatim)
+  - deepseek-v4.1-flash/m3/hook/sitecustomize.py (modified: installs a different hook)
+  - deepseek-v4.1-flash/upstream-v20/hook-peer/pin_hot_experts_hook.py (modified; pin_hot_experts_hook.diff)
+  - deepseek-v4.1-flash/upstream-v20/launch-v20.sh and launch-v20-prof.sh (reproduce the v20 recipe's launch)
+  - bench/knee.sh (modified; knee.sh.diff)
+
+This repository includes a modified SGLang file (qwen3.8-flash-next/patches/moe_hook.py; Copyright the SGLang
+contributors, Apache License 2.0, https://github.com/sgl-project/sglang).
+
+Benchmarks were run with llm-inference-bench (https://github.com/local-inference-lab/llm-inference-bench) and
+b12x (https://github.com/local-inference-lab/b12x). Neither is vendored here.

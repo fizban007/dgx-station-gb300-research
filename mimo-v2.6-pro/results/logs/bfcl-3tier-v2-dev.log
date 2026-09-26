@@ -1,0 +1,13 @@
+[3tier-v2-dev] 0/600 9s
+[3tier-v2-dev] 50/600 96s
+[3tier-v2-dev] 100/600 147s
+[3tier-v2-dev] 150/600 217s
+[3tier-v2-dev] 200/600 288s
+[3tier-v2-dev] 250/600 357s
+[3tier-v2-dev] 300/600 512s
+[3tier-v2-dev] 350/600 527s
+[3tier-v2-dev] 400/600 623s
+[3tier-v2-dev] 450/600 696s
+[3tier-v2-dev] 500/600 782s
+[3tier-v2-dev] 550/600 880s
+BFCL 3tier-v2-dev [dev]: all 557/600 = 0.9283 | simple_python 0.935 | multiple 0.915 | errors 0 | 939s

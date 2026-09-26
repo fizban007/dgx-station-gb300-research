@@ -1,0 +1,9 @@
+[
+ {
+  "tokens": 512,
+  "b12x_us": 1082.5,
+  "triton_gemv_us": 10594.0,
+  "cosine_vs_triton": 0.99964,
+  "rel_diff": 0.0269
+ }
+]

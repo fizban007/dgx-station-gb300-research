@@ -1,0 +1,1 @@
+{"1": {"calls": 310, "mean_us": 75.9, "mean_rows": 1.0}, "2": {"calls": 479, "mean_us": 92.2, "mean_rows": 2.0}, "4": {"calls": 1103, "mean_us": 98.5, "mean_rows": 3.5}, "8": {"calls": 1642, "mean_us": 118.5, "mean_rows": 6.2}, "16": {"calls": 555, "mean_us": 388.3, "mean_rows": 10.5}, "32": {"calls": 7, "mean_us": 188.6, "mean_rows": 18.7}}

@@ -1,0 +1,9 @@
+[3tier-v3] conc= 1:    32.0 agg tok/s   32.05 per-stream  (runs 31.8/32.3)
+[3tier-v3] conc= 2:    45.0 agg tok/s   22.49 per-stream  (runs 44.9/45.1)
+[3tier-v3] conc= 4:    60.6 agg tok/s   15.16 per-stream  (runs 60.2/61.1)
+[3tier-v3] conc= 8:    78.5 agg tok/s    9.81 per-stream  (runs 78.5/78.5)
+[3tier-v3] conc=12:    74.8 agg tok/s    6.23 per-stream  (runs 74.9/74.7)
+[3tier-v3] conc=16:    98.2 agg tok/s    6.14 per-stream  (runs 97.7/98.8)
+Traceback (most recent call last):
+  File "<stdin>", line 19, in <module>
+NameError: name 'WORKDIR' is not defined
