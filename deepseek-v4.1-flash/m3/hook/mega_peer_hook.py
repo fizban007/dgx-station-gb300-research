@@ -46,7 +46,20 @@ _states: list = []
 _count_host = None     # pinned int64 [40, E]; filled from the engine thread, written to disk by the dumper
 _count_copied = 0.0
 PEER_MIN_TOKENS = int(os.environ.get("MEGA_PEER_MIN_TOKENS", "1"))
+# MEGA_FUSED_SEND=1: for T <= peer_fused.FUSED_MAX, one kernel does the route split, counting, pack and publish
+# (bit-identical to the PyTorch ops + _pack/_publish; test_peer_fused.py).
+# MEGA_FUSED_SEND=2: peer_fused2 instead: the send quantizes the rows it packs itself (no separate MXFP8 quantize
+# launch) and runs one CTA per token, and the wait + scatter-add are one launch (bit-identical; test_peer_fused2.py).
+FUSED_SEND_MODE = os.environ.get("MEGA_FUSED_SEND", "0")
+FUSED_SEND = FUSED_SEND_MODE in ("1", "2")
+FUSED_SEND2 = FUSED_SEND_MODE == "2"
+# MEGA_MHC_OVERLAP=0: V4.1 decode (T <= 16) uses the single-kernel DeepGEMM mHC boundary instead of the two-stream
+# TileLang overlap path, which exists to hide the TP all-reduce; at TP1 there is none to hide.
+MHC_OVERLAP = os.environ.get("MEGA_MHC_OVERLAP", "1") != "0"
+# MEGA_LL_GEMM=1: MXFP8 dense linears with M <= 8 use FlashInfer's split-K cutedsl_low_latency kernel (ll_gemm.py).
+LL_GEMM = os.environ.get("MEGA_LL_GEMM", "0") == "1"
 TARGET = "vllm.models.deepseek_v4.nvidia.model"
+TARGET_V41 = "vllm.models.deepseek_v41.nvidia.model"
 _PREFIX = re.compile(r"(?:^|\.)model\.layers\.(\d+)\.ffn\.experts$")
 
 _LOG = lambda m: sys.stderr.write(f"MEGA_PEER {m}\n")
@@ -291,6 +304,32 @@ def _peer_tier(device):
     return _peer
 
 
+_pf = None
+_pf2 = None
+
+
+def _fused2():
+    global _pf2
+    if _pf2 is None:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import peer_fused2
+
+        _pf2 = peer_fused2
+        _LOG(f"fused decode send v2 (in-kernel quantize, one launch to finish) on for T <= {peer_fused2.FUSED_MAX}")
+    return _pf2
+
+
+def _fused():
+    global _pf
+    if _pf is None:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import peer_fused
+
+        _pf = peer_fused
+        _LOG(f"fused decode send on for T <= {peer_fused.FUSED_MAX}")
+    return _pf
+
+
 def _peer_tier2(device):
     global _peer2
     if _peer2 is None:
@@ -387,6 +426,31 @@ def _forward(self, hidden_states, topk_weights, topk_ids, *, activation_clamp, f
         return _orig["forward"](self, hidden_states, topk_weights, topk_ids,
                                 activation_clamp=activation_clamp, fast_math=fast_math)
     T = hidden_states.shape[0]
+    if PEER2 and FUSED_SEND2 and T <= _fused2().FUSED_MAX:
+        peer2 = _peer_tier2(hidden_states.device)
+        pf2 = _fused2()
+        hot_ids, has, pos, rows = pf2.route_send2(
+            peer2, topk_ids, topk_weights, st.row_map, st.counts, hidden_states, st.idx, HIDDEN, TOPK,
+            sys.modules["peer_tier2"].SMALL_ROWS)
+        if st.counts is not None:
+            _maybe_copy_counts(st)
+        y = _orig["forward"](self, hidden_states, topk_weights, hot_ids,
+                             activation_clamp=activation_clamp, fast_math=fast_math)
+        pf2.finish2(peer2, y, has, pos, rows)
+        return y
+    if PEER2 and FUSED_SEND and T <= _fused().FUSED_MAX:
+        peer2 = _peer_tier2(hidden_states.device)
+        xq, xs = _quant(hidden_states)
+        hot_ids, has, pos, rows = _fused().route_send(
+            peer2, topk_ids, topk_weights, st.row_map, st.counts, xq, xs, st.idx, HIDDEN, TOPK,
+            sys.modules["peer_tier2"].SMALL_ROWS)
+        if st.counts is not None:
+            _maybe_copy_counts(st)
+        y = _orig["forward"](self, hidden_states, topk_weights, hot_ids,
+                             activation_clamp=activation_clamp, fast_math=fast_math)
+        peer2.finish(y, has, pos, rows)
+        return y
+
     valid = topk_ids >= 0
     if st.counts is not None:
         st.counts.index_add_(0, topk_ids.clamp_min(0).flatten().long(), valid.flatten().long())
@@ -450,9 +514,18 @@ def _patch(module):
     _LOG(f"patched {TARGET}.DeepseekV4MegaMoEExperts (peer mode {PEER_MODE}, check {_check_left})")
 
 
+def _patch_v41(module):
+    if not MHC_OVERLAP:
+        module.supports_mhc_overlap = lambda vllm_config: False
+        _LOG(f"{TARGET_V41}: mHC overlap stream off; decode uses the single-kernel mHC boundary")
+
+
 class _Finder(importlib.abc.MetaPathFinder):
+    def __init__(self, target, patch):
+        self.target, self.patch = target, patch
+
     def find_spec(self, name, path, target=None):
-        if name != TARGET:
+        if name != self.target:
             return None
         sys.meta_path.remove(self)
         spec = importlib.util.find_spec(name)
@@ -460,16 +533,27 @@ class _Finder(importlib.abc.MetaPathFinder):
             return None
         orig_exec = spec.loader.exec_module
 
-        def exec_module(module, _orig_exec=orig_exec):
+        def exec_module(module, _orig_exec=orig_exec, _patch_fn=self.patch):
             _orig_exec(module)
-            _patch(module)
+            _patch_fn(module)
 
         spec.loader.exec_module = exec_module
         return spec
 
 
+def _patch_ll_gemm(module):
+    spec = importlib.util.spec_from_file_location("ll_gemm", os.path.join(os.path.dirname(__file__), "ll_gemm.py"))
+    ll = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ll)
+    ll.patch(module)
+
+
 def install():
-    if TARGET in sys.modules:
-        _patch(sys.modules[TARGET])
-    else:
-        sys.meta_path.insert(0, _Finder())
+    targets = [(TARGET, _patch), (TARGET_V41, _patch_v41)]
+    if LL_GEMM:
+        targets.append(("vllm.model_executor.kernels.linear.mxfp8.flashinfer", _patch_ll_gemm))
+    for target, patch in targets:
+        if target in sys.modules:
+            patch(sys.modules[target])
+        else:
+            sys.meta_path.insert(0, _Finder(target, patch))

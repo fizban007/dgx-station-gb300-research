@@ -14,7 +14,7 @@ are marked as such.
 
 | model | without the sidecar | with the sidecar | quality |
 |---|---|---|---|
-| **DeepSeek-V4.1-Flash** ([M3](deepseek-v4.1-flash/m3/)): MegaMoE hot experts on the GB300, 3,960 cold experts on the RTX PRO 6000 | Al-ENGR's v20 recipe, reproduced here: 583 / 821 tok/s at C8 / C16, 15.8K tok/s prefill | **926 / 1,333 tok/s** at C8 / C16 (1.6×), 219 tok/s per user at C1, 24K prefill | GSM8K-200 98.0% |
+| **DeepSeek-V4.1-Flash** ([M3](deepseek-v4.1-flash/m3/)): MegaMoE hot experts on the GB300, 3,960 cold experts on the RTX PRO 6000 | Al-ENGR's v20 recipe, reproduced here: 583 / 821 tok/s at C8 / C16, 15.8K tok/s prefill | **1,046 / 1,629 tok/s** at C8 / C16 (1.8× / 2.0×), 258–266 tok/s per user at C1, 44.5K prefill (60K on real text); 2026-09-28 | GSM8K-200 98.0%; needle at 114K |
 | **MiMo-V2.6-Pro** (527 GiB, [three tiers](mimo-v2.6-pro/)): 152.8 GiB in HBM, 90.2 GiB on the RTX PRO 6000, the rest in Grace | Al-ENGR's v23 recipe (HBM + Grace): 1,376 tok/s prefill and 37.4 tok/s decode at 11.5K; 63 tok/s at C16 | **2,812** prefill (2×), **39.4** decode; **102** tok/s at C16 | GSM8K-200 98.5%; BFCL dev 92.83% vs his 93.83% (not significant) |
 | DeepSeek-V4.1-Flash, Al-ENGR's v20 plus our sidecar ([details](deepseek-v4.1-flash/)) | 583 / 821 at C8 / C16 | 758 / 1,154 | not gated |
 

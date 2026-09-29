@@ -1,0 +1,24 @@
+=== boot fused-af7f (MEGA_FUSED_SEND=1) 16:20:32
+MEGA_PEER fused decode send on for T <= 64
+ab-fused-af7f: GSM8K 196/200 = 98.0%
+{"C": 1, "rep": 0, "tok_s": 223.4, "passes": 140, "ms_per_pass": 10.17, "wait_ms_per_pass": 0.17, "waits_per_pass": 23.8, "wait_us_per_wait": 7.3, "timeouts": 0}
+{"C": 1, "rep": 1, "tok_s": 232.9, "passes": 135, "ms_per_pass": 10.17, "wait_ms_per_pass": 0.13, "waits_per_pass": 21.8, "wait_us_per_wait": 5.8, "timeouts": 0}
+reasoning C1: 2209 tokens in 6.2 s = 353.9 tok/s (includes TTFT)
+decode                                  1      238.7      254.1      140ms    3.94ms    2.59    0
+decode                                  4      628.6      169.1      164ms    5.91ms    2.60    0
+decode                                  8    1,019.9      131.0      163ms    7.63ms    2.15    0
+decode                                 16    1,460.2       94.0      286ms   10.64ms    1.71    0
+  16384    1    4     2.44    26882.7     0.609     0.606     0.621   26887.0   100    800            65536   0
+=== boot fused-nomhcov-af7f (MEGA_FUSED_SEND=1 MEGA_MHC_OVERLAP=0) 16:33:10
+MEGA_PEER fused decode send on for T <= 64
+MEGA_PEER vllm.models.deepseek_v41.nvidia.model: mHC overlap stream off; decode uses the single-kernel mHC boundary
+ab-fused-nomhcov-af7f: GSM8K 195/200 = 97.5%
+{"C": 1, "rep": 0, "tok_s": 231.5, "passes": 135, "ms_per_pass": 10.23, "wait_ms_per_pass": 0.16, "waits_per_pass": 23.1, "wait_us_per_wait": 6.8, "timeouts": 0}
+{"C": 1, "rep": 1, "tok_s": 224.5, "passes": 139, "ms_per_pass": 10.19, "wait_ms_per_pass": 0.16, "waits_per_pass": 22.6, "wait_us_per_wait": 7.2, "timeouts": 0}
+reasoning C1: 1982 tokens in 5.6 s = 351.0 tok/s (includes TTFT)
+decode                                  1      241.6      256.9      147ms    3.89ms    2.63    0
+decode                                  4      628.7      163.8      172ms    6.11ms    2.56    0
+decode                                  8    1,006.9      130.7      171ms    7.65ms    2.16    0
+decode                                 16    1,447.1       93.0      298ms   10.76ms    1.72    0
+  16384    1    4     2.43    26955.9     0.608     0.607     0.615   26958.9    94    794            65536   0
+chain done

@@ -1,0 +1,56 @@
+tag fused-nomhcov-af7f image vllm/vllm-openai:nightly-af7f9488c2210d67e1033ecdc845b087ee7fe92b 2026-09-28T16:40:27-04:00
+effort: reasoning_effort\":\"high\"
+GPU-c51e3fdb-81ba-2821-7021-a4ae8a599eb7, NVIDIA RTX PRO 6000 Blackwell Max-Q Workstation Edition, P1, 2272 MHz, 13365 MHz, 0x0000000000000000, 65.91 W
+GPU-c146511a-0326-7ddc-4346-998d61a64b34, NVIDIA GB300, P0, 2070 MHz, 3996 MHz, 0x0000000000000000, 215.00 W
+=== gsm8k 16:40:27
+ab-fused-nomhcov-af7f: GSM8K 195/200 = 97.5%
+acceptance: 1.92 tokens/step, 90.6% of drafted, 19034 steps, avg k 1.01, per position [0.91, 0.01, 0.0, 0.0, 0.0]
+=== knee 16:40:54
+[ab-fused-nomhcov-af7f] conc= 1:   227.5 agg tok/s  227.54 per-stream  (runs 227.3/227.8)
+[ab-fused-nomhcov-af7f] conc= 2:   345.4 agg tok/s  172.72 per-stream  (runs 311.6/379.3)
+[ab-fused-nomhcov-af7f] conc= 4:   541.8 agg tok/s  135.46 per-stream  (runs 540.2/543.5)
+[ab-fused-nomhcov-af7f] conc= 8:   908.8 agg tok/s  113.60 per-stream  (runs 898.8/918.8)
+[ab-fused-nomhcov-af7f] conc=12:  1132.2 agg tok/s   94.35 per-stream  (runs 1133.6/1130.9)
+[ab-fused-nomhcov-af7f] conc=16:  1387.7 agg tok/s   86.73 per-stream  (runs 1392.0/1383.5)
+acceptance: 1.72 tokens/step, 41.7% of drafted, 9600 steps, avg k 1.71, per position [0.59, 0.09, 0.02, 0.01, 0.0]
+=== catid 16:41:13
+C1 rc=0
+C4 rc=0
+C8 rc=0
+C16 rc=0
+run                                     C  agg tok/s user tok/s  TTFT p50  ITL p50  accept  err
+decode                                  1      241.6      256.9      147ms    3.89ms    2.63    0
+decode                                  4      628.7      163.8      172ms    6.11ms    2.56    0
+decode                                  8    1,006.9      130.7      171ms    7.65ms    2.16    0
+decode                                 16    1,447.1       93.0      298ms   10.76ms    1.72    0
+acceptance: 1.96 tokens/step, 51.4% of drafted, 94770 steps, avg k 1.87, per position [0.71, 0.18, 0.04, 0.02, 0.01]
+=== wait 16:45:28
+{"C": 1, "rep": 0, "tok_s": 231.5, "passes": 135, "ms_per_pass": 10.23, "wait_ms_per_pass": 0.16, "waits_per_pass": 23.1, "wait_us_per_wait": 6.8, "timeouts": 0}
+{"C": 1, "rep": 1, "tok_s": 224.5, "passes": 139, "ms_per_pass": 10.19, "wait_ms_per_pass": 0.16, "waits_per_pass": 22.6, "wait_us_per_wait": 7.2, "timeouts": 0}
+{"C": 2, "rep": 0, "tok_s": 347.5, "passes": 154, "ms_per_pass": 11.95, "wait_ms_per_pass": 0.04, "waits_per_pass": 31.6, "wait_us_per_wait": 1.4, "timeouts": 0}
+{"C": 2, "rep": 1, "tok_s": 361.7, "passes": 149, "ms_per_pass": 11.8, "wait_ms_per_pass": 0.09, "waits_per_pass": 30.1, "wait_us_per_wait": 3.0, "timeouts": 0}
+{"C": 4, "rep": 0, "tok_s": 548.8, "passes": 159, "ms_per_pass": 14.58, "wait_ms_per_pass": 0.07, "waits_per_pass": 35.8, "wait_us_per_wait": 2.0, "timeouts": 0}
+{"C": 4, "rep": 1, "tok_s": 606.2, "passes": 145, "ms_per_pass": 14.47, "wait_ms_per_pass": 0.04, "waits_per_pass": 35.1, "wait_us_per_wait": 1.2, "timeouts": 0}
+acceptance: 2.27 tokens/step, 25.4% of drafted, 2115 steps, avg k 5.00, per position [0.61, 0.33, 0.17, 0.1, 0.05]
+=== reason 16:45:45
+{"q": 0, "tokens": 115, "tok_s": 308.4, "reasoning_chars": 185, "finish": "stop"}
+{"q": 1, "tokens": 57, "tok_s": 351.1, "reasoning_chars": 149, "finish": "stop"}
+{"q": 2, "tokens": 795, "tok_s": 375.5, "reasoning_chars": 2472, "finish": "stop"}
+{"q": 3, "tokens": 114, "tok_s": 368.5, "reasoning_chars": 233, "finish": "stop"}
+{"q": 4, "tokens": 267, "tok_s": 333.9, "reasoning_chars": 747, "finish": "stop"}
+{"q": 5, "tokens": 188, "tok_s": 329.7, "reasoning_chars": 362, "finish": "stop"}
+{"q": 6, "tokens": 106, "tok_s": 373.4, "reasoning_chars": 180, "finish": "stop"}
+{"q": 7, "tokens": 340, "tok_s": 329.5, "reasoning_chars": 937, "finish": "stop"}
+reasoning C1: 1982 tokens in 5.6 s = 351.0 tok/s (includes TTFT)
+acceptance: 3.80 tokens/step, 56.0% of drafted, 521 steps, avg k 5.00, per position [0.84, 0.68, 0.54, 0.42, 0.33]
+=== prefill 16:45:50
+target=http://127.0.0.1:30006 points=1 warmup=1 flush_cache=True timeout=1800s seed=1234 output=/home/jasonc/ds41f-exp/runs/ab-fused-nomhcov-af7f/prefill/prefill.jsonl label='ab-fused-nomhcov-af7f'
+server: (no /get_model_info or /get_server_info)
+    isl conc    n   wall_s  agg_tok/s ttft_mean  ttft_p50  ttft_p99 req_tok/s util%      W metrics_prompt_d err
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+  16384    1    4     2.43    26955.9     0.608     0.607     0.615   26958.9    94    794            65536   0
+done.
+acceptance: no drafts in this phase
+GPU-c51e3fdb-81ba-2821-7021-a4ae8a599eb7, P1, 2092 MHz, 0x0000000000000000
+GPU-c146511a-0326-7ddc-4346-998d61a64b34, P0, 2070 MHz, 0x0000000000000000
+ab suite done fused-nomhcov-af7f

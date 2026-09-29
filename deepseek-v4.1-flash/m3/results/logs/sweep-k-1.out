@@ -1,0 +1,39 @@
+=== bench k521 num_speculative_tokens_per_batch_size\":[[1,4,5],[5,8,2],[9,24,1]] 17:43:23
+{"C": 1, "agg_tok_s": 286.1, "per_stream_tok_s": 286.1, "median_request_decode_tok_s": 374.4, "requests_done": 37, "accept_tokens_per_step": 3.03, "avg_k": 5.0, "accept_per_position": [0.72, 0.51, 0.37, 0.26, 0.18]}
+{"C": 4, "agg_tok_s": 680.3, "per_stream_tok_s": 170.1, "median_request_decode_tok_s": 221.4, "requests_done": 99, "accept_tokens_per_step": 2.98, "avg_k": 5.0, "accept_per_position": [0.72, 0.51, 0.35, 0.24, 0.16]}
+{"C": 8, "agg_tok_s": 969.2, "per_stream_tok_s": 121.2, "median_request_decode_tok_s": 135.5, "requests_done": 110, "accept_tokens_per_step": 2.25, "avg_k": 2.0, "accept_per_position": [0.73, 0.52, 0.0, 0.0, 0.0]}
+{"C": 12, "agg_tok_s": 1059.2, "per_stream_tok_s": 88.3, "median_request_decode_tok_s": 92.5, "requests_done": 154, "accept_tokens_per_step": 1.75, "avg_k": 1.0, "accept_per_position": [0.75, 0.0, 0.0, 0.0, 0.0]}
+{"C": 16, "agg_tok_s": 1257.9, "per_stream_tok_s": 78.6, "median_request_decode_tok_s": 82.1, "requests_done": 172, "accept_tokens_per_step": 1.76, "avg_k": 1.0, "accept_per_position": [0.76, 0.0, 0.0, 0.0, 0.0]}
+{"C": 24, "agg_tok_s": 1516.4, "per_stream_tok_s": 63.2, "median_request_decode_tok_s": 63.1, "requests_done": 199, "accept_tokens_per_step": 1.75, "avg_k": 1.0, "accept_per_position": [0.75, 0.0, 0.0, 0.0, 0.0]}
+decode                                  8    1,001.2      129.8      256ms    7.71ms    2.16    0
+decode                                 16    1,434.0       92.3      290ms   10.84ms    1.72    0
+[k-k521] conc= 1:   218.7 agg tok/s  218.72 per-stream  (runs 215.4/222.0)
+[k-k521] conc= 4:   563.3 agg tok/s  140.84 per-stream  (runs 558.2/568.5)
+[k-k521] conc= 8:   935.8 agg tok/s  116.97 per-stream  (runs 951.1/920.4)
+=== boot k532 KSCHED=[[1,4,5],[5,8,3],[9,24,2]] 17:53:46
+=== bench k532 num_speculative_tokens_per_batch_size\":[[1,4,5],[5,8,3],[9,24,2]] 18:01:01
+{"C": 1, "agg_tok_s": 269.6, "per_stream_tok_s": 269.6, "median_request_decode_tok_s": 370.2, "requests_done": 37, "accept_tokens_per_step": 2.86, "avg_k": 5.0, "accept_per_position": [0.7, 0.48, 0.32, 0.22, 0.14]}
+{"C": 4, "agg_tok_s": 691.0, "per_stream_tok_s": 172.7, "median_request_decode_tok_s": 220.2, "requests_done": 102, "accept_tokens_per_step": 3.02, "avg_k": 5.0, "accept_per_position": [0.73, 0.51, 0.36, 0.25, 0.17]}
+{"C": 8, "agg_tok_s": 1023.4, "per_stream_tok_s": 127.9, "median_request_decode_tok_s": 145.9, "requests_done": 135, "accept_tokens_per_step": 2.6, "avg_k": 3.0, "accept_per_position": [0.73, 0.51, 0.36, 0.0, 0.0]}
+{"C": 12, "agg_tok_s": 1173.5, "per_stream_tok_s": 97.8, "median_request_decode_tok_s": 108.0, "requests_done": 169, "accept_tokens_per_step": 2.29, "avg_k": 2.0, "accept_per_position": [0.75, 0.54, 0.0, 0.0, 0.0]}
+{"C": 16, "agg_tok_s": 1375.5, "per_stream_tok_s": 86.0, "median_request_decode_tok_s": 93.0, "requests_done": 194, "accept_tokens_per_step": 2.27, "avg_k": 2.0, "accept_per_position": [0.74, 0.53, 0.0, 0.0, 0.0]}
+{"C": 24, "agg_tok_s": 1564.1, "per_stream_tok_s": 65.2, "median_request_decode_tok_s": 68.8, "requests_done": 225, "accept_tokens_per_step": 2.28, "avg_k": 2.0, "accept_per_position": [0.74, 0.54, 0.0, 0.0, 0.0]}
+decode                                  8    1,039.7      136.5      173ms    7.32ms    2.37    0
+decode                                 16    1,551.2      100.0      289ms   10.00ms    2.15    0
+[k-k532] conc= 1:   209.6 agg tok/s  209.58 per-stream  (runs 209.7/209.5)
+[k-k532] conc= 4:   570.5 agg tok/s  142.63 per-stream  (runs 567.1/573.9)
+[k-k532] conc= 8:   883.4 agg tok/s  110.42 per-stream  (runs 867.3/899.5)
+=== boot k543 KSCHED=[[1,4,5],[5,8,4],[9,24,3]] 18:11:33
+=== bench k543 num_speculative_tokens_per_batch_size\":[[1,4,5],[5,8,4],[9,24,3]] 18:18:52
+{"C": 1, "agg_tok_s": 277.3, "per_stream_tok_s": 277.3, "median_request_decode_tok_s": 373.5, "requests_done": 38, "accept_tokens_per_step": 2.96, "avg_k": 5.0, "accept_per_position": [0.72, 0.5, 0.35, 0.23, 0.15]}
+{"C": 4, "agg_tok_s": 691.5, "per_stream_tok_s": 172.9, "median_request_decode_tok_s": 215.4, "requests_done": 100, "accept_tokens_per_step": 3.0, "avg_k": 5.0, "accept_per_position": [0.72, 0.51, 0.36, 0.24, 0.17]}
+{"C": 8, "agg_tok_s": 1021.7, "per_stream_tok_s": 127.7, "median_request_decode_tok_s": 154.3, "requests_done": 113, "accept_tokens_per_step": 2.83, "avg_k": 4.0, "accept_per_position": [0.72, 0.5, 0.35, 0.25, 0.0]}
+{"C": 12, "agg_tok_s": 1192.1, "per_stream_tok_s": 99.3, "median_request_decode_tok_s": 113.8, "requests_done": 170, "accept_tokens_per_step": 2.62, "avg_k": 3.0, "accept_per_position": [0.73, 0.52, 0.37, 0.0, 0.0]}
+{"C": 16, "agg_tok_s": 1353.7, "per_stream_tok_s": 84.6, "median_request_decode_tok_s": 96.3, "requests_done": 195, "accept_tokens_per_step": 2.62, "avg_k": 3.0, "accept_per_position": [0.73, 0.52, 0.37, 0.0, 0.0]}
+{"C": 24, "agg_tok_s": 1590.9, "per_stream_tok_s": 66.3, "median_request_decode_tok_s": 73.5, "requests_done": 234, "accept_tokens_per_step": 2.62, "avg_k": 3.0, "accept_per_position": [0.73, 0.52, 0.37, 0.0, 0.0]}
+decode                                  8    1,013.5      133.2      181ms    7.51ms    2.55    0
+decode                                 16    1,588.9      103.2      294ms    9.69ms    2.41    0
+[k-k543] conc= 1:   223.4 agg tok/s  223.38 per-stream  (runs 229.7/217.0)
+[k-k543] conc= 4:   534.6 agg tok/s  133.65 per-stream  (runs 534.0/535.2)
+[k-k543] conc= 8:   840.3 agg tok/s  105.04 per-stream  (runs 845.7/835.0)
+sweep done

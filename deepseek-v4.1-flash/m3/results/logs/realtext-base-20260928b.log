@@ -1,0 +1,7 @@
+corpus 1.3 MB, 360953 tokens
+16384 tokens:    38093 tok/s  ttft 0.430s  cold rows/token 0.214
+16384 tokens:    38767 tok/s  ttft 0.423s  cold rows/token 0.228
+16384 tokens:    38859 tok/s  ttft 0.422s  cold rows/token 0.234
+65536 tokens:    37349 tok/s  ttft 1.755s  cold rows/token 0.303
+65536 tokens:    36881 tok/s  ttft 1.777s  cold rows/token 0.276
+65536 tokens:    37412 tok/s  ttft 1.752s  cold rows/token 0.237

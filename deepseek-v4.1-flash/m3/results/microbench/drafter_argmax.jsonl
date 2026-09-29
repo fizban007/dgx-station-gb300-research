@@ -1,0 +1,7 @@
+{"rows": 1, "torch_argmax_us": 25.19, "two_stage_us": 11.26, "equal": true}
+{"rows": 2, "torch_argmax_us": 24.99, "two_stage_us": 10.45, "equal": true}
+{"rows": 4, "torch_argmax_us": 25.22, "two_stage_us": 12.67, "equal": true}
+{"rows": 8, "torch_argmax_us": 25.17, "two_stage_us": 15.58, "equal": true}
+{"rows": 12, "torch_argmax_us": 25.4, "two_stage_us": 16.59, "equal": true}
+{"rows": 16, "torch_argmax_us": 25.17, "two_stage_us": 20.97, "equal": true}
+{"rows": 24, "torch_argmax_us": 25.15, "two_stage_us": 23.96, "equal": true}

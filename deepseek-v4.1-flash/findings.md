@@ -163,3 +163,106 @@ not covered.
 6. Before any claim or upstreaming: broader quality gates (DSpark acceptance by class, BFCL tool calling,
    long-context retrieval, greedy parity against the 6000-off path), the MegaMoE-vs-image control, and
    calibration on real traffic.
+
+## 6. Decode profile and the hook's send path (2026-09-28)
+
+Image nightly-7f1a5398 → nightly-af7f9488 (same flags, effort pinned to 75 on both arms, `megamoe/ab-suite.sh`):
+decode within noise (catid C1 222 → 226 per user), 16K prefill 25.8K → 26.9K, GSM8K-200 97.0 → 98.0%.
+
+Nsight Systems with CUDA-graph node tracing (`PROF=nsys`, `megamoe/nsys_decode.py`) on reasoning decode:
+
+| C1 step (6-token verify), 12.0 ms profiled | ms/step | note |
+| --- | ---: | --- |
+| MegaMoE (hot experts + shared) | 3.7 | ~86 us/layer, near HBM bandwidth for the experts touched |
+| hook glue between router and MegaMoE | ~1.6 | ~25 PyTorch ops/layer: masks, counts, row-map split, any/cumsum/sum, casts |
+| mHC (TileLang overlap path at T <= 16) | 1.8 summed | a side stream hides most of it; forcing the single-kernel path changed nothing |
+| sparse attention (FlashMLA mega kernel) | 1.35 | ~30 us/layer, one CTA per query token; vLLM measured split-KV equal at small s_q |
+| dense FP8/FP4 GEMMs | ~1.8 | |
+| peer publish/wait/add | 0.5 | the actual stall on the 6000 is 0.13 ms/step |
+
+At C8 (24 tokens) MegaMoE is 52% of an 18.6 ms step, at HBM bandwidth.
+
+`megamoe/hook/peer_fused.py` replaces the glue plus `_pack`/`_publish` with one single-CTA kernel for T <= 64
+(bit-identical on 176 cases, `megamoe/test_peer_fused.py`; 34-47 → 5-13 us per layer under CUDA graphs):
+
+| catid decode (8K in, 1,024 out) | C1 per user | C4 | C8 | C16 | reasoning C1 | GSM8K |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| af7f9488 | 225.8 | 579.5 | 931.9 | 1,328.1 | 307 | 98.0% |
+| af7f9488 + fused send | **254.1** | **628.6** | **1,019.9** | **1,460.2** | **354** | 98.0% |
+| catid, 2× GB300 (PP2 + DSpark) | 248.5 | | | 1,677.7 | | |
+
+DSpark acceptance on reasoning text is 3.8 tokens/step at k=5 (catid 2.6, prose 2.3); the k schedule was tuned on
+catid/prose.
+
+DSpark draft-length schedule, re-swept after the fused send on closed-loop reasoning traffic (`megamoe/reason_bench.py`,
+thinking on at `high`, T=1.0/top_p 0.95; `megamoe/sweep-k.sh`). DSpark's block is 5 tokens, so k tops out at 5.
+
+| k by batch size (≤4 / 5-8 / 9-24) | reasoning C8 / C12 / C16 / C24 | catid C8 / C16 | prose knee C8 / C16 |
+| --- | ---: | ---: | ---: |
+| 5 / 2 / 1 (previous) | 969 / 1,059 / 1,258 / 1,516 | 1,001 / 1,434 | 936 / 1,408 |
+| 5 / 3 / 2 | 1,023 / 1,174 / 1,376 / 1,564 | 1,040 / 1,551 | 883 / 1,435 |
+| 5 / 4 / 3 | 1,022 / 1,192 / 1,354 / 1,591 | 1,014 / 1,589 | 840 / 1,431 |
+| **5 / 3 / 2 + graph sizes 20/28/36/56/72/80 (production)** | **1,004 / 1,187 / 1,406 / 1,608** | **1,060 / 1,581** | 896 / 1,449 |
+
+C1/C4 use k=5 in every arm (reasoning C1 270-286 tok/s is run-to-run noise at T=1). Padded graph tokens still route
+through experts, so the finer capture sizes matter once k+1 stops dividing the old sizes (C24 × 3 = 72 was padded to 96).
+
+## 7. Drafting, dense GEMMs and the hook's send/receive path (2026-09-28 evening)
+
+Same image (af7f9488). Arms benchmarked with `megamoe/sweep-k.sh` (reasoning closed loop at T=1, catid, prose knee); raw
+output in `megamoe/logs/sweep-probdraft.out` and `megamoe/logs/sweep-pd-k.out`.
+
+**Kept (now the `launch-m3.sh` defaults):**
+- `"draft_sample_method":"probabilistic"`. The drafter samples instead of taking its argmax, and rejection uses the
+  full draft distribution. At T=1 acceptance of the first draft position goes 0.73 → 0.80; reasoning C1 +7%, C4 +12%,
+  C8 +6%, C24 +6%. Greedy (T=0) and prose traffic are within noise.
+- DSpark k schedule 5/3/3 (k=3 above 8 streams, was 2): reasoning C12 1,224 → 1,312, C16 1,432 → 1,504, C24 1,647 →
+  1,747. 5/4/3 matched it on reasoning and cost catid/prose 2–3% at C8.
+- `MEGA_LL_GEMM=1` (`megamoe/hook/ll_gemm.py`): MXFP8 dense linears with M ≤ 8 (wq_a+wkv, wq_b, wo_b) run on
+  FlashInfer's split-K `cutedsl_low_latency` kernel instead of `cute-dsl`, whose persistent grid launches one CTA per
+  128-wide N tile (40 CTAs for wo_b). Microbench at M=6: 25.6 → 20.4 µs per layer; C1 pass 10.03 → 9.96 ms.
+- `MEGA_FUSED_SEND=2` (`megamoe/hook/peer_fused2.py`): the send quantizes the rows it packs itself and runs one CTA per
+  token; wait + scatter-add are one launch. Bit-identical to the previous path (`megamoe/test_peer_fused2.py`, 176
+  cases; the quantizer matches FlashInfer byte for byte). Microbench: −0.075 ms/step at 6 tokens, −0.2 at 24, −0.4 at
+  48–64. C1 pass 9.96 → 9.87 ms.
+
+| | Start of evening (5/3/2, greedy drafts) | Now |
+| --- | ---: | ---: |
+| reasoning C1 / C8 / C16 (T=1) | 287 / 1,024 / 1,435 | **306 / 1,102 / 1,535** |
+| catid C1 per user / C16 | 254 / 1,558 | **266 / 1,613** |
+| GSM8K-200 | 98.0% | 98.0% |
+
+**Measured and dropped:**
+- FlashMLA mega attention is 26.7 µs per layer whether it gets 1 or 96 query tokens: one CTA per token walks 640 keys
+  in blocks of 64 at ~2.7 µs per block. Padding to the 128-head 2-CTA kernel saves ~4 µs per layer only at ≤ 12 tokens;
+  an NVFP4 compressed cache does not change it; deepseek-ai/FlashMLA#227 (built for sm_103a in `flashmla-227/`) gives
+  nothing at decode sizes because its overlaps need many queries per CTA. Splitting a token's keys across a CTA
+  cluster remains the one large decode lever (~0.6 ms/step, C1–C24).
+- MXFP8 at M > 8: TRT-LLM, cutlass and cuDNN are no faster than cute-dsl; a Triton split-K kernel
+  (`megamoe/hook/mxfp8_splitk.py`, native block-scaled tcgen05 MMA) is correct but 25–60% slower (cp.async loads).
+
+## 8. Decoder SWA bounded replay (vllm#58132, as an overlay; 2026-09-28 late)
+
+vllm#58132 (open, approved by a maintainer, not merged) lets DS-V4.1's layers 21–39, which own only sliding-window KV
+and take their long-range context from layer 20's compressed KV, run on each request's last 128 tokens in eager
+prefill steps. It applies cleanly to af7f9488 (which already has the encoder side, #56227, and #58586). The patched
+files live in `megamoe/overlay-58132/tree` and are bind-mounted by `swap-to-m3v2.sh` (default; `REPLAY_OVERLAY=0`
+boots stock). The boot log line "Decoder SWA bounded replay ... layers 21-39" confirms it is on; it stays on with DSpark.
+
+| | Before | With #58132 |
+| --- | ---: | ---: |
+| real-text prefill 16K (tok/s, TTFT) | 38.6K, 0.42 s | **60.5K, 0.27 s** |
+| real-text prefill 64K | 37.2K, 1.76 s | **60.0K, 1.09 s** |
+| catid random-id prefill 16K / 128K, C1 | 26.9K / 23.3K | **44.5K / 44.0K** |
+| catid random-id prefill 16K / 64K / 128K, C4 | | 46.6K / 46.2K / 44.8K |
+| reasoning decode C1 / C8 / C16 | 306 / 1,102 / 1,535 | 312 / 1,098 / 1,519 |
+| catid C16 | 1,613 | 1,629 |
+| GSM8K-200 | 98.0% | 98.0% |
+| needle at 57K / 114K tokens (3 depths each) | 6/6 | 6/6 |
+
+catid's two-GB300 PP2 numbers for comparison: 35.9K at 16K and 56.0K at 128K (C1).
+
+The replay is an approximation at the window edge, not an exact rewrite. Greedy 48-token continuations of six 16K/64K
+real-text prompts (`megamoe/longctx_check.py`, per-run `cache_salt`) differ from the stock server by no more than the
+stock server differs from itself (the b12x cold tier is not bitwise reproducible): identical prefixes of 9–48 tokens
+vs 1–48, all first-token top-5 sets overlapping in 4–5 of 5.

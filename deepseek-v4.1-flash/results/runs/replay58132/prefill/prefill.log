@@ -1,0 +1,16 @@
+target=http://127.0.0.1:30006 points=6 warmup=1 flush_cache=True timeout=1800s seed=1234 output=/home/jasonc/ds41f-exp/runs/replay58132/prefill/prefill.jsonl label='replay58132'
+server: (no /get_model_info or /get_server_info)
+    isl conc    n   wall_s  agg_tok/s ttft_mean  ttft_p50  ttft_p99 req_tok/s util%      W metrics_prompt_d err
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+  16384    1    4     1.47    44535.2     0.368     0.368     0.369   44538.0   100    627            65536   0
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+  16384    4   16     5.63    46575.1     1.317     1.365     1.673   12888.2   100    842           262144   0
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+  65536    1    4     5.84    44849.7     1.461     1.460     1.475   44852.2    96    833           262144   0
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+  65536    4   16    22.68    46224.6     5.260     5.630     6.311   13326.6   100    864          1048576   0
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+ 131072    1    4    11.92    43984.2     2.980     2.980     2.988   43984.9    93    840           524288   0
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+ 131072    4   16    46.81    44798.4    10.797    11.648    12.700   13063.1   100    871          2097152   0
+done.

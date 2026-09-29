@@ -1,0 +1,15 @@
+# tools/test_peer_fused2.py (after gating the stats atomics and dropping the second fence)
+quantizer n=1: 0 value bytes and 0 scale bytes differ from FlashInfer
+quantizer n=7: 0 value bytes and 0 scale bytes differ from FlashInfer
+quantizer n=64: 0 value bytes and 0 scale bytes differ from FlashInfer
+176/176 cases bit-identical
+T=  1: old (quant+send+wait+scatter)   9.2 us/layer, new   8.5 us/layer, saves 0.028 ms/step
+T=  6: old (quant+send+wait+scatter)   9.9 us/layer, new   8.0 us/layer, saves 0.075 ms/step
+T= 12: old (quant+send+wait+scatter)  10.8 us/layer, new   8.4 us/layer, saves 0.096 ms/step
+T= 24: old (quant+send+wait+scatter)  13.7 us/layer, new   8.6 us/layer, saves 0.203 ms/step
+T= 48: old (quant+send+wait+scatter)  19.3 us/layer, new   9.2 us/layer, saves 0.404 ms/step
+T= 64: old (quant+send+wait+scatter)  19.9 us/layer, new   9.2 us/layer, saves 0.428 ms/step
+# tools/pf2_pieces.py: us per layer per piece (40 layers per graph)
+1 {'quant': 1.22, 'send_old': 4.7, 'finish_old': 2.88, 'send2': 5.29, 'finish2': 2.87, 'empty_triton': 1.17}
+6 {'quant': 1.22, 'send_old': 5.13, 'finish_old': 2.97, 'send2': 5.52, 'finish2': 2.86, 'empty_triton': 1.13}
+48 {'quant': 1.27, 'send_old': 11.72, 'finish_old': 3.13, 'send2': 5.64, 'finish2': 2.85, 'empty_triton': 1.24}

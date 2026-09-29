@@ -1,0 +1,45 @@
+{"shape": "wq_a+wkv", "N": 1792, "K": 5120, "M": 1, "cute-dsl": 4.34, "cute-dsl_TBps": 2.11, "cutedsl_low_latency": 3.53, "cutedsl_low_latency_TBps": 2.6, "cutlass": 7.79, "cutlass_TBps": 1.18, "cudnn": 8.68, "cudnn_TBps": 1.06}
+{"shape": "wq_a+wkv", "N": 1792, "K": 5120, "M": 2, "cute-dsl": 4.63, "cute-dsl_TBps": 1.98, "cutedsl_low_latency": 3.4, "cutedsl_low_latency_TBps": 2.7, "cutlass": 7.72, "cutlass_TBps": 1.19, "cudnn": 8.7, "cudnn_TBps": 1.05}
+{"shape": "wq_a+wkv", "N": 1792, "K": 5120, "M": 4, "cute-dsl": 4.39, "cute-dsl_TBps": 2.09, "cutedsl_low_latency": 3.39, "cutedsl_low_latency_TBps": 2.7, "cutlass": 7.7, "cutlass_TBps": 1.19, "cudnn": 8.62, "cudnn_TBps": 1.06}
+{"shape": "wq_a+wkv", "N": 1792, "K": 5120, "M": 6, "cute-dsl": 4.64, "cute-dsl_TBps": 1.98, "cutedsl_low_latency": 3.39, "cutedsl_low_latency_TBps": 2.71, "cutlass": 7.7, "cutlass_TBps": 1.19, "cudnn": 8.62, "cudnn_TBps": 1.06}
+{"shape": "wq_a+wkv", "N": 1792, "K": 5120, "M": 8, "cute-dsl": 4.64, "cute-dsl_TBps": 1.98, "cutedsl_low_latency": 3.39, "cutedsl_low_latency_TBps": 2.71, "cutlass": 7.71, "cutlass_TBps": 1.19, "cudnn": 8.63, "cudnn_TBps": 1.06}
+{"shape": "wq_a+wkv", "N": 1792, "K": 5120, "M": 12, "cute-dsl": 4.95, "cute-dsl_TBps": 1.85, "cutlass": 7.7, "cutlass_TBps": 1.19, "cudnn": 8.63, "cudnn_TBps": 1.06}
+{"shape": "wq_a+wkv", "N": 1792, "K": 5120, "M": 16, "cute-dsl": 4.95, "cute-dsl_TBps": 1.85, "cutlass": 7.7, "cutlass_TBps": 1.19, "cudnn": 8.65, "cudnn_TBps": 1.06}
+{"shape": "wq_a+wkv", "N": 1792, "K": 5120, "M": 24, "cute-dsl": 7.07, "cute-dsl_TBps": 1.3, "cutlass": 7.69, "cutlass_TBps": 1.19, "cudnn": 8.75, "cudnn_TBps": 1.05}
+{"shape": "wq_a+wkv", "N": 1792, "K": 5120, "M": 32, "cute-dsl": 7.08, "cute-dsl_TBps": 1.3, "cutlass": 7.7, "cutlass_TBps": 1.19, "cudnn": 8.78, "cudnn_TBps": 1.04}
+{"shape": "wq_a+wkv", "N": 1792, "K": 5120, "M": 48, "cute-dsl": 7.53, "cute-dsl_TBps": 1.22, "cutlass": 7.5, "cutlass_TBps": 1.22, "cudnn": 8.82, "cudnn_TBps": 1.04}
+{"shape": "wq_a+wkv", "N": 1792, "K": 5120, "M": 64, "cute-dsl": 7.53, "cute-dsl_TBps": 1.22, "cutlass": 7.51, "cutlass_TBps": 1.22, "cudnn": 8.84, "cudnn_TBps": 1.04}
+{"shape": "wq_b", "N": 32768, "K": 1280, "M": 1, "cute-dsl": 9.45, "cute-dsl_TBps": 4.44, "cutedsl_low_latency": 7.32, "cutedsl_low_latency_TBps": 5.73, "cutlass": 10.82, "cutlass_TBps": 3.88, "cudnn": 10.28, "cudnn_TBps": 4.08}
+{"shape": "wq_b", "N": 32768, "K": 1280, "M": 2, "cute-dsl": 9.34, "cute-dsl_TBps": 4.49, "cutedsl_low_latency": 7.69, "cutedsl_low_latency_TBps": 5.45, "cutlass": 10.84, "cutlass_TBps": 3.87, "cudnn": 10.69, "cudnn_TBps": 3.92}
+{"shape": "wq_b", "N": 32768, "K": 1280, "M": 4, "cute-dsl": 10.46, "cute-dsl_TBps": 4.01, "cutedsl_low_latency": 9.38, "cutedsl_low_latency_TBps": 4.47, "cutlass": 10.81, "cutlass_TBps": 3.88, "cudnn": 10.27, "cudnn_TBps": 4.08}
+{"shape": "wq_b", "N": 32768, "K": 1280, "M": 6, "cute-dsl": 9.28, "cute-dsl_TBps": 4.52, "cutedsl_low_latency": 7.53, "cutedsl_low_latency_TBps": 5.57, "cutlass": 10.9, "cutlass_TBps": 3.85, "cudnn": 11.42, "cudnn_TBps": 3.67}
+{"shape": "wq_b", "N": 32768, "K": 1280, "M": 8, "cute-dsl": 9.28, "cute-dsl_TBps": 4.52, "cutedsl_low_latency": 7.49, "cutedsl_low_latency_TBps": 5.6, "cutlass": 10.83, "cutlass_TBps": 3.87, "cudnn": 10.8, "cudnn_TBps": 3.89}
+{"shape": "wq_b", "N": 32768, "K": 1280, "M": 12, "cute-dsl": 9.58, "cute-dsl_TBps": 4.38, "cutlass": 10.82, "cutlass_TBps": 3.88, "cudnn": 10.72, "cudnn_TBps": 3.91}
+{"shape": "wq_b", "N": 32768, "K": 1280, "M": 16, "cute-dsl": 9.69, "cute-dsl_TBps": 4.33, "cutlass": 10.79, "cutlass_TBps": 3.89, "cudnn": 10.5, "cudnn_TBps": 4.0}
+{"shape": "wq_b", "N": 32768, "K": 1280, "M": 24, "cute-dsl": 9.79, "cute-dsl_TBps": 4.29, "cutlass": 10.9, "cutlass_TBps": 3.85, "cudnn": 10.98, "cudnn_TBps": 3.82}
+{"shape": "wq_b", "N": 32768, "K": 1280, "M": 32, "cute-dsl": 9.69, "cute-dsl_TBps": 4.33, "cutlass": 10.84, "cutlass_TBps": 3.87, "cudnn": 10.99, "cudnn_TBps": 3.82}
+{"shape": "wq_b", "N": 32768, "K": 1280, "M": 48, "cute-dsl": 9.56, "cute-dsl_TBps": 4.39, "cutlass": 10.8, "cutlass_TBps": 3.88, "cudnn": 10.26, "cudnn_TBps": 4.09}
+{"shape": "wq_b", "N": 32768, "K": 1280, "M": 64, "cute-dsl": 9.52, "cute-dsl_TBps": 4.41, "cutlass": 10.83, "cutlass_TBps": 3.87, "cudnn": 10.34, "cudnn_TBps": 4.06}
+{"shape": "wo_b", "N": 5120, "K": 8192, "M": 1, "cute-dsl": 11.07, "cute-dsl_TBps": 3.79, "cutedsl_low_latency": 9.39, "cutedsl_low_latency_TBps": 4.47, "cutlass": 13.35, "cutlass_TBps": 3.14, "cudnn": 13.95, "cudnn_TBps": 3.01}
+{"shape": "wo_b", "N": 5120, "K": 8192, "M": 2, "cute-dsl": 11.68, "cute-dsl_TBps": 3.59, "cutedsl_low_latency": 9.4, "cutedsl_low_latency_TBps": 4.46, "cutlass": 13.35, "cutlass_TBps": 3.14, "cudnn": 14.01, "cudnn_TBps": 2.99}
+{"shape": "wo_b", "N": 5120, "K": 8192, "M": 4, "cute-dsl": 9.43, "cute-dsl_TBps": 4.45, "cutedsl_low_latency": 9.12, "cutedsl_low_latency_TBps": 4.6, "cutlass": 13.33, "cutlass_TBps": 3.15, "cudnn": 14.15, "cudnn_TBps": 2.96}
+{"shape": "wo_b", "N": 5120, "K": 8192, "M": 6, "cute-dsl": 11.63, "cute-dsl_TBps": 3.61, "cutedsl_low_latency": 9.43, "cutedsl_low_latency_TBps": 4.45, "cutlass": 13.33, "cutlass_TBps": 3.15, "cudnn": 14.09, "cudnn_TBps": 2.98}
+{"shape": "wo_b", "N": 5120, "K": 8192, "M": 8, "cute-dsl": 11.62, "cute-dsl_TBps": 3.61, "cutedsl_low_latency": 9.38, "cutedsl_low_latency_TBps": 4.47, "cutlass": 13.39, "cutlass_TBps": 3.13, "cudnn": 14.14, "cudnn_TBps": 2.97}
+{"shape": "wo_b", "N": 5120, "K": 8192, "M": 12, "cute-dsl": 11.24, "cute-dsl_TBps": 3.73, "cutlass": 13.33, "cutlass_TBps": 3.15, "cudnn": 14.13, "cudnn_TBps": 2.97}
+{"shape": "wo_b", "N": 5120, "K": 8192, "M": 16, "cute-dsl": 11.23, "cute-dsl_TBps": 3.74, "cutlass": 13.35, "cutlass_TBps": 3.14, "cudnn": 14.19, "cudnn_TBps": 2.96}
+{"shape": "wo_b", "N": 5120, "K": 8192, "M": 24, "cute-dsl": 10.95, "cute-dsl_TBps": 3.83, "cutlass": 13.32, "cutlass_TBps": 3.15, "cudnn": 15.6, "cudnn_TBps": 2.69}
+{"shape": "wo_b", "N": 5120, "K": 8192, "M": 32, "cute-dsl": 11.0, "cute-dsl_TBps": 3.81, "cutlass": 13.34, "cutlass_TBps": 3.15, "cudnn": 16.2, "cudnn_TBps": 2.59}
+{"shape": "wo_b", "N": 5120, "K": 8192, "M": 48, "cute-dsl": 10.99, "cute-dsl_TBps": 3.82, "cutlass": 13.1, "cutlass_TBps": 3.2, "cudnn": 14.37, "cudnn_TBps": 2.92}
+{"shape": "wo_b", "N": 5120, "K": 8192, "M": 64, "cute-dsl": 11.04, "cute-dsl_TBps": 3.8, "cutlass": 13.08, "cutlass_TBps": 3.21, "cudnn": 14.47, "cudnn_TBps": 2.9}
+{"shape": "dspark_fc", "N": 5120, "K": 15360, "M": 1, "cute-dsl": 15.73, "cute-dsl_TBps": 5.0, "cutedsl_low_latency": 15.77, "cutedsl_low_latency_TBps": 4.99, "cutlass": 22.5, "cutlass_TBps": 3.49, "cudnn": 21.17, "cudnn_TBps": 3.71}
+{"shape": "dspark_fc", "N": 5120, "K": 15360, "M": 2, "cute-dsl": 15.78, "cute-dsl_TBps": 4.98, "cutedsl_low_latency": 16.02, "cutedsl_low_latency_TBps": 4.91, "cutlass": 22.53, "cutlass_TBps": 3.49, "cudnn": 21.43, "cudnn_TBps": 3.67}
+{"shape": "dspark_fc", "N": 5120, "K": 15360, "M": 4, "cute-dsl": 15.73, "cute-dsl_TBps": 5.0, "cutedsl_low_latency": 15.65, "cutedsl_low_latency_TBps": 5.02, "cutlass": 22.57, "cutlass_TBps": 3.49, "cudnn": 21.51, "cudnn_TBps": 3.66}
+{"shape": "dspark_fc", "N": 5120, "K": 15360, "M": 6, "cute-dsl": 15.82, "cute-dsl_TBps": 4.97, "cutedsl_low_latency": 15.78, "cutedsl_low_latency_TBps": 4.98, "cutlass": 22.63, "cutlass_TBps": 3.47, "cudnn": 21.7, "cudnn_TBps": 3.62}
+{"shape": "dspark_fc", "N": 5120, "K": 15360, "M": 8, "cute-dsl": 15.89, "cute-dsl_TBps": 4.95, "cutedsl_low_latency": 15.81, "cutedsl_low_latency_TBps": 4.98, "cutlass": 22.65, "cutlass_TBps": 3.47, "cudnn": 21.85, "cudnn_TBps": 3.6}
+{"shape": "dspark_fc", "N": 5120, "K": 15360, "M": 12, "cute-dsl": 21.31, "cute-dsl_TBps": 3.69, "cutlass": 22.12, "cutlass_TBps": 3.55, "cudnn": 21.99, "cudnn_TBps": 3.58}
+{"shape": "dspark_fc", "N": 5120, "K": 15360, "M": 16, "cute-dsl": 21.29, "cute-dsl_TBps": 3.69, "cutlass": 22.21, "cutlass_TBps": 3.54, "cudnn": 22.08, "cudnn_TBps": 3.56}
+{"shape": "dspark_fc", "N": 5120, "K": 15360, "M": 24, "cute-dsl": 21.55, "cute-dsl_TBps": 3.65, "cutlass": 22.27, "cutlass_TBps": 3.53, "cudnn": 22.4, "cudnn_TBps": 3.51}
+{"shape": "dspark_fc", "N": 5120, "K": 15360, "M": 32, "cute-dsl": 21.55, "cute-dsl_TBps": 3.65, "cutlass": 22.35, "cutlass_TBps": 3.52, "cudnn": 22.7, "cudnn_TBps": 3.46}
+{"shape": "dspark_fc", "N": 5120, "K": 15360, "M": 48, "cute-dsl": 18.9, "cute-dsl_TBps": 4.16, "cutlass": 22.44, "cutlass_TBps": 3.51, "cudnn": 22.0, "cudnn_TBps": 3.58}
+{"shape": "dspark_fc", "N": 5120, "K": 15360, "M": 64, "cute-dsl": 18.97, "cute-dsl_TBps": 4.15, "cutlass": 22.45, "cutlass_TBps": 3.5, "cudnn": 22.42, "cudnn_TBps": 3.51}
+{"hbm_read_ref_TBps": 6.32}

@@ -1,0 +1,56 @@
+tag base-7f1a image vllm/vllm-openai:nightly-7f1a5398e9610d96c473931a26c0e12bbe0d0423 2026-09-28T15:41:18-04:00
+effort: reasoning_effort\":75
+GPU-c51e3fdb-81ba-2821-7021-a4ae8a599eb7, NVIDIA RTX PRO 6000 Blackwell Max-Q Workstation Edition, P8, 180 MHz, 405 MHz, 0x0000000000000000, 5.40 W
+GPU-c146511a-0326-7ddc-4346-998d61a64b34, NVIDIA GB300, P0, 2070 MHz, 3996 MHz, 0x0000000000000000, 211.22 W
+=== gsm8k 15:41:18
+ab-base-7f1a: GSM8K 194/200 = 97.0%
+acceptance: 1.93 tokens/step, 89.3% of drafted, 19534 steps, avg k 1.04, per position [0.91, 0.01, 0.0, 0.0, 0.0]
+=== knee 15:41:51
+[ab-base-7f1a] conc= 1:   179.3 agg tok/s  179.26 per-stream  (runs 184.9/173.6)
+[ab-base-7f1a] conc= 2:   267.8 agg tok/s  133.89 per-stream  (runs 315.9/219.7)
+[ab-base-7f1a] conc= 4:   489.4 agg tok/s  122.36 per-stream  (runs 470.9/507.9)
+[ab-base-7f1a] conc= 8:   836.6 agg tok/s  104.57 per-stream  (runs 833.3/839.8)
+[ab-base-7f1a] conc=12:  1041.6 agg tok/s   86.80 per-stream  (runs 1030.7/1052.5)
+[ab-base-7f1a] conc=16:  1291.1 agg tok/s   80.69 per-stream  (runs 1291.1/1291.1)
+acceptance: 1.73 tokens/step, 42.6% of drafted, 9523 steps, avg k 1.72, per position [0.6, 0.1, 0.02, 0.01, 0.0]
+=== catid 15:42:12
+C1 rc=0
+C4 rc=0
+C8 rc=0
+C16 rc=0
+run                                     C  agg tok/s user tok/s  TTFT p50  ITL p50  accept  err
+decode                                  1      213.7      222.2      150ms    4.50ms    2.67    0
+decode                                  4      592.1      154.4      171ms    6.48ms    2.61    0
+decode                                  8      943.0      121.4      289ms    8.23ms    2.17    0
+decode                                 16    1,334.2       85.9      294ms   11.64ms    1.71    0
+acceptance: 1.96 tokens/step, 51.8% of drafted, 94269 steps, avg k 1.85, per position [0.71, 0.18, 0.04, 0.02, 0.01]
+=== wait 15:46:56
+{"C": 1, "rep": 0, "tok_s": 208.5, "passes": 130, "ms_per_pass": 11.73, "wait_ms_per_pass": 0.16, "waits_per_pass": 22.8, "wait_us_per_wait": 6.9, "timeouts": 0}
+{"C": 1, "rep": 1, "tok_s": 198.8, "passes": 138, "ms_per_pass": 11.66, "wait_ms_per_pass": 0.14, "waits_per_pass": 21.8, "wait_us_per_wait": 6.3, "timeouts": 0}
+{"C": 2, "rep": 0, "tok_s": 323.8, "passes": 150, "ms_per_pass": 13.09, "wait_ms_per_pass": 0.09, "waits_per_pass": 29.7, "wait_us_per_wait": 2.9, "timeouts": 0}
+{"C": 2, "rep": 1, "tok_s": 326.4, "passes": 145, "ms_per_pass": 13.52, "wait_ms_per_pass": 0.08, "waits_per_pass": 31.1, "wait_us_per_wait": 2.7, "timeouts": 0}
+{"C": 4, "rep": 0, "tok_s": 534.3, "passes": 147, "ms_per_pass": 16.3, "wait_ms_per_pass": 0.08, "waits_per_pass": 36.7, "wait_us_per_wait": 2.1, "timeouts": 0}
+{"C": 4, "rep": 1, "tok_s": 523.8, "passes": 153, "ms_per_pass": 15.96, "wait_ms_per_pass": 0.1, "waits_per_pass": 36.1, "wait_us_per_wait": 2.6, "timeouts": 0}
+acceptance: 2.32 tokens/step, 26.5% of drafted, 2068 steps, avg k 5.00, per position [0.63, 0.35, 0.18, 0.11, 0.06]
+=== reason 15:47:14
+{"q": 0, "tokens": 110, "tok_s": 258.0, "reasoning_chars": 185, "finish": "stop"}
+{"q": 1, "tokens": 54, "tok_s": 285.6, "reasoning_chars": 134, "finish": "stop"}
+{"q": 2, "tokens": 461, "tok_s": 313.3, "reasoning_chars": 1145, "finish": "stop"}
+{"q": 3, "tokens": 133, "tok_s": 339.7, "reasoning_chars": 277, "finish": "stop"}
+{"q": 4, "tokens": 226, "tok_s": 276.3, "reasoning_chars": 523, "finish": "stop"}
+{"q": 5, "tokens": 189, "tok_s": 297.6, "reasoning_chars": 373, "finish": "stop"}
+{"q": 6, "tokens": 107, "tok_s": 319.9, "reasoning_chars": 153, "finish": "stop"}
+{"q": 7, "tokens": 307, "tok_s": 324.8, "reasoning_chars": 734, "finish": "stop"}
+reasoning C1: 1587 tokens in 5.2 s = 304.5 tok/s (includes TTFT)
+acceptance: 3.82 tokens/step, 56.4% of drafted, 415 steps, avg k 5.00, per position [0.83, 0.68, 0.54, 0.43, 0.33]
+=== prefill 15:47:19
+target=http://127.0.0.1:30006 points=1 warmup=1 flush_cache=True timeout=1800s seed=1234 output=/home/jasonc/ds41f-exp/runs/ab-base-7f1a/prefill/prefill.jsonl label='ab-base-7f1a'
+server: (no /get_model_info or /get_server_info)
+    isl conc    n   wall_s  agg_tok/s ttft_mean  ttft_p50  ttft_p99 req_tok/s util%      W metrics_prompt_d err
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+  16384    1    4     2.54    25776.9     0.636     0.626     0.666   25799.5   100    764            65536   0
+done.
+acceptance: no drafts in this phase
+GPU-c51e3fdb-81ba-2821-7021-a4ae8a599eb7, P1, 2100 MHz, 0x0000000000000000
+GPU-c146511a-0326-7ddc-4346-998d61a64b34, P0, 2070 MHz, 0x0000000000000000
+ab suite done base-7f1a

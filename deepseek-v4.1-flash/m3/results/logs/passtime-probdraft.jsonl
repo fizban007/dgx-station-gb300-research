@@ -1,0 +1,6 @@
+{"C": 1, "rep": 0, "tok_s": 211.8, "passes": 150, "ms_per_pass": 10.01, "wait_ms_per_pass": 0.15, "waits_per_pass": 21.7, "wait_us_per_wait": 7.1, "timeouts": 0}
+{"C": 1, "rep": 1, "tok_s": 243.1, "passes": 130, "ms_per_pass": 10.06, "wait_ms_per_pass": 0.18, "waits_per_pass": 23.6, "wait_us_per_wait": 7.4, "timeouts": 0}
+{"C": 2, "rep": 0, "tok_s": 364.5, "passes": 137, "ms_per_pass": 12.81, "wait_ms_per_pass": 0.03, "waits_per_pass": 33.2, "wait_us_per_wait": 1.0, "timeouts": 0}
+{"C": 2, "rep": 1, "tok_s": 338.1, "passes": 150, "ms_per_pass": 12.62, "wait_ms_per_pass": 0.08, "waits_per_pass": 31.5, "wait_us_per_wait": 2.4, "timeouts": 0}
+{"C": 4, "rep": 0, "tok_s": 583.0, "passes": 152, "ms_per_pass": 14.37, "wait_ms_per_pass": 0.07, "waits_per_pass": 36.0, "wait_us_per_wait": 2.1, "timeouts": 0}
+{"C": 4, "rep": 1, "tok_s": 587.0, "passes": 150, "ms_per_pass": 14.54, "wait_ms_per_pass": 0.08, "waits_per_pass": 36.5, "wait_us_per_wait": 2.1, "timeouts": 0}

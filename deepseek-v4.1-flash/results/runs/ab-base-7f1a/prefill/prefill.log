@@ -1,0 +1,6 @@
+target=http://127.0.0.1:30006 points=1 warmup=1 flush_cache=True timeout=1800s seed=1234 output=/home/jasonc/ds41f-exp/runs/ab-base-7f1a/prefill/prefill.jsonl label='ab-base-7f1a'
+server: (no /get_model_info or /get_server_info)
+    isl conc    n   wall_s  agg_tok/s ttft_mean  ttft_p50  ttft_p99 req_tok/s util%      W metrics_prompt_d err
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+  16384    1    4     2.54    25776.9     0.636     0.626     0.666   25799.5   100    764            65536   0
+done.

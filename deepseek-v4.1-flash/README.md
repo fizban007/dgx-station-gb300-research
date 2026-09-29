@@ -2,14 +2,15 @@
 
 Serving DeepSeek-V4.1-Flash (`deepseek-ai/DeepSeek-V4.1-Flash` revision `dba1be0a`, 515 GB, 289 GB of it MXFP4
 routed experts) on one GB300 (251 GiB HBM) plus Grace memory and, in some configurations, the RTX PRO 6000
-Blackwell Max-Q in the same box. All runs: 2026-09-24, host gracie. Full tables, flags and provenance: [DETAILS.md](DETAILS.md). Machine-readable numbers:
+Blackwell Max-Q in the same box. Runs: 2026-09-24, with M3 updates on 2026-09-28; host gracie. Full tables, flags and provenance: [DETAILS.md](DETAILS.md). Machine-readable numbers:
 [results.jsonl](results.jsonl).
 
 ## What we found
 
 - **Best single-station result: M3, MegaMoE hot experts plus the RTX PRO 6000 sidecar** ([m3/](m3/README.md)).
-  It reaches 219.1 tok/s per user at C1 and 926.4 / 1,333.4 aggregate at C8 / C16, about 1.6× v20. Prefill is
-  24K tok/s at 16K, and GSM8K-200 is 98.0%.
+  As of 2026-09-28 it reaches 257.9–266.3 tok/s per user at C1 and 1,046.3 / 1,628.6 aggregate at C8 / C16, about
+  1.8× / 2.0× v20. Prefill is 44.5K tok/s at 16K on random token ids and ~60K on real text. GSM8K-200 is 98.0%.
+  On 2026-09-24 it stood at 219.1 per user at C1 and 926.4 / 1,333.4 at C8 / C16, with 24K prefill.
 - **Al-ENGR's v20 recipe reproduces on our box** (upstream vLLM nightly + a hook that keeps 295 hot experts
   per layer in HBM and streams 89 cold ones from Grace): 202.6 tok/s per user at C1, 820.5 aggregate at C16,
   15,799 tok/s cold prefill at 16K.
@@ -38,6 +39,8 @@ Blackwell Max-Q in the same box. All runs: 2026-09-24, host gracie. Full tables,
 | b12x stack + 6000, Al-ENGR k-schedule (`F-ksched`) | GB300 + 6000 | 148.5 | 382.4 | 502.0 | 590.5 | not run | not run | not run | not run | not run |
 | M3 mix-v1 (`mix-v1`) | GB300 + 6000 | 211.6 | 776.0 | 1,133.6 | not run | 23,968.7 | 187.7 | 774.4 | 1,196.2 | 98.0% (196/200) |
 | M3 final, DSpark k 5/2/1 (`phaseC-C4-k2-to-8`) | GB300 + 6000 | 219.1 | 926.4 | 1,333.4 | not run | not run | not run | not run | not run | not run |
+| M3 2026-09-28, k 5/3/3, probabilistic drafts (`k-pd-ll-k533`) | GB300 + 6000 | not run | 1,046.3 | 1,603.9 | not run | not run | 208.9 | 904.4 | 1,423.2 | carries over¹ |
+| M3 2026-09-28 current, + vllm#58132 (`replay58132`) | GB300 + 6000 | 257.9 | not run | 1,628.6 | not run | 44,535.2 | not run | not run | not run | 98.0% (196/200) |
 | External: Al-ENGR v20, published | 1x GB300 | - | - | - | - | ~22K (v15) | 180.9 | 670 | 979 | BFCL-gated by Al-ENGR |
 | External: catid vLLM PP2 + DSpark | **2x GB300** | 252.9 | 1,024.1 | 1,677.7 | 2,346.4 | 35,214.4 | - | - | - | catid "accepted" |
 
@@ -58,6 +61,10 @@ Sources: `results/runs/<run>/decode/c<C>.json`, `results/runs/<run>/prefill/pref
 [`data/throughput.csv`](https://github.com/catid/dgx_station_benchmarks/blob/ff8a496e5e027bbc462f81643361ef5516072a68/deepseek-v4.1-flash/data/throughput.csv)
 and [`data/prefill.csv`](https://github.com/catid/dgx_station_benchmarks/blob/ff8a496e5e027bbc462f81643361ef5516072a68/deepseek-v4.1-flash/data/prefill.csv).
 The `up-v20-base2` knee C16 mean is anomalous (C16 below C8); see DETAILS.md.
+¹ `k-pd-ll-k533` differs from the GSM8K-gated `prod-20260928b` only in a bit-identical hook path; see
+[m3/DETAILS.md](m3/DETAILS.md#2026-09-28-evening-probabilistic-drafting-small-m-gemms-fused-send-v2). The 2026-09-28
+sources are under `results/runs/k-pd-ll-k533/`, `results/runs/replay58132/`,
+`results/upstream-logs/knee-k-pd-ll-k533.json` and `m3/results/logs/gsm8k-replay58132.json`.
 
 ## What was tried
 
