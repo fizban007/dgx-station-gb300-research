@@ -1,6 +1,6 @@
 # DGX Station GB300 serving research
 
-> Measured LLM serving results from one NVIDIA DGX Station GB300 (SM 10.3, ~250 GiB HBM, Grace LPDDR5X over NVLink-C2C) plus an RTX PRO 6000 Blackwell Max-Q (SM 12.0, 96 GB, PCIe) in the same host, 2026-09-23..28. Models: DeepSeek-V4.1-Flash, MiMo-V2.6-Pro, MiMo-V2.6-Flash, Qwen3.8-Flash-Next. The main technique is an expert "sidecar": MoE experts that do not fit in GB300 HBM live on, and are computed by, the RTX PRO 6000; the GB300 exchanges only the affected token rows through pinned host memory inside CUDA graphs.
+> Measured LLM serving results from one NVIDIA DGX Station GB300 (SM 10.3, ~250 GiB HBM, Grace LPDDR5X over NVLink-C2C) plus an RTX PRO 6000 Blackwell Max-Q (SM 12.0, 96 GB, PCIe) in the same host, 2026-09-23..10-03 (DeepSeek-V4.1-Flash M3 after 09-28). Models: DeepSeek-V4.1-Flash, MiMo-V2.6-Pro, MiMo-V2.6-Flash, Qwen3.8-Flash-Next. The main technique is an expert "sidecar": MoE experts that do not fit in GB300 HBM live on, and are computed by, the RTX PRO 6000; the GB300 exchanges only the affected token rows through pinned host memory inside CUDA graphs.
 
 How to use this repository as an agent:
 - Every quoted number is one row in data/results.jsonl (or data/results.csv). Rows have a fixed schema (data/README.md), and each row cites the raw file it came from (`source`). Filter on `lane`, `config`, `benchmark` and `metric`.

@@ -1,0 +1,37 @@
+=== 20:50 smoke
+chat: '391'
+tools: [('get_weather', '{"city": "Paris"}'), ('get_weather', '{"city": "Tokyo"}')]
+=== 20:50 gsm8k-200
+ds41h3-h265-nvfp4e: GSM8K 196/200 = 98.0%
+=== 20:50 needles
+ds41h3-h265-nvfp4e-125000 depth=10% prompt_tokens=108593 time=3s PASS reply='violet-anchor-5817'
+ds41h3-h265-nvfp4e-125000 depth=50% prompt_tokens=108593 time=2s PASS reply='violet-anchor-5817'
+ds41h3-h265-nvfp4e-125000 depth=90% prompt_tokens=108593 time=4s PASS reply='violet-anchor-5817'
+ds41h3-h265-nvfp4e-125000 needle 3/3
+ds41h3-h265-nvfp4e-500000 depth=10% prompt_tokens=433938 time=11s PASS reply='violet-anchor-5817'
+ds41h3-h265-nvfp4e-500000 depth=50% prompt_tokens=433938 time=12s PASS reply='violet-anchor-5817'
+ds41h3-h265-nvfp4e-500000 depth=90% prompt_tokens=433938 time=9s PASS reply='violet-anchor-5817'
+ds41h3-h265-nvfp4e-500000 needle 3/3
+ds41h3-h265-nvfp4e-1000000 depth=10% prompt_tokens=867523 time=27s PASS reply='violet-anchor-5817'
+ds41h3-h265-nvfp4e-1000000 depth=50% prompt_tokens=867523 time=20s PASS reply='violet-anchor-5817'
+ds41h3-h265-nvfp4e-1000000 depth=90% prompt_tokens=867523 time=18s PASS reply='violet-anchor-5817'
+ds41h3-h265-nvfp4e-1000000 needle 3/3
+=== 20:52 reasoning decode
+speed: {"C": 1, "agg_tok_s": 296.1, "per_stream_tok_s": 296.1, "median_request_decode_tok_s": 385.7, "requests_done": 73, "accept_tokens_per_step": 3.15, "avg_k": 5.0, "accept_per_position": [0.77, 0.55, 0.39, 0.26, 0.17]}
+speed: {"C": 8, "agg_tok_s": 1081.9, "per_stream_tok_s": 135.2, "median_request_decode_tok_s": 154.5, "requests_done": 203, "accept_tokens_per_step": 2.75, "avg_k": 3.0, "accept_per_position": [0.79, 0.57, 0.39, 0.0, 0.0]}
+speed: {"C": 16, "agg_tok_s": 1492.5, "per_stream_tok_s": 93.3, "median_request_decode_tok_s": 103.5, "requests_done": 304, "accept_tokens_per_step": 2.78, "avg_k": 3.0, "accept_per_position": [0.79, 0.58, 0.41, 0.0, 0.0]}
+=== 20:57 catid prefill
+prefill:   16384    1    4     1.65    39645.1     0.413     0.412     0.418   39649.4   100    716            65536   0
+prefill:   65536    1    4     6.49    40362.2     1.624     1.622     1.630   40363.1   100    767           262144   0
+prefill:  131072    1    4    13.29    39441.3     3.323     3.317     3.341   39442.1    94    781           524288   0
+=== 20:58 coexistence: H3 15 s render + DS41 C1 decode
+speed during H3: {"C": 1, "agg_tok_s": 161.3, "per_stream_tok_s": 161.3, "median_request_decode_tok_s": 320.9, "requests_done": 34, "accept_tokens_per_step": 3.28, "avg_k": 5.0, "accept_per_position": [0.79, 0.59, 0.42, 0.29, 0.19]}
+h3: wall 233.648654036 s
+h3: HTTP/1.1 500 Internal Server Error
+GB300 peak during coexistence: 249.8 of 250.7 GiB
+ds41 error lines: 0
+h3 error lines: 9
+=== 21:02 done
+=== 21:02 GPQA-Diamond DS41 T=1
+gpqa ds41: 183 / 198 92.4 % hit_max 0
+=== 21:18 GPQA done

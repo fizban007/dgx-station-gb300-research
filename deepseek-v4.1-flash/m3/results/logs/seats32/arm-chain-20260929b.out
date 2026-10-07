@@ -1,0 +1,60 @@
+=== boot s32-pin-b (SEQS=32 MEGA_FI_TUNE_FILE=/w/fi-tune/fiset-a964-9a5ab530.json) 10:59:48
+serving 11:07:02
+2026-09-29 15:06:40,139 - INFO - autotuner.py:3554 - flashinfer.jit: [Autotuner]: Saved 117 configs to /tmp/fi-tune-pinned-359.json (0 new, 117 from previous config)
+2026-09-29 15:06:40,735 - INFO - autotuner.py:1992 - flashinfer.jit: [Autotuner]: Config cache hit for mxfp8_gemm (runner=CutedslLowLatencyBlockscaledGemmRunner, source=config file)
+(EngineCore pid=359) INFO 09-29 15:01:34 [model.py:766] Decoder SWA bounded replay: in eager prefill steps, layers 21-39 run on each request's last 128 tokens only.
+(EngineCore pid=359) INFO 09-29 15:03:32 [kv_cache_utils.py:2408] GPU KV cache size: 3,527,818 tokens, Maximum concurrency for 1,048,576 tokens per request: 3.36x
+LL_GEMM cutedsl_low_latency K=1280 N=32768: tactics from the pinned FlashInfer autotune file, no live tune
+LL_GEMM cutedsl_low_latency K=5120 N=1792: tactics from the pinned FlashInfer autotune file, no live tune
+LL_GEMM cutedsl_low_latency K=8192 N=5120: tactics from the pinned FlashInfer autotune file, no live tune
+MEGA_PEER FlashInfer autotune pinned: /w/fi-tune/fiset-a964-9a5ab530.json sha256 9a5ab5308ba02244f4202405a3bd4b449338929fea5fe6b88b5d575fdddba3a2 (working copy /tmp/fi-tune-pinned-359.json)
+check: 40 unseen sizes, 0 new DeepGEMM kernels, slowest 465 tokens in 0.11s
+[s32-pin-b-r1] tool_json    274.9 tok/s  accept=86.8%  acc/step=4.34  tokens=284
+[s32-pin-b-r1] code         404.6 tok/s  accept=67.3%  acc/step=3.37  tokens=680
+[s32-pin-b-r1] shell_ops    417.9 tok/s  accept=82.1%  acc/step=4.11  tokens=144
+[s32-pin-b-r1] structured   315.7 tok/s  accept=49.8%  acc/step=2.49  tokens=426
+[s32-pin-b-r1] prose        228.2 tok/s  accept=26.5%  acc/step=1.33  tokens=393
+[s32-pin-b-r1] weighted accept=59.1%
+[s32-pin-b-r1] tool_json    282.4 tok/s  accept= 85.8%  acc/step=4.29  drafted=550 tokens=586
+[s32-pin-b-r1] shell_ops    357.9 tok/s  accept= 75.6%  acc/step=3.78  drafted=410 tokens=393
+[s32-pin-b-r1] code         422.3 tok/s  accept= 74.6%  acc/step=3.73  drafted=1065 tokens=1009
+[s32-pin-b-r1] structured   324.7 tok/s  accept= 50.7%  acc/step=2.53  drafted=1395 tokens=988
+[s32-pin-b-r1] prose        238.8 tok/s  accept= 28.9%  acc/step=1.45  drafted=2635 tokens=1289
+[s32-pin-b-r2] tool_json    293.3 tok/s  accept=90.7%  acc/step=4.54  tokens=301
+[s32-pin-b-r2] code         393.5 tok/s  accept=66.0%  acc/step=3.30  tokens=629
+[s32-pin-b-r2] shell_ops    416.2 tok/s  accept=82.9%  acc/step=4.14  tokens=144
+[s32-pin-b-r2] structured   325.6 tok/s  accept=52.4%  acc/step=2.62  tokens=427
+[s32-pin-b-r2] prose        252.5 tok/s  accept=31.7%  acc/step=1.59  tokens=369
+[s32-pin-b-r2] weighted accept=61.4%
+[s32-pin-b-r2] tool_json    284.8 tok/s  accept= 82.5%  acc/step=4.12  drafted=600 tokens=618
+[s32-pin-b-r2] shell_ops    365.9 tok/s  accept= 78.0%  acc/step=3.90  drafted=400 tokens=394
+[s32-pin-b-r2] code         438.6 tok/s  accept= 77.2%  acc/step=3.86  drafted=1120 tokens=1091
+[s32-pin-b-r2] structured   317.3 tok/s  accept= 48.8%  acc/step=2.44  drafted=1425 tokens=982
+[s32-pin-b-r2] prose        233.6 tok/s  accept= 27.8%  acc/step=1.39  drafted=2660 tokens=1272
+[s32-pin-b-r3] tool_json    250.4 tok/s  accept=83.5%  acc/step=4.17  tokens=238
+[s32-pin-b-r3] code         391.7 tok/s  accept=64.8%  acc/step=3.24  tokens=632
+[s32-pin-b-r3] shell_ops    416.3 tok/s  accept=82.9%  acc/step=4.14  tokens=144
+[s32-pin-b-r3] structured   306.3 tok/s  accept=46.8%  acc/step=2.34  tokens=441
+[s32-pin-b-r3] prose        242.5 tok/s  accept=29.3%  acc/step=1.46  tokens=400
+[s32-pin-b-r3] weighted accept=56.7%
+[s32-pin-b-r3] tool_json    271.4 tok/s  accept= 81.7%  acc/step=4.08  drafted=545 tokens=558
+[s32-pin-b-r3] shell_ops    353.5 tok/s  accept= 75.1%  acc/step=3.76  drafted=410 tokens=391
+[s32-pin-b-r3] code         429.7 tok/s  accept= 75.3%  acc/step=3.77  drafted=1160 tokens=1106
+[s32-pin-b-r3] structured   319.3 tok/s  accept= 49.1%  acc/step=2.46  drafted=1425 tokens=987
+[s32-pin-b-r3] prose        241.8 tok/s  accept= 29.3%  acc/step=1.47  drafted=2865 tokens=1413
+2026-09-21_tf-r1.jsonl                   agent         1074     19   1.77%   0.04001   5.9950   6.0687        0
+2026-09-21_tf-r1.jsonl                   heldout       2868      0   0.00%   0.00000   2.7700   2.7700        0
+tf-s32-pin-b.jsonl                       agent         1074    129  12.01%   0.28630   5.9950   6.2206        0
+tf-s32-pin-b.jsonl                       heldout       2868    226   7.88%   0.21540   2.7700   2.7832        0
+non-local requests during window: 0
+arm-s32-pin-b: GSM8K 195/200 = 97.5%
+[arm-s32-pin-b] conc= 1:   214.7 agg tok/s  214.66 per-stream  (runs 201.4/227.9)
+[arm-s32-pin-b] conc=16:  1429.2 agg tok/s   89.32 per-stream  (runs 1411.7/1446.6)
+non-local requests during window: 0
+decode                                  1      244.5      251.0      146ms    3.98ms    2.60    0
+decode                                  4      643.6      167.8      164ms    5.96ms    2.58    0
+decode                                  8    1,052.5      137.6      172ms    7.27ms    2.41    0
+decode                                 16    1,604.3      105.8      280ms    9.45ms    2.40    0
+decode                                 24    1,943.1       83.3      300ms   12.00ms    2.40    0
+decode                                 32    2,319.3       75.1      311ms   13.31ms    2.40    0
+chain done

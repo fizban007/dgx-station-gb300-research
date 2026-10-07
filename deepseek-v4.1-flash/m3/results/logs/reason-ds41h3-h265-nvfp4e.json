@@ -1,0 +1,56 @@
+{
+ "tag": "ds41h3-h265-nvfp4e",
+ "time": "2026-10-02T20:57:48",
+ "window_s": 90.0,
+ "sampling": "T=1.0 top_p=0.95, thinking on at server default effort",
+ "results": [
+  {
+   "C": 1,
+   "agg_tok_s": 296.1,
+   "per_stream_tok_s": 296.1,
+   "median_request_decode_tok_s": 385.7,
+   "requests_done": 73,
+   "accept_tokens_per_step": 3.15,
+   "avg_k": 5.0,
+   "accept_per_position": [
+    0.77,
+    0.55,
+    0.39,
+    0.26,
+    0.17
+   ]
+  },
+  {
+   "C": 8,
+   "agg_tok_s": 1081.9,
+   "per_stream_tok_s": 135.2,
+   "median_request_decode_tok_s": 154.5,
+   "requests_done": 203,
+   "accept_tokens_per_step": 2.75,
+   "avg_k": 3.0,
+   "accept_per_position": [
+    0.79,
+    0.57,
+    0.39,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "C": 16,
+   "agg_tok_s": 1492.5,
+   "per_stream_tok_s": 93.3,
+   "median_request_decode_tok_s": 103.5,
+   "requests_done": 304,
+   "accept_tokens_per_step": 2.78,
+   "avg_k": 3.0,
+   "accept_per_position": [
+    0.79,
+    0.58,
+    0.41,
+    0.0,
+    0.0
+   ]
+  }
+ ]
+}

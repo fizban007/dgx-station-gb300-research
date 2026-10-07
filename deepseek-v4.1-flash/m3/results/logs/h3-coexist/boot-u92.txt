@@ -1,0 +1,13 @@
+# boot of the 2026-10-02 test lane (GPU_UTIL 0.92, rowmap h265, NVFP4 Engram, fp8_ds_mla KV): swap-to-m3v2.sh output,
+# boot-log lines, then GB300 nvidia-smi memory.used/total and free -g (GiB) after boot
+M3 v2 serving on :30006
+WARNING: REPLAY_OVERLAY=1 but the boot log has no 'Decoder SWA bounded replay' line; prefill runs without it
+Engram NVFP4 table offloaded to registered host memory: 384006168 rows x 256, 51.50 GiB per rank (global scale 0.00409226)
+Engram NVFP4 table offloaded to registered host memory: 384016682 rows x 256, 51.50 GiB per rank (global scale 0.00892857)
+Decoder SWA bounded replay: in eager prefill steps, layers 21-39 run on each request's last 128 tokens only.
+Model loading took 204.75 GiB memory and 110.728109 seconds
+Available KV cache memory: 13.39 GiB
+GPU KV cache size: 6,928,817 tokens, Maximum concurrency for 1,048,576 tokens per request: 6.61x
+238231 MiB, 256703 MiB
+Mem:             494         324          23         158         336         169
+

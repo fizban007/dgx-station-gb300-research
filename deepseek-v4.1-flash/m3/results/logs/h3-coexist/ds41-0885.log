@@ -1,0 +1,16 @@
+  [08:22] both idle for 120s before: DS41 relaunch at 0.885 (waited 1 min)
+=== 08:22 relaunch DS41 at 0.885 (NVFP4 KV)
+  swap rc=0
+Using DeepSeek's nvfp4_ds_mla KV cache format.
+Engram NVFP4 table offloaded to registered host memory: 384006168 rows x 256, 51.50 GiB per rank (global scale 0.0040922
+Engram NVFP4 table offloaded to registered host memory: 384016682 rows x 256, 51.50 GiB per rank (global scale 0.0089285
+Available KV cache memory: 4.64 GiB
+GPU KV cache size: 3,423,027 tokens, Maximum concurrency for 1,048,576 tokens per request: 3.26x
+=== 08:30 warm DS41 (1M needle, 128K prefill, C16 decode)
+  ds41-0885-warm-1m needle 1/1
+  [08:33] h3 idle for 120s before: H3 restart (release cached memory) (waited 1 min)
+  after warm-up: DS41 225.3 GiB, H3 6.5 GiB
+  [08:37] both idle for 120s before: 15 s combined render check (waited 1 min)
+  15 s combined: HTTP/1.1 200 wall 238.311731686 s | GB300 peak 246.6 of 249.8 GiB
+  DS41 errors: 0
+=== 08:41 done

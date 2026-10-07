@@ -1,0 +1,179 @@
+{
+ "shards": 48,
+ "tensors": 96085,
+ "total_size": 418123281000,
+ "engram_tables": {
+  "layers.1.engram.embed.weight": [
+   "U8",
+   [
+    384006168,
+    128
+   ]
+  ],
+  "layers.1.engram.embed.scale": [
+   "F8_E4M3",
+   [
+    384006168,
+    16
+   ]
+  ],
+  "layers.14.engram.embed.weight": [
+   "U8",
+   [
+    384016682,
+    128
+   ]
+  ],
+  "layers.14.engram.embed.scale": [
+   "F8_E4M3",
+   [
+    384016682,
+    16
+   ]
+  ]
+ },
+ "links": {
+  "DeepSeek_V41_Tech_Report.pdf": "../DeepSeek-V4.1-Flash/DeepSeek_V41_Tech_Report.pdf",
+  "LICENSE": "../DeepSeek-V4.1-Flash/LICENSE",
+  "README-engram-nvfp4.md": "../DeepSeek-V4.1-Flash-engram-nvfp4/hf/README.md",
+  "README.md": "../DeepSeek-V4.1-Flash/README.md",
+  "assets": "../DeepSeek-V4.1-Flash/assets",
+  "encoding": "../DeepSeek-V4.1-Flash/encoding",
+  "engram-nvfp4.json": "../DeepSeek-V4.1-Flash-engram-nvfp4/hf/engram-nvfp4.json",
+  "evaluation": "../DeepSeek-V4.1-Flash/evaluation",
+  "inference": "../DeepSeek-V4.1-Flash/inference",
+  "model-00001-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00001-of-00048.safetensors",
+  "model-00002-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00002-of-00048.safetensors",
+  "model-00003-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00003-of-00048.safetensors",
+  "model-00004-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00004-of-00048.safetensors",
+  "model-00005-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00005-of-00048.safetensors",
+  "model-00006-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00006-of-00048.safetensors",
+  "model-00007-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00007-of-00048.safetensors",
+  "model-00008-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00008-of-00048.safetensors",
+  "model-00009-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00009-of-00048.safetensors",
+  "model-00010-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00010-of-00048.safetensors",
+  "model-00011-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00011-of-00048.safetensors",
+  "model-00012-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00012-of-00048.safetensors",
+  "model-00013-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00013-of-00048.safetensors",
+  "model-00014-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00014-of-00048.safetensors",
+  "model-00015-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00015-of-00048.safetensors",
+  "model-00016-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00016-of-00048.safetensors",
+  "model-00017-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00017-of-00048.safetensors",
+  "model-00018-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00018-of-00048.safetensors",
+  "model-00019-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00019-of-00048.safetensors",
+  "model-00020-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00020-of-00048.safetensors",
+  "model-00021-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00021-of-00048.safetensors",
+  "model-00022-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00022-of-00048.safetensors",
+  "model-00023-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00023-of-00048.safetensors",
+  "model-00024-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00024-of-00048.safetensors",
+  "model-00025-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00025-of-00048.safetensors",
+  "model-00026-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00026-of-00048.safetensors",
+  "model-00027-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00027-of-00048.safetensors",
+  "model-00028-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00028-of-00048.safetensors",
+  "model-00029-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00029-of-00048.safetensors",
+  "model-00030-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00030-of-00048.safetensors",
+  "model-00031-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00031-of-00048.safetensors",
+  "model-00032-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00032-of-00048.safetensors",
+  "model-00033-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00033-of-00048.safetensors",
+  "model-00034-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00034-of-00048.safetensors",
+  "model-00035-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00035-of-00048.safetensors",
+  "model-00036-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00036-of-00048.safetensors",
+  "model-00037-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00037-of-00048.safetensors",
+  "model-00038-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00038-of-00048.safetensors",
+  "model-00039-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00039-of-00048.safetensors",
+  "model-00040-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00040-of-00048.safetensors",
+  "model-00041-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00041-of-00048.safetensors",
+  "model-00042-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00042-of-00048.safetensors",
+  "model-00043-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00043-of-00048.safetensors",
+  "model-00044-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00044-of-00048.safetensors",
+  "model-00045-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00045-of-00048.safetensors",
+  "model-00046-of-00048.safetensors": "../DeepSeek-V4.1-Flash/model-00046-of-00048.safetensors",
+  "model-00047-of-00048.safetensors": "../DeepSeek-V4.1-Flash-engram-nvfp4/hf/model-00047-of-00048.safetensors",
+  "model-00048-of-00048.safetensors": "../DeepSeek-V4.1-Flash-engram-nvfp4/hf/model-00048-of-00048.safetensors",
+  "tokenizer.json": "../DeepSeek-V4.1-Flash/tokenizer.json",
+  "tokenizer_config.json": "../DeepSeek-V4.1-Flash/tokenizer_config.json"
+ },
+ "config_quant": {
+  "engram_quant": "nvfp4",
+  "engram_quant_block_size": 16,
+  "engram_quant_global_scale": {
+   "1": 0.004092261904761905,
+   "14": 0.008928571428571428
+  },
+  "engram_quant_method": "gptq-mse8"
+ },
+ "non_table_tensors_in_engram_shards": {
+  "layers.1.engram.k_weight": {
+   "dtype": "BF16",
+   "shape": [
+    4,
+    5120
+   ],
+   "identical": true,
+   "sha256": "61152efdabab20ca"
+  },
+  "layers.1.engram.q_weight": {
+   "dtype": "BF16",
+   "shape": [
+    4,
+    5120
+   ],
+   "identical": true,
+   "sha256": "0aca22a679f1a247"
+  },
+  "layers.1.engram.wkv.scale": {
+   "dtype": "F8_E8M0",
+   "shape": [
+    800,
+    192
+   ],
+   "identical": true,
+   "sha256": "2c395fc76e65fad2"
+  },
+  "layers.1.engram.wkv.weight": {
+   "dtype": "F8_E4M3",
+   "shape": [
+    25600,
+    6144
+   ],
+   "identical": true,
+   "sha256": "44d799d6444a3f72"
+  },
+  "layers.14.engram.k_weight": {
+   "dtype": "BF16",
+   "shape": [
+    4,
+    5120
+   ],
+   "identical": true,
+   "sha256": "fa3128a62fef3630"
+  },
+  "layers.14.engram.q_weight": {
+   "dtype": "BF16",
+   "shape": [
+    4,
+    5120
+   ],
+   "identical": true,
+   "sha256": "a49e74aa912b88f5"
+  },
+  "layers.14.engram.wkv.scale": {
+   "dtype": "F8_E8M0",
+   "shape": [
+    800,
+    192
+   ],
+   "identical": true,
+   "sha256": "8c8d7aa1ccc5a6c2"
+  },
+  "layers.14.engram.wkv.weight": {
+   "dtype": "F8_E4M3",
+   "shape": [
+    25600,
+    6144
+   ],
+   "identical": true,
+   "sha256": "9abdfe920afa0528"
+  }
+ }
+}

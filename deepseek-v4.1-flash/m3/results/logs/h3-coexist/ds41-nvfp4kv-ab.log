@@ -1,0 +1,48 @@
+=== 21:56 GPQA-Diamond T=0 (FP8 KV, current config; pairs with the 09-30 greedy baseline)
+gpqa ds41-h265-nvfp4engram-t0-c32-max: 168 / 198 84.8 % hit_max 18 | vs baseline flips 13 / 8 p 0.38331031799316406
+  [22:22] ds41 idle for 120s before: FP8-KV reference numerics (waited 1 min)
+=== 22:22 FP8-KV reference numerics (H3 idle in combined)
+{"n": 131072, "k": 2, "s": 2.36, "text": "2)].to(cutlass.Float32)\n        v3 = fc1_flat[fc1_base + Int"}
+=== 22:22 boot NVFP4 KV (stop H3 for clean measurements)
+  [22:24] both idle for 120s before: DS41 relaunch on NVFP4 KV (H3 stops until the end) (waited 1 min)
+non-default args: {'model_tag': '/model', 'default_chat_template_kwargs': {'reasoning_effort': 'high'}, 'enable_auto_tool_choice': True, 'to
+Using nvfp4_ds_mla data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accu
+Initializing a V1 LLM engine (v0.30.1rc1.dev245+gaf7f9488c) with config: model='/model', speculative_config=SpeculativeConfig(method='dspark
+Using DeepSeek's nvfp4_ds_mla KV cache format.
+Available KV cache memory: 5.89 GiB
+=== 22:31 NVFP4-KV numerics + compare
+{"n": 131072, "k": 2, "s": 2.36, "text": "2)].to(cutlass.Float32)\n        v3 = fc1_flat[fc1_base + Int"}
+numerics: {"short_tokens": 98256, "nll_fp8kv": 0.82646, "nll_nvfp4kv": 0.82444, "delta_nll": -0.00202, "ppl_ratio": 0.99798, "argmax_agree": 0.96688, "abs_dlogprob_p50": 0.00125, "p90": 0.2285, "p99": 0.9674, "max": 11.1909}
+numerics: {"ctx": 16384, "identical_prefix": "64/64", "first_top5_overlap": 5, "first_max_dlogprob": 1.0, "s": [0.43, 0.52]}
+numerics: {"ctx": 16384, "identical_prefix": "20/64", "first_top5_overlap": 4, "first_max_dlogprob": 0.875, "s": [0.43, 0.46]}
+numerics: {"ctx": 16384, "identical_prefix": "64/64", "first_top5_overlap": 5, "first_max_dlogprob": 1.249, "s": [0.43, 0.43]}
+numerics: {"ctx": 65536, "identical_prefix": "64/64", "first_top5_overlap": 5, "first_max_dlogprob": 0.125, "s": [1.22, 1.24]}
+numerics: {"ctx": 65536, "identical_prefix": "64/64", "first_top5_overlap": 5, "first_max_dlogprob": 0.7487, "s": [1.23, 1.24]}
+numerics: {"ctx": 65536, "identical_prefix": "64/64", "first_top5_overlap": 4, "first_max_dlogprob": 0.3748, "s": [1.32, 1.27]}
+numerics: {"ctx": 131072, "identical_prefix": "9/64", "first_top5_overlap": 3, "first_max_dlogprob": 0.875, "s": [2.41, 2.42]}
+numerics: {"ctx": 131072, "identical_prefix": "64/64", "first_top5_overlap": 5, "first_max_dlogprob": 1.6856, "s": [2.39, 2.41]}
+numerics: {"ctx": 131072, "identical_prefix": "64/64", "first_top5_overlap": 5, "first_max_dlogprob": 0.8125, "s": [2.36, 2.36]}
+=== 22:32 needles
+nvfp4kv-125000 needle 3/3
+nvfp4kv-500000 needle 3/3
+nvfp4kv-1000000 needle 3/3
+=== 22:33 gsm8k-200
+ds41-nvfp4kv: GSM8K 197/200 = 98.5%
+  [22:36] ds41 idle for 120s before: reasoning decode benchmark (waited 1 min)
+=== 22:36 reasoning decode
+speed: {"C": 1, "agg_tok_s": 304.5, "per_stream_tok_s": 304.5, "median_request_decode_tok_s": 380.5, "requests_done": 75, "accept_tokens_per_step": 3.28, "avg_k": 5.0, "accept_per_position": [0.79, 0.59, 0.42, 0.29, 0.2]}
+speed: {"C": 8, "agg_tok_s": 1071.3, "per_stream_tok_s": 133.9, "median_request_decode_tok_s": 147.9, "requests_done": 203, "accept_tokens_per_step": 2.77, "avg_k": 3.0, "accept_per_position": [0.79, 0.57, 0.4, 0.0, 0.0]}
+speed: {"C": 16, "agg_tok_s": 1470.0, "per_stream_tok_s": 91.9, "median_request_decode_tok_s": 101.5, "requests_done": 300, "accept_tokens_per_step": 2.81, "avg_k": 3.0, "accept_per_position": [0.8, 0.59, 0.42, 0.0, 0.0]}
+  [22:43] ds41 idle for 120s before: prefill benchmark (waited 1 min)
+=== 22:43 catid prefill
+prefill:   16384    1    4     1.67    39341.8     0.416     0.417     0.417   39344.3    94    581            65536   0
+prefill:   65536    1    4     6.50    40332.1     1.625     1.618     1.650   40336.3    91    754           262144   0
+prefill:  131072    1    4    13.21    39682.0     3.303     3.297     3.334   39683.8    91    778           524288   0
+=== 22:43 GPQA-Diamond T=1 (NVFP4 KV)
+gpqa nvfp4kv: 179 / 198 90.4 % hit_max 2
+=== 23:02 GPQA-Diamond T=0 (NVFP4 KV)
+gpqa ds41-nvfp4kv-t0-c32-max: 169 / 198 85.4 % hit_max 18 | vs baseline flips 9 / 10 p 1.0
+gates: needles 3/3 lengths, GSM8K 98.5%, GPQA drop vs FP8 2.0 pts
+=== 23:26 NVFP4 KV passed the gates: DS41 stays on it pending your decision
+=== 23:26 restore H3 (combined)
+=== 23:26 done

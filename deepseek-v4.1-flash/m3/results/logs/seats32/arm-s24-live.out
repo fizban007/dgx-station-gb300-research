@@ -1,0 +1,75 @@
+tag s24-live start 2026-09-29T14:13:19Z image vllm/vllm-openai:nightly-af7f9488c2210d67e1033ecdc845b087ee7fe92b
+MEGA_PEER_CHECK_MIN_T=65 MEGA_COLD_TRT=0 MEGA_ROWMAP=/w/rowmap-mix-v1.json MEGA_PEER=2 MEGA_COUNT=/prof/route-counts.json MEGA_FUSED_SEND=2 MEGA_MHC_OVERLAP=1 MEGA_LL_GEMM=1 MEGA_HOOK=/w/mega_peer_hook.py MEGA_PEER_MIN_TOKENS=1 MEGA_PEER_CHECK=0 
+max-num-seqs","24
+(EngineCore pid=908) INFO 09-29 03:11:21 [kv_cache_utils.py:2408] GPU KV cache size: 3,618,460 tokens, Maximum concurrency for 1,048,576 tokens per request: 3.45x
+2026-09-29 03:11:43,252 - INFO - autotuner.py:3691 - flashinfer.jit: [Autotuner]: Loaded 117 configs from /root/.cache/vllm/flashinfer_autotune_cache/0.7.0/103a/a964a58534c09ff27619257094c7577b111a3d0df92c9d02599a3997866bd2db/autotune_configs.json
+2026-09-29 03:14:28,863 - INFO - autotuner.py:3554 - flashinfer.jit: [Autotuner]: Saved 117 configs to /root/.cache/vllm/flashinfer_autotune_cache/0.7.0/103a/a964a58534c09ff27619257094c7577b111a3d0df92c9d02599a3997866bd2db/autotune_configs.json (0 new, 117 fro
+GPU-c51e3fdb-81ba-2821-7021-a4ae8a599eb7, NVIDIA RTX PRO 6000 Blackwell Max-Q Workstation Edition, P8, 180 MHz, 405 MHz, 0x0000000000000000, 8.57 W
+GPU-c146511a-0326-7ddc-4346-998d61a64b34, NVIDIA GB300, P0, 2070 MHz, 3996 MHz, 0x0000000000000000, 211.20 W
+[s24-live] tool_json    259.9 tok/s  accept=85.8%  acc/step=4.29  tokens=255
+[s24-live] code         393.4 tok/s  accept=65.9%  acc/step=3.29  tokens=627
+[s24-live] shell_ops    394.3 tok/s  accept=76.0%  acc/step=3.80  tokens=144
+[s24-live] structured   314.0 tok/s  accept=49.5%  acc/step=2.48  tokens=431
+[s24-live] prose        264.3 tok/s  accept=33.4%  acc/step=1.67  tokens=400
+[s24-live] weighted accept=58.6%
+2026-09-21_tf-r1.jsonl                   agent         1074     19   1.77%   0.04001   5.9950   6.0687        0
+2026-09-21_tf-r1.jsonl                   heldout       2868      0   0.00%   0.00000   2.7700   2.7700        0
+2026-09-21_tf-r1.jsonl                   prose        75602    790   1.04%   0.02935   1.4447   1.4450        0
+tf-s24-live.jsonl                        agent         1074    128  11.92%   0.27379   5.9950   5.9675        0
+tf-s24-live.jsonl                        heldout       2868    261   9.10%   0.20952   2.7700   2.7532        0
+tf-s24-live.jsonl                        prose        75602   1398   1.85%   0.05309   1.4447   1.4467        0
+non-local requests during window: 0
+=== gsm8k 10:13:30
+arm-s24-live: GSM8K 196/200 = 98.0%
+acceptance: 3.41 tokens/step, 80.1% of drafted, 10712 steps, avg k 3.01, per position [0.91, 0.81, 0.69, 0.0, 0.0]
+=== knee 10:13:55
+[arm-s24-live] conc= 1:   224.0 agg tok/s  224.00 per-stream  (runs 227.4/220.6)
+[arm-s24-live] conc= 2:   340.6 agg tok/s  170.31 per-stream  (runs 347.9/333.3)
+[arm-s24-live] conc= 4:   555.4 agg tok/s  138.86 per-stream  (runs 545.5/565.4)
+[arm-s24-live] conc= 8:   912.2 agg tok/s  114.03 per-stream  (runs 918.6/905.8)
+[arm-s24-live] conc=12:  1170.6 agg tok/s   97.55 per-stream  (runs 1140.6/1200.6)
+[arm-s24-live] conc=16:  1450.1 agg tok/s   90.63 per-stream  (runs 1444.4/1455.8)
+acceptance: 2.05 tokens/step, 31.6% of drafted, 8040 steps, avg k 3.33, per position [0.6, 0.3, 0.14, 0.01, 0.0]
+=== catid 10:14:14
+C1 rc=0
+C4 rc=0
+C8 rc=0
+C16 rc=0
+C24 rc=0
+C32 rc=0
+run                                     C  agg tok/s user tok/s  TTFT p50  ITL p50  accept  err
+decode                                  1      247.4      263.2      155ms    3.80ms    2.63    0
+decode                                  4      643.4      170.2      165ms    5.88ms    2.58    0
+decode                                  8    1,046.2      138.3      176ms    7.23ms    2.41    0
+decode                                 16    1,644.5      107.9      297ms    9.27ms    2.42    0
+decode                                 24    1,974.1       86.5      306ms   11.56ms    2.40    0
+decode                                 32    1,897.7       81.7    1,911ms   12.23ms    2.39    0
+acceptance: 2.42 tokens/step, 45.0% of drafted, 220913 steps, avg k 3.16, per position [0.71, 0.44, 0.26, 0.01, 0.01]
+=== reason 10:21:28
+{"C": 1, "agg_tok_s": 310.8, "per_stream_tok_s": 310.8, "median_request_decode_tok_s": 388.5, "requests_done": 51, "accept_tokens_per_step": 3.26, "avg_k": 5.0, "accept_per_position": [0.79, 0.58, 0.41, 0.28, 0.19]}
+{"C": 8, "agg_tok_s": 1079.6, "per_stream_tok_s": 135.0, "median_request_decode_tok_s": 156.6, "requests_done": 133, "accept_tokens_per_step": 2.75, "avg_k": 3.0, "accept_per_position": [0.79, 0.57, 0.39, 0.0, 0.0]}
+{"C": 16, "agg_tok_s": 1541.6, "per_stream_tok_s": 96.4, "median_request_decode_tok_s": 104.7, "requests_done": 183, "accept_tokens_per_step": 2.78, "avg_k": 3.0, "accept_per_position": [0.79, 0.58, 0.41, 0.0, 0.0]}
+{"C": 24, "agg_tok_s": 1777.3, "per_stream_tok_s": 74.1, "median_request_decode_tok_s": 77.9, "requests_done": 242, "accept_tokens_per_step": 2.78, "avg_k": 3.0, "accept_per_position": [0.79, 0.58, 0.41, 0.0, 0.0]}
+{"C": 32, "agg_tok_s": 1773.9, "per_stream_tok_s": 55.4, "median_request_decode_tok_s": 79.4, "requests_done": 239, "accept_tokens_per_step": 2.81, "avg_k": 3.0, "accept_per_position": [0.8, 0.59, 0.42, 0.0, 0.0]}
+acceptance: 2.83 tokens/step, 59.5% of drafted, 169342 steps, avg k 3.08, per position [0.8, 0.59, 0.42, 0.01, 0.01]
+=== prefill 10:27:44
+target=http://127.0.0.1:30006 points=1 warmup=1 flush_cache=True timeout=1800s seed=1234 output=/home/jasonc/ds41f-exp/runs/arm-s24-live/prefill/prefill.jsonl label='arm-s24-live'
+server: (no /get_model_info or /get_server_info)
+    isl conc    n   wall_s  agg_tok/s ttft_mean  ttft_p50  ttft_p99 req_tok/s util%      W metrics_prompt_d err
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+  16384    1    4     1.48    44298.5     0.370     0.369     0.374   44302.7    98    750            65536   0
+done.
+acceptance: no drafts in this phase
+=== realtext 10:27:46
+corpus 1.3 MB, 360953 tokens
+16384 tokens:    58479 tok/s  ttft 0.280s  cold rows/token 0.249
+16384 tokens:    52926 tok/s  ttft 0.310s  cold rows/token 0.231
+16384 tokens:    58783 tok/s  ttft 0.279s  cold rows/token 0.255
+65536 tokens:    59579 tok/s  ttft 1.100s  cold rows/token 0.333
+65536 tokens:    59938 tok/s  ttft 1.093s  cold rows/token 0.301
+65536 tokens:    59853 tok/s  ttft 1.095s  cold rows/token 0.274
+acceptance: no drafts in this phase
+non-local requests during window: 0
+GPU-c51e3fdb-81ba-2821-7021-a4ae8a599eb7, P1, 2175 MHz, 0x0000000000000000
+GPU-c146511a-0326-7ddc-4346-998d61a64b34, P0, 1980 MHz, 0x0000000000000004
+arm suite done s24-live

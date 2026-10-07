@@ -1,7 +1,7 @@
 # DGX Station GB300 serving research
 
-These are measured results from three days (2026-09-23 to 25) of serving large MoE models on one NVIDIA DGX
-Station GB300. The station also holds an RTX PRO 6000 Blackwell Max-Q, and most of this work puts that second
+These are measured results from serving large MoE models on one NVIDIA DGX Station GB300, mostly from
+2026-09-23 to 25, with DeepSeek-V4.1-Flash M3 updates through 2026-10-03. The station also holds an RTX PRO 6000 Blackwell Max-Q, and most of this work puts that second
 GPU to use. For models whose experts don't fit in the GB300's HBM, the RTX PRO 6000 becomes an **expert
 sidecar**: it holds experts in its own 96 GB and computes them there.
 
@@ -20,6 +20,11 @@ are marked as such.
 
 The GB300 spends under 1% of each forward pass waiting for the sidecar. The design, protocol and failure
 behaviour are in [docs/sidecar-peer-tier.md](docs/sidecar-peer-tier.md).
+
+Since 2026-10-03 the DeepSeek M3 lane also shares its GB300 with a video model (MiniMax-H3) and keeps 3.42M KV
+tokens. It uses 265 hot experts, NVFP4 Engram tables and NVFP4 KV
+([how](deepseek-v4.1-flash/m3/DETAILS.md#2026-10-0203-sharing-the-gb300-with-minimax-h3)). The table above shows its
+peak results from 2026-09-28.
 
 The later MiMo-V2.6-Pro versions are **unqualified**: no GSM8K or BFCL gate has been run on them yet. They add
 FlashInfer TRT-LLM expert banks that read from HBM, an FP8 KV cache, and DFlash k=3. They reach 4.6–5.0K tok/s

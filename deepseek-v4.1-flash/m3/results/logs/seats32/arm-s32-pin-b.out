@@ -1,0 +1,103 @@
+tag s32-pin-b start 2026-09-29T15:08:17Z image vllm/vllm-openai:nightly-af7f9488c2210d67e1033ecdc845b087ee7fe92b
+MEGA_HOOK=/w/mega_peer_hook.py MEGA_ROWMAP=/w/rowmap-mix-v1.json MEGA_FUSED_SEND=2 MEGA_LL_GEMM=1 MEGA_NO_MEGA_MHC=0 MEGA_PEER=2 MEGA_PEER_CHECK=0 MEGA_COUNT=/prof/route-counts.json MEGA_PEER_CHECK_MIN_T=65 MEGA_MHC_OVERLAP=1 MEGA_FI_TUNE_FILE=/w/fi-tune/fiset-a964-9a5ab530.json MEGA_PEER_MIN_TOKENS=1 MEGA_COLD_TRT=0 
+max-num-seqs","32
+(EngineCore pid=359) INFO 09-29 15:03:32 [kv_cache_utils.py:2408] GPU KV cache size: 3,527,818 tokens, Maximum concurrency for 1,048,576 tokens per request: 3.36x
+MEGA_PEER FlashInfer autotune pinned: /w/fi-tune/fiset-a964-9a5ab530.json sha256 9a5ab5308ba02244f4202405a3bd4b449338929fea5fe6b88b5d575fdddba3a2 (working copy /tmp/fi-tune-pinned-359.json)
+2026-09-29 15:03:54,219 - INFO - autotuner.py:3691 - flashinfer.jit: [Autotuner]: Loaded 117 configs from /tmp/fi-tune-pinned-359.json
+2026-09-29 15:06:40,139 - INFO - autotuner.py:3554 - flashinfer.jit: [Autotuner]: Saved 117 configs to /tmp/fi-tune-pinned-359.json (0 new, 117 from previous config)
+GPU-c51e3fdb-81ba-2821-7021-a4ae8a599eb7, NVIDIA RTX PRO 6000 Blackwell Max-Q Workstation Edition, P1, 2100 MHz, 13365 MHz, 0x0000000000000000, 183.02 W
+GPU-c146511a-0326-7ddc-4346-998d61a64b34, NVIDIA GB300, P0, 2070 MHz, 3996 MHz, 0x0000000000000000, 748.53 W
+[s32-pin-b-r1] tool_json    274.9 tok/s  accept=86.8%  acc/step=4.34  tokens=284
+[s32-pin-b-r1] code         404.6 tok/s  accept=67.3%  acc/step=3.37  tokens=680
+[s32-pin-b-r1] shell_ops    417.9 tok/s  accept=82.1%  acc/step=4.11  tokens=144
+[s32-pin-b-r1] structured   315.7 tok/s  accept=49.8%  acc/step=2.49  tokens=426
+[s32-pin-b-r1] prose        228.2 tok/s  accept=26.5%  acc/step=1.33  tokens=393
+[s32-pin-b-r1] weighted accept=59.1%
+[s32-pin-b-r1] tool_json    282.4 tok/s  accept= 85.8%  acc/step=4.29  drafted=550 tokens=586
+[s32-pin-b-r1] shell_ops    357.9 tok/s  accept= 75.6%  acc/step=3.78  drafted=410 tokens=393
+[s32-pin-b-r1] code         422.3 tok/s  accept= 74.6%  acc/step=3.73  drafted=1065 tokens=1009
+[s32-pin-b-r1] structured   324.7 tok/s  accept= 50.7%  acc/step=2.53  drafted=1395 tokens=988
+[s32-pin-b-r1] prose        238.8 tok/s  accept= 28.9%  acc/step=1.45  drafted=2635 tokens=1289
+[s32-pin-b-r2] tool_json    293.3 tok/s  accept=90.7%  acc/step=4.54  tokens=301
+[s32-pin-b-r2] code         393.5 tok/s  accept=66.0%  acc/step=3.30  tokens=629
+[s32-pin-b-r2] shell_ops    416.2 tok/s  accept=82.9%  acc/step=4.14  tokens=144
+[s32-pin-b-r2] structured   325.6 tok/s  accept=52.4%  acc/step=2.62  tokens=427
+[s32-pin-b-r2] prose        252.5 tok/s  accept=31.7%  acc/step=1.59  tokens=369
+[s32-pin-b-r2] weighted accept=61.4%
+[s32-pin-b-r2] tool_json    284.8 tok/s  accept= 82.5%  acc/step=4.12  drafted=600 tokens=618
+[s32-pin-b-r2] shell_ops    365.9 tok/s  accept= 78.0%  acc/step=3.90  drafted=400 tokens=394
+[s32-pin-b-r2] code         438.6 tok/s  accept= 77.2%  acc/step=3.86  drafted=1120 tokens=1091
+[s32-pin-b-r2] structured   317.3 tok/s  accept= 48.8%  acc/step=2.44  drafted=1425 tokens=982
+[s32-pin-b-r2] prose        233.6 tok/s  accept= 27.8%  acc/step=1.39  drafted=2660 tokens=1272
+[s32-pin-b-r3] tool_json    250.4 tok/s  accept=83.5%  acc/step=4.17  tokens=238
+[s32-pin-b-r3] code         391.7 tok/s  accept=64.8%  acc/step=3.24  tokens=632
+[s32-pin-b-r3] shell_ops    416.3 tok/s  accept=82.9%  acc/step=4.14  tokens=144
+[s32-pin-b-r3] structured   306.3 tok/s  accept=46.8%  acc/step=2.34  tokens=441
+[s32-pin-b-r3] prose        242.5 tok/s  accept=29.3%  acc/step=1.46  tokens=400
+[s32-pin-b-r3] weighted accept=56.7%
+[s32-pin-b-r3] tool_json    271.4 tok/s  accept= 81.7%  acc/step=4.08  drafted=545 tokens=558
+[s32-pin-b-r3] shell_ops    353.5 tok/s  accept= 75.1%  acc/step=3.76  drafted=410 tokens=391
+[s32-pin-b-r3] code         429.7 tok/s  accept= 75.3%  acc/step=3.77  drafted=1160 tokens=1106
+[s32-pin-b-r3] structured   319.3 tok/s  accept= 49.1%  acc/step=2.46  drafted=1425 tokens=987
+[s32-pin-b-r3] prose        241.8 tok/s  accept= 29.3%  acc/step=1.47  drafted=2865 tokens=1413
+2026-09-21_tf-r1.jsonl                   agent         1074     19   1.77%   0.04001   5.9950   6.0687        0
+2026-09-21_tf-r1.jsonl                   heldout       2868      0   0.00%   0.00000   2.7700   2.7700        0
+2026-09-21_tf-r1.jsonl                   prose        75602    790   1.04%   0.02935   1.4447   1.4450        0
+tf-s32-pin-b.jsonl                       agent         1074    129  12.01%   0.28630   5.9950   6.2206        0
+tf-s32-pin-b.jsonl                       heldout       2868    226   7.88%   0.21540   2.7700   2.7832        0
+tf-s32-pin-b.jsonl                       prose        75602   1401   1.85%   0.05273   1.4447   1.4464        0
+non-local requests during window: 0
+=== gsm8k 11:09:44
+arm-s32-pin-b: GSM8K 195/200 = 97.5%
+acceptance: 3.40 tokens/step, 79.5% of drafted, 10804 steps, avg k 3.02, per position [0.91, 0.8, 0.68, 0.01, 0.01]
+=== knee 11:10:10
+[arm-s32-pin-b] conc= 1:   214.7 agg tok/s  214.66 per-stream  (runs 201.4/227.9)
+[arm-s32-pin-b] conc= 2:   351.0 agg tok/s  175.48 per-stream  (runs 346.9/355.1)
+[arm-s32-pin-b] conc= 4:   549.1 agg tok/s  137.28 per-stream  (runs 566.6/531.6)
+[arm-s32-pin-b] conc= 8:   893.2 agg tok/s  111.66 per-stream  (runs 898.4/888.1)
+[arm-s32-pin-b] conc=12:  1203.2 agg tok/s  100.27 per-stream  (runs 1204.0/1202.4)
+[arm-s32-pin-b] conc=16:  1429.2 agg tok/s   89.32 per-stream  (runs 1411.7/1446.6)
+acceptance: 2.04 tokens/step, 31.3% of drafted, 8089 steps, avg k 3.33, per position [0.59, 0.3, 0.14, 0.01, 0.0]
+=== catid 11:10:28
+C1 rc=0
+C4 rc=0
+C8 rc=0
+C16 rc=0
+C24 rc=0
+C32 rc=0
+run                                     C  agg tok/s user tok/s  TTFT p50  ITL p50  accept  err
+decode                                  1      244.5      251.0      146ms    3.98ms    2.60    0
+decode                                  4      643.6      167.8      164ms    5.96ms    2.58    0
+decode                                  8    1,052.5      137.6      172ms    7.27ms    2.41    0
+decode                                 16    1,604.3      105.8      280ms    9.45ms    2.40    0
+decode                                 24    1,943.1       83.3      300ms   12.00ms    2.40    0
+decode                                 32    2,319.3       75.1      311ms   13.31ms    2.40    0
+acceptance: 2.42 tokens/step, 44.9% of drafted, 220951 steps, avg k 3.15, per position [0.71, 0.44, 0.26, 0.01, 0.01]
+=== reason 11:17:19
+{"C": 1, "agg_tok_s": 314.4, "per_stream_tok_s": 314.4, "median_request_decode_tok_s": 394.6, "requests_done": 49, "accept_tokens_per_step": 3.31, "avg_k": 5.0, "accept_per_position": [0.8, 0.6, 0.42, 0.3, 0.2]}
+{"C": 8, "agg_tok_s": 1081.7, "per_stream_tok_s": 135.2, "median_request_decode_tok_s": 149.7, "requests_done": 136, "accept_tokens_per_step": 2.78, "avg_k": 3.0, "accept_per_position": [0.79, 0.58, 0.41, 0.0, 0.0]}
+{"C": 16, "agg_tok_s": 1487.1, "per_stream_tok_s": 92.9, "median_request_decode_tok_s": 105.8, "requests_done": 198, "accept_tokens_per_step": 2.77, "avg_k": 3.0, "accept_per_position": [0.79, 0.58, 0.41, 0.0, 0.0]}
+{"C": 24, "agg_tok_s": 1764.2, "per_stream_tok_s": 73.5, "median_request_decode_tok_s": 77.2, "requests_done": 228, "accept_tokens_per_step": 2.77, "avg_k": 3.0, "accept_per_position": [0.79, 0.57, 0.4, 0.0, 0.0]}
+{"C": 32, "agg_tok_s": 2035.7, "per_stream_tok_s": 63.6, "median_request_decode_tok_s": 67.6, "requests_done": 267, "accept_tokens_per_step": 2.78, "avg_k": 3.0, "accept_per_position": [0.79, 0.58, 0.41, 0.0, 0.0]}
+acceptance: 2.83 tokens/step, 59.3% of drafted, 175373 steps, avg k 3.08, per position [0.8, 0.59, 0.42, 0.01, 0.01]
+=== prefill 11:23:34
+target=http://127.0.0.1:30006 points=1 warmup=1 flush_cache=True timeout=1800s seed=1234 output=/home/jasonc/ds41f-exp/runs/arm-s32-pin-b/prefill/prefill.jsonl label='arm-s32-pin-b'
+server: (no /get_model_info or /get_server_info)
+    isl conc    n   wall_s  agg_tok/s ttft_mean  ttft_p50  ttft_p99 req_tok/s util%      W metrics_prompt_d err
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+  16384    1    4     1.48    44308.7     0.370     0.370     0.372   44312.5   100    750            65536   0
+done.
+acceptance: no drafts in this phase
+=== realtext 11:23:36
+corpus 1.3 MB, 360953 tokens
+16384 tokens:    58329 tok/s  ttft 0.281s  cold rows/token 0.249
+16384 tokens:    59618 tok/s  ttft 0.275s  cold rows/token 0.231
+16384 tokens:    58033 tok/s  ttft 0.282s  cold rows/token 0.254
+65536 tokens:    59313 tok/s  ttft 1.105s  cold rows/token 0.334
+65536 tokens:    60225 tok/s  ttft 1.088s  cold rows/token 0.301
+65536 tokens:    59452 tok/s  ttft 1.102s  cold rows/token 0.274
+acceptance: no drafts in this phase
+non-local requests during window: 0
+GPU-c51e3fdb-81ba-2821-7021-a4ae8a599eb7, P1, 2160 MHz, 0x0000000000000000
+GPU-c146511a-0326-7ddc-4346-998d61a64b34, P0, 2070 MHz, 0x0000000000000000
+arm suite done s32-pin-b

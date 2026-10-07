@@ -1,0 +1,329 @@
+{
+ "config": {
+  "hf_config_class": "DeepseekV41Config",
+  "engram_quant": "nvfp4",
+  "engram_quant_block_size": 16,
+  "engram_quant_global_scale": {
+   "1": 0.004092261904761905,
+   "14": 0.008928571428571428
+  },
+  "layout": {
+   "quant": "nvfp4",
+   "block": 16,
+   "global_scales": [
+    0.004092261904761905,
+    0.008928571428571428
+   ],
+   "layer_ids": [
+    1,
+    14
+   ],
+   "num_embeddings": [
+    384006168,
+    384016682
+   ],
+   "row_bytes": 144,
+   "kwargs_l1": {
+    "block_size": 16,
+    "quant": "nvfp4",
+    "global_scale": 0.004092261904761905
+   }
+  },
+  "fp8_dir_layout": {
+   "quant": "fp8",
+   "block": 32,
+   "kwargs_l1": {},
+   "row_bytes": 264
+  }
+ },
+ "discovery": {
+  "globbed": 48,
+  "kept_after_index_filter": 48,
+  "shard47": "/data/checkpoints/DeepSeek-V4.1-Flash-engram-nvfp4/hf/model-00047-of-00048.safetensors",
+  "shard48": "/data/checkpoints/DeepSeek-V4.1-Flash-engram-nvfp4/hf/model-00048-of-00048.safetensors",
+  "others_in_fp8_dir": true
+ },
+ "dry_run": {
+  "modules": {
+   "1": {
+    "quant": "nvfp4",
+    "global_scale": 0.004092261904761905,
+    "block_size": 16,
+    "weight": [
+     [
+      384006168,
+      128
+     ],
+     "torch.uint8",
+     "meta"
+    ],
+    "scale": [
+     [
+      384006168,
+      16
+     ],
+     "torch.float8_e4m3fn"
+    ],
+    "vocab": [
+     0,
+     384006168
+    ],
+    "num_embeddings": 384006168,
+    "host_bytes": 55296888192,
+    "staged_rows": [
+     8192,
+     24,
+     256
+    ],
+    "prefetch_stream": true
+   },
+   "14": {
+    "quant": "nvfp4",
+    "global_scale": 0.008928571428571428,
+    "block_size": 16,
+    "weight": [
+     [
+      384016682,
+      128
+     ],
+     "torch.uint8",
+     "meta"
+    ],
+    "scale": [
+     [
+      384016682,
+      16
+     ],
+     "torch.float8_e4m3fn"
+    ],
+    "vocab": [
+     0,
+     384016682
+    ],
+    "num_embeddings": 384016682,
+    "host_bytes": 55298402208,
+    "staged_rows": [
+     8192,
+     24,
+     256
+    ],
+    "prefetch_stream": true
+   }
+  },
+  "loaded": {
+   "weight_scale:model.layers.1.engram.embed_tokens.weight_scale_inv": {
+    "ckpt": [
+     [
+      384006168,
+      16
+     ],
+     "torch.float8_e4m3fn"
+    ],
+    "param": [
+     [
+      384006168,
+      16
+     ],
+     "torch.float8_e4m3fn"
+    ],
+    "loader": "_engram_nvfp4_head_shard_weight_loader",
+    "s": 0.0
+   },
+   "weight_scale:model.layers.1.engram.embed_tokens.weight": {
+    "ckpt": [
+     [
+      384006168,
+      128
+     ],
+     "torch.uint8"
+    ],
+    "param": [
+     [
+      384006168,
+      128
+     ],
+     "torch.uint8"
+    ],
+    "loader": "_engram_nvfp4_head_shard_weight_loader",
+    "s": 0.0
+   },
+   "weight_scale:model.layers.14.engram.embed_tokens.weight_scale_inv": {
+    "ckpt": [
+     [
+      384016682,
+      16
+     ],
+     "torch.float8_e4m3fn"
+    ],
+    "param": [
+     [
+      384016682,
+      16
+     ],
+     "torch.float8_e4m3fn"
+    ],
+    "loader": "_engram_nvfp4_head_shard_weight_loader",
+    "s": 0.0
+   },
+   "weight_scale:model.layers.14.engram.embed_tokens.weight": {
+    "ckpt": [
+     [
+      384016682,
+      128
+     ],
+     "torch.uint8"
+    ],
+    "param": [
+     [
+      384016682,
+      128
+     ],
+     "torch.uint8"
+    ],
+    "loader": "_engram_nvfp4_head_shard_weight_loader",
+    "s": 0.0
+   },
+   "weight_scale_inv:model.layers.1.engram.embed_tokens.weight_scale_inv": {
+    "ckpt": [
+     [
+      384006168,
+      16
+     ],
+     "torch.float8_e4m3fn"
+    ],
+    "param": [
+     [
+      384006168,
+      16
+     ],
+     "torch.float8_e4m3fn"
+    ],
+    "loader": "_engram_nvfp4_head_shard_weight_loader",
+    "s": 0.0
+   },
+   "weight_scale_inv:model.layers.1.engram.embed_tokens.weight": {
+    "ckpt": [
+     [
+      384006168,
+      128
+     ],
+     "torch.uint8"
+    ],
+    "param": [
+     [
+      384006168,
+      128
+     ],
+     "torch.uint8"
+    ],
+    "loader": "_engram_nvfp4_head_shard_weight_loader",
+    "s": 0.0
+   },
+   "weight_scale_inv:model.layers.14.engram.embed_tokens.weight_scale_inv": {
+    "ckpt": [
+     [
+      384016682,
+      16
+     ],
+     "torch.float8_e4m3fn"
+    ],
+    "param": [
+     [
+      384016682,
+      16
+     ],
+     "torch.float8_e4m3fn"
+    ],
+    "loader": "_engram_nvfp4_head_shard_weight_loader",
+    "s": 0.0
+   },
+   "weight_scale_inv:model.layers.14.engram.embed_tokens.weight": {
+    "ckpt": [
+     [
+      384016682,
+      128
+     ],
+     "torch.uint8"
+    ],
+    "param": [
+     [
+      384016682,
+      128
+     ],
+     "torch.uint8"
+    ],
+    "loader": "_engram_nvfp4_head_shard_weight_loader",
+    "s": 0.0
+   }
+  },
+  "unmapped_or_skipped": [
+   "model.layers.1.engram.wkv.weight_scale",
+   "model.layers.1.engram.wkv.weight_scale_inv",
+   "model.layers.14.engram.wkv.weight_scale",
+   "model.layers.14.engram.wkv.weight_scale_inv"
+  ],
+  "fp8_into_nvfp4_guard": {
+   "weight": "rejected: ValueError: NVFP4 engram (384006168, 128) torch.uint8 parameter cannot load a torch.float8_e4m3fn checkpoint tensor; does config.json engram_quant match the engram shards?",
+   "scale": "rejected: ValueError: NVFP4 engram (384006168, 16) torch.float8_e4m3fn parameter cannot load a torch.float8_e8m0fnu checkpoint tensor; does config.json engram_quant match the engram "
+  }
+ },
+ "subset_load": {
+  "rows": 32000136,
+  "bytes": 4608019584,
+  "load_s": 0.33,
+  "load_GBps": 13.84,
+  "rss_delta_gib": 4.3,
+  "storage": "registered",
+  "T4_prefetch_embed_bit_identical": true,
+  "T8192_prefetch_embed_bit_identical": true
+ },
+ "footprint": {
+  "rows": 6291456,
+  "nvfp4_registered": {
+   "tensor_bytes": 905969664,
+   "rss_delta_bytes": 905969664,
+   "caching_host_allocator_bytes": 0,
+   "is_pinned": true
+  },
+  "nvfp4_thp": {
+   "tensor_bytes": 905969664,
+   "rss_delta_bytes": 905969664,
+   "caching_host_allocator_bytes": 0,
+   "is_pinned": true
+  },
+  "nvfp4_pin_memory_fallback": {
+   "tensor_bytes": 905969664,
+   "rss_delta_bytes": 1207959552,
+   "caching_host_allocator_bytes": 1207959552,
+   "is_pinned": true
+  },
+  "fp8_stock_pin_memory": {
+   "tensor_bytes": 1660944384,
+   "rss_delta_bytes": 2214592512,
+   "caching_host_allocator_bytes": 2214592512,
+   "is_pinned": true
+  },
+  "projection_real_tables": {
+   "nvfp4": {
+    "exact_bytes": 110595290400,
+    "exact_GiB": 103.0,
+    "pin_memory_rounded_bytes": 154618822656,
+    "pin_memory_rounded_GiB": 144.0
+   },
+   "fp8": {
+    "exact_bytes": 202758032400,
+    "exact_GiB": 188.83,
+    "pin_memory_rounded_bytes": 283467841536,
+    "pin_memory_rounded_GiB": 264.0
+   }
+  }
+ },
+ "checks": {
+  "config": true,
+  "discovery": true,
+  "dry_run": true,
+  "subset_load": true,
+  "footprint": true
+ },
+ "pass": true
+}

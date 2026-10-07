@@ -1,0 +1,75 @@
+{
+ "n_random": 65536,
+ "layers": {
+  "1": {
+   "rows_in_table": 384006168,
+   "sampled_rows": 69625,
+   "read_seconds": 2.01,
+   "global_scale": 0.004092261904761905,
+   "nvfp4_gather_vs_reference": {
+    "elements": 17848320,
+    "max_abs_diff": 0.0,
+    "bit_identical_forward": true,
+    "bit_identical_background_grid": true,
+    "bit_identical_hbm_resident_table": true,
+    "torch_equal": true,
+    "zero_rows_for_invalid_ids": true,
+    "negative_zero_outputs": 0
+   },
+   "fp8_gather_vs_reference": {
+    "bit_identical": true
+   },
+   "nvfp4_vs_fp8": {
+    "rel_rms_fp32": 0.08986816600046801,
+    "rel_rms_bf16_outputs": 0.08980580430396515,
+    "row_rel_err_median": 0.08981229452315749,
+    "row_rel_err_p99": 0.09834258875872921,
+    "row_cosine_median": 0.9960048959863559,
+    "row_cosine_min": 0.9945103576359733,
+    "rel_rms_if_nibbles_swapped": 1.4055998057583172,
+    "rel_rms_without_global_scale": 240.57478444230983
+   },
+   "host_table_bytes": {
+    "nvfp4": 10026000,
+    "fp8": 18381000,
+    "nvfp4_storage": "registered"
+   }
+  },
+  "14": {
+   "rows_in_table": 384016682,
+   "sampled_rows": 69631,
+   "read_seconds": 2.08,
+   "global_scale": 0.008928571428571428,
+   "nvfp4_gather_vs_reference": {
+    "elements": 17848320,
+    "max_abs_diff": 0.0,
+    "bit_identical_forward": true,
+    "bit_identical_background_grid": true,
+    "bit_identical_hbm_resident_table": true,
+    "torch_equal": true,
+    "zero_rows_for_invalid_ids": true,
+    "negative_zero_outputs": 0
+   },
+   "fp8_gather_vs_reference": {
+    "bit_identical": true
+   },
+   "nvfp4_vs_fp8": {
+    "rel_rms_fp32": 0.09064052997956519,
+    "rel_rms_bf16_outputs": 0.09073961174977048,
+    "row_rel_err_median": 0.09064380456658168,
+    "row_rel_err_p99": 0.09928000803491165,
+    "row_cosine_median": 0.9959163135944995,
+    "row_cosine_min": 0.9944845348451774,
+    "rel_rms_if_nibbles_swapped": 1.407537394520794,
+    "rel_rms_without_global_scale": 109.96681553671928
+   },
+   "host_table_bytes": {
+    "nvfp4": 10026864,
+    "fp8": 18382584,
+    "nvfp4_storage": "registered"
+   }
+  }
+ },
+ "dummy_weights_decode_to_global_scale": true,
+ "pass": true
+}

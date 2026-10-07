@@ -5,6 +5,11 @@ set -euo pipefail
 # 95% HBM target; DSpark k=5 to 4 streams, 3 above, probabilistic drafting, LL GEMM, fused send v2
 # (2026-09-28 evening; all set in launch-m3.sh).
 export GPU_UTIL=${GPU_UTIL:-0.95} MEGA_COLD_TRT=${MEGA_COLD_TRT:-0} MEGA_COUNT=${MEGA_COUNT-/prof/route-counts.json}
+# 2026-09-29: 32 seats (launch-m3.sh SEQS default) and FlashInfer tactics pinned to the set this lane served on
+# 2026-09-28/29 (hook/fi-tune, sha256 9a5ab530...): live tunes pick different dense-GEMM tactics per boot (58 of 105
+# shared keys differed between two boots) and live-tuned entries outrank loaded ones. Re-pin after an image or
+# FlashInfer upgrade (boot with MEGA_FI_TUNE_FILE= once, copy the saved set into hook/fi-tune). Empty disables it.
+export MEGA_FI_TUNE_FILE=${MEGA_FI_TUNE_FILE-/w/fi-tune/fiset-a964-9a5ab530.json}
 PEER_DIR=/home/jasonc/ds41f-exp/peer
 LOG=/home/jasonc/research/megamoe/logs
 mkdir -p "$LOG"

@@ -2,14 +2,37 @@
 
 This file backs the [README](README.md). Every number is in [`results.jsonl`](results.jsonl) with its source
 file; regenerate that file with [`tools/make_results_jsonl.py`](tools/make_results_jsonl.py). Numbers marked
-*(notes)* come from session notes; their raw output was not kept. Runs are from 2026-09-24 and 2026-09-28, in EDT.
-The 2026-09-28 work (image upgrade, hook fusion, DSpark retunes, dense-GEMM and prefill changes) starts at
-[2026-09-28: image upgrade and decode profile](#2026-09-28-image-upgrade-and-decode-profile).
+*(notes)* come from session notes; their raw output was not kept. Runs are from 2026-09-24 to 2026-10-03, in EDT.
+- The 2026-09-28 work (image upgrade, hook fusion, DSpark retunes, dense-GEMM and prefill changes) starts at
+  [2026-09-28: image upgrade and decode profile](#2026-09-28-image-upgrade-and-decode-profile).
+- The 2026-09-29 work (32 sequences, pinned FlashInfer tactics) is at
+  [2026-09-29: 32 sequences and pinned FlashInfer tactics](#2026-09-29-32-sequences-and-pinned-flashinfer-tactics).
+- The 2026-10-02/03 work (making room for MiniMax-H3, NVFP4 Engram, NVFP4 KV, GPQA) is at
+  [2026-10-02/03: sharing the GB300 with MiniMax-H3](#2026-10-0203-sharing-the-gb300-with-minimax-h3).
 
-## Configuration (current, 2026-09-28)
+## Configuration (current, 2026-10-03)
 
-What [`swap-to-m3v2.sh`](swap-to-m3v2.sh) and [`launch-m3.sh`](launch-m3.sh) boot by default. Changes from the
-2026-09-24 configuration below:
+What [`swap-to-ds41-h3.sh`](swap-to-ds41-h3.sh) boots: the 2026-09-29 configuration below, plus:
+- `ROWMAP=rowmap-mix-v1-h265.json`: 265 hot experts per layer; the other 119 are on the sidecar.
+- The NVFP4 Engram overlay and checkpoint mounts ([`engram-nvfp4/lane-mounts.sh`](engram-nvfp4/lane-mounts.sh)),
+  which include the vllm#58132 mounts.
+- `--kv-cache-dtype nvfp4_ds_mla`.
+- `GPU_UTIL=0.885`.
+
+The KV cache is 4.64 GiB, or 3,423,027 tokens (3.26 requests at the 1,048,576-token max length). The lane
+shares the GB300 with MiniMax-H3 in vllm-omni, started by
+[`tools/coexist/serve-h3-gracie.sh`](tools/coexist/serve-h3-gracie.sh) with `H3_MODE=combined OFFLOAD=legacy`.
+
+## Configuration (2026-09-29)
+
+[`swap-to-m3v2.sh`](swap-to-m3v2.sh) and [`launch-m3.sh`](launch-m3.sh) still boot this by default. It is the
+2026-09-28 configuration below with 32 sequences (was 24) and FlashInfer tactics pinned by `MEGA_FI_TUNE_FILE`
+([`hook/fi-tune/fiset-a964-9a5ab530.json`](hook/fi-tune/fiset-a964-9a5ab530.json)). It still uses 285 hot
+experts, FP8 Engram, `fp8_ds_mla` and `--gpu-memory-utilization 0.95`: 3,527,818 KV tokens, and no room for H3.
+
+## Configuration (2026-09-28)
+
+Changes from the 2026-09-24 configuration below:
 
 - Image `vllm/vllm-openai:nightly-af7f9488c2210d67e1033ecdc845b087ee7fe92b`, plus
   [vllm#58132](https://github.com/vllm-project/vllm/pull/58132) (decoder SWA bounded replay) bind-mounted from
@@ -332,7 +355,8 @@ of 5 in both comparisons.
 - **Attention.** FlashMLA's fused mega kernel takes 26.7 µs per layer for any s_q from 1 to 96. It runs one CTA
   per query token over 640 keys (128 SWA + 512 compressed top-k), in 10 serial blocks of 64 at ~2.7 µs each.
   Padding 64 heads to the 128-head 2-CTA kernel saves ~4 µs per layer only up to 12 tokens, and costs more at 96.
-  An NVFP4 compressed cache does not change the time
+  An NVFP4 compressed cache does not change the time (it was adopted on 2026-10-02 for capacity instead; see
+  [NVFP4 KV](#nvfp4-kv-ab-same-lane-util-089))
   ([`results/microbench/mega_attn_variants.jsonl`](results/microbench/mega_attn_variants.jsonl),
   [`tools/mega_attn_bench.py`](tools/mega_attn_bench.py)).
   [deepseek-ai/FlashMLA#227](https://github.com/deepseek-ai/FlashMLA/pull/227), built for sm_103a with its B200
@@ -348,3 +372,194 @@ of 5 in both comparisons.
   ~25 µs each; a two-stage PyTorch argmax gets 11–24 µs
   ([`results/microbench/drafter_argmax.jsonl`](results/microbench/drafter_argmax.jsonl)). Probabilistic drafting
   replaces the argmax with a Gumbel sample, so this was not pursued.
+
+## 2026-09-29: 32 sequences and pinned FlashInfer tactics
+
+**Tactics.** FlashInfer autotunes its dense MXFP8 GEMMs at boot. Two boots that each tuned live disagreed on 58 of
+105 shared tactic keys *(notes)*. In FlashInfer 0.7.0 live-tuned entries also outrank loaded ones, and
+[`hook/ll_gemm.py`](hook/ll_gemm.py) re-tuned the M ≤ 8 GEMMs on every boot. So A/Bs that changed the engine
+hash, such as the 2026-09-28 k-schedule sweeps, carry ~1–4% of boot-to-boot noise.
+- `MEGA_FI_TUNE_FILE` now loads the set this lane served on 2026-09-28/29
+  ([`hook/fi-tune/fiset-a964-9a5ab530.json`](hook/fi-tune/fiset-a964-9a5ab530.json), 117 configs).
+- [`hook/mega_peer_hook.py`](hook/mega_peer_hook.py) copies it to a working file, and `ll_gemm.py` takes its
+  M ≤ 8 tactics from it instead of tuning. The boot log confirms this with `tactics from the pinned FlashInfer
+  autotune file, no live tune`.
+- Pinned boots agree on catid within ~1%.
+- Re-pin after any image or FlashInfer upgrade: boot once with `MEGA_FI_TUNE_FILE=` and copy the saved set.
+- The sidecar still races its b12x configurations on every boot.
+
+**32 sequences.** `SEQS` went from 24 to 32 in [`launch-m3.sh`](launch-m3.sh). Each boot ran
+[`tools/arm-suite.sh`](tools/arm-suite.sh): GSM8K-200, Al-ENGR's prose knee, catid decode from C1 to C32,
+reasoning from C1 to C32, and catid 16K prefill. Logs are in [`results/logs/seats32/`](results/logs/seats32/),
+and catid runs in `../results/runs/arm-*`. The suite also ran a fidelity check against J-M-Recipes' reference
+(agent-fixture acceptance and teacher-forced top-1 flips). Its output is in the same logs and is not analysed here.
+
+| | 24 seqs, live autotune (`arm-s24-live`) | 32 seqs, pinned (`arm-s32-pin-a`) | 32 seqs, pinned (`arm-s32-pin-b`) |
+|---|--:|--:|--:|
+| catid C1 agg / user | 247 / 263 | 244 / 254 | 244 / 251 |
+| catid C8 / C16 / C24 agg | 1,046 / 1,645 / 1,974 | 1,059 / 1,621 / 1,950 | 1,052 / 1,604 / 1,943 |
+| **catid C32 agg, TTFT p50** | **1,898, 1,911 ms** | **2,303, 319 ms** | **2,319, 311 ms** |
+| reasoning C1 / C8 / C16 | 311 / 1,080 / 1,542 | 329 / 1,075 / 1,533 | 314 / 1,082 / 1,487 |
+| reasoning C24 / C32 | 1,777 / 1,774 | 1,738 / 2,106 | 1,764 / 2,036 |
+| prefill 16K (random ids) | 44.3K | 44.0K | 44.3K |
+| GSM8K-200 | 98.0% | 98.0% | 97.5% |
+| KV cache | 3,618,460 tokens | 3,527,818 | 3,527,818 |
+
+At 24 sequences, C32 queues a quarter of its requests, which shows up as the 1.9 s TTFT. 32 sequences remove
+that queue and cost 90K KV tokens. The reasoning C1 cells of the three boots span 311–329, so a single C1
+reasoning run is good to about ±3%.
+
+`MEGA_NO_MEGA_MHC=1` does not boot at 32 sequences. `cuGraphInstantiate` fails with "operation not permitted"
+on a full CUDA graph ([`results/logs/seats32/arm-chain-20260929.out`](results/logs/seats32/arm-chain-20260929.out)).
+That is the kernel-node resource limit, so production boots sit near it.
+
+## 2026-10-02/03: sharing the GB300 with MiniMax-H3
+
+MiniMax-H3 generates video with audio from text, a first frame or reference media (image, video and voice). It
+runs in vllm-omni ([`tools/coexist/serve-h3-gracie.sh`](tools/coexist/serve-h3-gracie.sh)). Its DiT, text
+encoder and VAEs can stream layer by layer from pinned Grace memory over NVLink-C2C. In our earlier H3 tests that
+cost no speed *(notes)*, and it leaves a small HBM footprint, so H3 can share the GB300 with this lane. The
+modes used here:
+
+| H3 mode | what is pinned in Grace | GB300 idle | 15 s render peak (H3 only) |
+|---|---|--:|--:|
+| `fl2va-min`: FL2VA only, legacy `--enable-layerwise-offload` (DiT and text encoder streamed, VAEs staged) | ~157 GiB *(notes)* | 3.7 GiB *(notes)* | 17.5 GiB |
+| `combined` + `OFFLOAD=legacy`: FL2VA and Ref2VA (voice cloning) behind one text encoder | ~268 GiB | 6.5 GiB | 20.3 GiB |
+
+The 268 GiB is DS41 alone at 332 GiB of host memory available, then 64 GiB available with combined H3 up
+([`results/logs/h3-coexist/ds41-final-coexist.log`](results/logs/h3-coexist/ds41-final-coexist.log)).
+
+### What had to change
+
+The 2026-09-29 lane (util 0.95) left no HBM for H3, and its Engram tables took most of Grace. Four changes:
+
+1. **265 hot experts instead of 285** ([`hook/rowmap-mix-v1-h265.json`](hook/rowmap-mix-v1-h265.json)).
+   - It uses the `mix-v1` recipe cut at 265: decode sets D and E weighted 0.3 each, prefill sets A and B 0.2
+     each. [`tools/build_mix_rowmap.py`](tools/build_mix_rowmap.py) rebuilds `mix-v1` byte for byte at 285.
+   - It saves 20 × 40 experts × ~18.8 MB ≈ 14 GiB of HBM. Weights load as 204.75 GiB
+     ([`boot-u92.txt`](results/logs/h3-coexist/boot-u92.txt)).
+   - The sidecar now holds 119 × 40 cold experts, ~89.5 GB.
+   - Decode cold-route share on the calibration sets: D 3.4 → 4.9%, E 2.8 → 4.2% *(notes)*.
+   - `-h270` and `-h260` were built as alternatives.
+2. **NVFP4 Engram tables** ([`engram-nvfp4/`](engram-nvfp4/README.md)).
+   - The source is the re-quantization `aidendle94/DeepSeek-V4.1-Flash-NVFP4-Engram` (MIT): 203 GB → 111 GB.
+     Stock vLLM can't read it, so a two-file overlay adds an NVFP4 lookup kernel and an exact-size registered
+     host allocation.
+   - The bigger saving was a finding about the FP8 tables. torch's pinned allocator rounds each table to a
+     power of two, so FP8 Engram pinned **264 GiB**, not 189. NVFP4 pins exactly **103 GiB**.
+   - Both tables log `Engram NVFP4 table offloaded to registered host memory ... 51.50 GiB` at boot.
+3. **`nvfp4_ds_mla` KV** (`EXTRA="--kv-cache-dtype nvfp4_ds_mla"`). The compressed per-token record shrinks from
+   528 to 288 bytes *(notes)*. The image supports it and the mega attention kernel reads it. See the A/B below.
+4. **GPU memory utilization 0.885**, after 0.92 and 0.89; see the coexistence tests.
+
+### Test boot: 265 hot, NVFP4 Engram, FP8 KV, util 0.92
+
+[`tools/coexist/ds41-h3-test.sh`](tools/coexist/ds41-h3-test.sh), log
+[`ds41-h3-test.log`](results/logs/h3-coexist/ds41-h3-test.log):
+- **Boot:** 6,928,817 KV tokens (13.39 GiB). Chat and parallel tool calls work.
+- **Quality:**
+  - GSM8K-200 98.0%;
+  - needles 3/3 at 108,593, 433,938 and 867,523 prompt tokens;
+  - GPQA-Diamond 92.4% at T=1 ([below](#gpqa-diamond-t1-vs-greedy)).
+- **Reasoning decode:** 296 / 1,082 / 1,493 tok/s at C1 / C8 / C16. The 2026-09-29 pinned boots got 314–329 /
+  1,075–1,082 / 1,487–1,533. C1 is 6–10% lower; C8 and C16 are unchanged.
+- **Prefill (random ids):** 39.6K / 40.4K / 39.4K tok/s at 16K / 64K / 128K, against 44.0–44.3K at 16K
+  before (−11%). The h265 rowmap and NVFP4 Engram changed together, so their shares of the loss were not
+  separated. At 265 hot, more prefill rows go to the sidecar.
+- **Coexistence:** a 15 s H3 render (fl2va-min) **ran out of memory** (HTTP 500 after 234 s). The GB300 peaked
+  at 249.8 of 250.7 GiB ([`gb300-mem-coexist.txt`](results/logs/h3-coexist/gb300-mem-coexist.txt)).
+  - DS41's allocator grows ~5.3 GiB above its post-boot size once it has served 1M-token prefills *(notes)*;
+    that growth used up H3's room.
+  - DS41 logged no errors and decoded at 161 tok/s (C1) during the render. Only the render failed.
+
+### Coexistence tests at util 0.89 and 0.885
+
+Each run first warms DS41 to its grown size: a 1M-token needle, a 128K prefill and C16 decode. Then a
+30-step 1024×576 render runs while DS41 decodes reasoning traffic at C1. Peaks are `nvidia-smi memory.used`,
+sampled every second. The scripts are [`tools/coexist/ds41-final-coexist.sh`](tools/coexist/ds41-final-coexist.sh)
+and [`ds41-0885.sh`](tools/coexist/ds41-0885.sh); logs are in [`results/logs/h3-coexist/`](results/logs/h3-coexist/).
+
+| DS41 lane | DS41 after warm-up | H3 render | result | wall | GB300 peak | DS41 C1 during |
+|---|--:|---|---|--:|--:|--:|
+| FP8 KV, 0.89 (3.05M tokens) | 226.5 GiB | fl2va-min, 15 s t2va | 200 | 257 s | 245.0 GiB | 183 tok/s |
+| same | 226.5 | combined, 15 s t2va | 200 | 258 s | 247.8 | 171 |
+| same | 226.5 | combined, 6 s ref2va voice clone | 200 | 93 s | 242.1 | 152 |
+| NVFP4 KV, 0.89 (4.34M), after the full A/B suite | 227.3 *(notes)* | combined, 15 s t2va | 200 | 238 s | 248.6 | — |
+| **NVFP4 KV, 0.885 (3.42M, current)** | **225.3** | combined, 15 s t2va | **200** | **238 s** | **246.6** | — |
+
+With no render running, C1 is 304 tok/s on the FP8 0.89 lane and 304.5 on NVFP4 0.89. A render therefore costs
+DS41 40–50% of its C1 decode while it lasts. H3's prompt encoding streams the text encoder from Grace, and in the
+first 15 s render it took 31 s of the 257. At 0.885 the worst case keeps 3.2 GiB of headroom, measured against
+the 249.8 GiB at which the 0.92 render failed. The 0.89 NVFP4 lane kept only 1.2 GiB.
+
+### NVFP4 KV A/B (same lane, util 0.89)
+
+[`tools/coexist/ds41-nvfp4kv-ab.sh`](tools/coexist/ds41-nvfp4kv-ab.sh). The FP8 reference ran on the util-0.89
+FP8 lane. The NVFP4 lane was then booted with H3 stopped ([log](results/logs/h3-coexist/ds41-nvfp4kv-ab.log)).
+Both boots use the same pinned tactics.
+
+| | FP8 KV (`fp8_ds_mla`) | NVFP4 KV (`nvfp4_ds_mla`) |
+|---|--:|--:|
+| KV cache at util 0.89 | 5.89 GiB, 3,049,362 tokens | 5.89 GiB, 4,344,140 tokens *(notes)* (+42%) |
+| reasoning C1 / C8 / C16 | 296 / 1,082 / 1,493 (util-0.92 test boot) | 304 / 1,071 / 1,470 |
+| prefill 16K / 64K / 128K (random ids) | 39.6K / 40.4K / 39.4K (util-0.92 test boot) | 39.3K / 40.3K / 39.7K |
+| needles at 125K / 500K / 1M targets | 3/3 each | 3/3 each |
+| GSM8K-200 | 98.0% | 98.5% |
+| GPQA-Diamond, T=1 | 92.4% (0 capped) | 90.4% (2 capped) |
+| GPQA-Diamond, T=0 | 84.8% (18 capped) | 85.4% (18 capped) |
+| 15 s combined H3 render, GB300 peak | 247.8 GiB | 248.6 GiB |
+
+**Numerics** ([`tools/ds41_numerics.py`](tools/ds41_numerics.py)):
+- **Teacher-forced over 98,256 tokens of code and docs:** NLL 0.8244 (NVFP4) against 0.8265 (FP8). That is a
+  0.2% perplexity ratio below 1, which is noise. Argmax agreement 96.7%; |Δ logprob| p50 0.001, p90 0.23,
+  p99 0.97.
+- **Greedy continuations from 16K, 64K and 128K prompts (three each):** 7 of 9 match FP8 for all 64 tokens. One
+  16K prompt splits at token 20 and one 128K prompt at token 9, both at near-ties (top-5 overlap 4/5 and 3/5).
+- **No cross-boot baseline yet.** FP8 against FP8 on a second boot hasn't been measured. b12x's sidecar is not
+  bitwise reproducible, so part of that 3.3% argmax disagreement is boot noise.
+
+**Why +42% and not 1.83×:** the 528 → 288-byte saving applies only to the compressed MLA record. The rest of
+each token's KV state (the SWA window and the indexer cache) keeps its size.
+
+**Paired GPQA:** at T=1, 9 answers were right only on FP8 and 5 only on NVFP4 (McNemar p = 0.42). At T=0 the
+split was 9 and 10 (p = 1.0). Neither difference is significant, and they point in opposite directions. The
+script's gates kept NVFP4: needles 3/3 at every length, GSM8K ≥ 97%, and GPQA no more than 3 points under FP8.
+It would have relaunched on FP8 if any gate failed. NVFP4 then ran at util 0.89, and 0.885 from 2026-10-03.
+
+### GPQA-Diamond: T=1 vs greedy
+
+All runs use 198 items, reasoning effort max, max_tokens 131,072, C32 and llm-inference-bench's GPQA profile.
+Only aggregate scores are published here; per-item outputs are kept privately.
+
+| lane | T=0 (greedy) | T=1, top_p 0.95 |
+|---|--:|--:|
+| 285 hot, FP8 Engram, FP8 KV (2026-09-30) | 87.4%, 18 answers hit the cap *(notes)* | — |
+| 265 hot, NVFP4 Engram, FP8 KV | 84.8%, 18 hit the cap | 92.4%, 0 |
+| 265 hot, NVFP4 Engram, NVFP4 KV | 85.4%, 18 | 90.4%, 2 |
+
+- **Greedy runs lose 5–8 points to loops.** The answers that hit the cap are the model repeating itself to
+  131K tokens, and most of them score wrong: 13 of 18 in the 285-hot run and 17 of 18 in the 265-hot FP8-KV run.
+  Excluding them, those two greedy runs score 93.3% and 92.8%, the same as T=1.
+- **Loops aren't tied to questions.** Only 9 of the 18 looping questions are the same in the two greedy FP8 runs:
+  batching is not deterministic, even at T=0. The T=1 run answered 22 of the 27 questions that looped in either
+  greedy run correctly.
+- **The rowmap and Engram change didn't move quality.** The greedy pair across it (87.4 → 84.8%) is 13 against 8
+  flipped answers, p = 0.38.
+- **Use T=1 for comparisons.** Greedy GPQA mostly measures how often a model loops.
+
+### Gotchas from these runs
+
+- **`swap-to-m3v2.sh` still boots the 285-hot lane.** Start this lane with
+  [`swap-to-ds41-h3.sh`](swap-to-ds41-h3.sh). The DS41 container has no restart policy, so after a host reboot
+  start it by hand.
+- **The H3 launcher used to read `PORT`.** The DS41 test scripts export `PORT=30006`, so every H3 restart from
+  them bound DS41's port and died with "Address already in use".
+  - The first test A and B attempts (21:30–21:40 in `ds41-final-coexist.log`) are void for that reason. The
+    launcher now reads `H3_PORT`.
+  - The 303.7 tok/s "during lean" line in that log is the no-render C1 from the void attempt.
+- **Restarts and timed runs wait for an idle lane.** Clients were using the lane during these tests.
+  [`tools/coexist/lan-idle.sh`](tools/coexist/lan-idle.sh) waits until the DS41 and H3 `/metrics` show no
+  running or waiting request for 120 s. It treats a stopped container as idle.
+- **The swap script warns falsely.** Its `no 'Decoder SWA bounded replay' line` warning fires on timing. The
+  boot log has the line ([`boot-u92.txt`](results/logs/h3-coexist/boot-u92.txt)).
+- **When H3 runs out of memory, only its request fails.** The render returns HTTP 500 and DS41 keeps serving.

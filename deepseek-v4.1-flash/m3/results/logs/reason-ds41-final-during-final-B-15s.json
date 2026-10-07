@@ -1,0 +1,24 @@
+{
+ "tag": "ds41-final-during-final-B-15s",
+ "time": "2026-10-02T21:52:05",
+ "window_s": 45.0,
+ "sampling": "T=1.0 top_p=0.95, thinking on at server default effort",
+ "results": [
+  {
+   "C": 1,
+   "agg_tok_s": 170.7,
+   "per_stream_tok_s": 170.7,
+   "median_request_decode_tok_s": 300.0,
+   "requests_done": 31,
+   "accept_tokens_per_step": 3.43,
+   "avg_k": 5.0,
+   "accept_per_position": [
+    0.82,
+    0.62,
+    0.46,
+    0.32,
+    0.21
+   ]
+  }
+ ]
+}

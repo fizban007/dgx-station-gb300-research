@@ -1,0 +1,389 @@
+{
+  "metadata": {
+    "version": "0.4.29",
+    "engine": "vllm",
+    "model": "dsv41-flash-uva",
+    "server": "127.0.0.1:30006",
+    "timestamp": "2026-09-29T10:39:00.981534",
+    "decode_mode": "request-count",
+    "primary_decode_layer": "burst_e2e_decode",
+    "duration_per_test": 30.0,
+    "request_count": 5,
+    "warmup_request_count": 1,
+    "run_burst": false,
+    "prefill_mode": "skipped",
+    "standalone_prefill": false,
+    "prefill_only": false,
+    "skip_prefill": true,
+    "burst_e2e_status": "enabled",
+    "burst_request_count": 0,
+    "burst_warmup_request_count": 0,
+    "burst_requests_per_concurrency": 5,
+    "decode_warmup_seconds": 3.0,
+    "decode_warmup_context": 8192,
+    "decode_warmup_concurrency": 1,
+    "cell_warmup_timeout_seconds": 0.0,
+    "cell_warmup_timeout_policy": "<=32k:60s,64k:120s,>=128k:180s when override is 0",
+    "show_capacity_limited_values": false,
+    "max_tokens": 1024,
+    "temperature": 0.0,
+    "ignore_eos": true,
+    "max_total_tokens": 3527818,
+    "dcp_size": 0,
+    "metrics_available": true,
+    "metrics_warning": "",
+    "concurrency_levels": [
+      1
+    ],
+    "context_lengths": [
+      8192
+    ],
+    "startup_diagnostics_available": true,
+    "nvidia_p2p_override_effective": false,
+    "p2pmark_status": "not_run",
+    "amd_fabric_status": "not_run"
+  },
+  "startup_diagnostics": {
+    "version": "0.4.29",
+    "server_url": "http://127.0.0.1:30006",
+    "hostname": "gracie",
+    "uname": "Linux gracie 7.0.0-1019-nvidia-64k #19~24.04.2-Ubuntu SMP PREEMPT_DYNAMIC Sun Sep  6 20:24:04 UTC 2 aarch64 aarch64 aarch64 GNU/Linux",
+    "env": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "1"
+    },
+    "args": {
+      "concurrency": "1",
+      "contexts": "8k",
+      "max_tokens": 1024,
+      "duration": 30.0,
+      "request_count": 5,
+      "run_burst": false,
+      "standalone_prefill": false,
+      "prefill_only": false,
+      "skip_prefill": true,
+      "prefill_contexts": "8k,64k,128k",
+      "prefill_metric": "client",
+      "dcp_size": 0,
+      "kv_budget": 0
+    },
+    "nvidia_p2p_override": {
+      "effective": false,
+      "configured": false,
+      "params_path": "/proc/driver/nvidia/params",
+      "params_available": true,
+      "modprobe_path": "/etc/modprobe.d/nvidia-p2p-override.conf",
+      "modprobe_available": false,
+      "runtime": {
+        "ForceP2P": "",
+        "RMForceP2PType": "",
+        "RMPcieP2PType": "",
+        "GrdmaPciTopoCheckOverride": "",
+        "EnableResizableBar": "0",
+        "DmaRemapPeerMmio": "1"
+      },
+      "expected": {
+        "ForceP2P": "0x11",
+        "RMForceP2PType": "1",
+        "RMPcieP2PType": "2",
+        "GrdmaPciTopoCheckOverride": "1",
+        "EnableResizableBar": "1"
+      },
+      "missing": [
+        "ForceP2P",
+        "RMForceP2PType",
+        "RMPcieP2PType",
+        "GrdmaPciTopoCheckOverride"
+      ],
+      "mismatched": {
+        "EnableResizableBar": {
+          "expected": "1",
+          "actual": "0"
+        }
+      },
+      "registry_dwords": "",
+      "suggested_modprobe_line": "options nvidia NVreg_RegistryDwords=\"ForceP2P=0x11;RMForceP2PType=1;RMPcieP2PType=2;GrdmaPciTopoCheckOverride=1;EnableResizableBar=1\"",
+      "suggested_reload": "stop GPU workloads, then reload NVIDIA modules or reboot; the modprobe file alone is not enough until the nvidia module is reloaded"
+    },
+    "p2pmark": {
+      "status": "not_run"
+    },
+    "amd_fabric": {
+      "status": "not_run"
+    },
+    "nvidia_smi_query": {
+      "cmd": [
+        "nvidia-smi",
+        "--query-gpu=index,name,driver_version,pci.bus_id,pcie.link.gen.current,pcie.link.width.current,power.limit",
+        "--format=csv,noheader,nounits"
+      ],
+      "returncode": 0,
+      "stdout": "0, NVIDIA RTX PRO 6000 Blackwell Max-Q Workstation Edition, 595.91.07, 00000004:01:00.0, 5, 16, 300.00\n1, NVIDIA GB300, 595.91.07, 00000009:06:00.0, 6, 16, 1300.00",
+      "stderr": ""
+    },
+    "nvidia_smi_topo": {
+      "cmd": [
+        "nvidia-smi",
+        "topo",
+        "-m"
+      ],
+      "returncode": 0,
+      "stdout": "\u001b[4mGPU0\tGPU1\tNIC0\tNIC1\tDD0\tCPU Affinity\tNUMA Affinity\tGPU NUMA ID\u001b[0m\nGPU0\t X \tSYS\tSYS\tSYS\tSYS\t0-71\t0-8\t\tN/A\nGPU1\tSYS\t X \tSYS\tSYS\tPXB\t0-71\t0-8\t\tN/A\nNIC0\tSYS\tSYS\t X \tPIX\tSYS\t\t\t\t\nNIC1\tSYS\tSYS\tPIX\t X \tSYS\t\t\t\t\nDD0\tSYS\tPXB\tSYS\tSYS\t X \t\t\t\t\n\nLegend:\n\n  X    = Self\n  SYS  = Connection traversing PCIe as well as the SMP interconnect between NUMA nodes (e.g., QPI/UPI)\n  NODE = Connection traversing PCIe as well as the interconnect between PCIe Host Bridges within a NUMA node\n  PHB  = Connection traversing PCIe as well as a PCIe Host Bridge (typically the CPU)\n  PXB  = Connection traversing multiple PCIe bridges (without traversing the PCIe Host Bridge)\n  PIX  = Connection traversing at most a single PCIe bridge\n  NV#  = Connection traversing a bonded set of # NVLinks\n\nNIC Legend:\n\n  NIC0: mlx5_0\n  NIC1: mlx5_1\n  DD0: mlx5_0 data-direct function\n  DD0: mlx5_1 data-direct function",
+      "stderr": ""
+    }
+  },
+  "nvidia_p2p_override": {
+    "effective": false,
+    "configured": false,
+    "params_path": "/proc/driver/nvidia/params",
+    "params_available": true,
+    "modprobe_path": "/etc/modprobe.d/nvidia-p2p-override.conf",
+    "modprobe_available": false,
+    "runtime": {
+      "ForceP2P": "",
+      "RMForceP2PType": "",
+      "RMPcieP2PType": "",
+      "GrdmaPciTopoCheckOverride": "",
+      "EnableResizableBar": "0",
+      "DmaRemapPeerMmio": "1"
+    },
+    "expected": {
+      "ForceP2P": "0x11",
+      "RMForceP2PType": "1",
+      "RMPcieP2PType": "2",
+      "GrdmaPciTopoCheckOverride": "1",
+      "EnableResizableBar": "1"
+    },
+    "missing": [
+      "ForceP2P",
+      "RMForceP2PType",
+      "RMPcieP2PType",
+      "GrdmaPciTopoCheckOverride"
+    ],
+    "mismatched": {
+      "EnableResizableBar": {
+        "expected": "1",
+        "actual": "0"
+      }
+    },
+    "registry_dwords": "",
+    "suggested_modprobe_line": "options nvidia NVreg_RegistryDwords=\"ForceP2P=0x11;RMForceP2PType=1;RMPcieP2PType=2;GrdmaPciTopoCheckOverride=1;EnableResizableBar=1\"",
+    "suggested_reload": "stop GPU workloads, then reload NVIDIA modules or reboot; the modprobe file alone is not enough until the nvidia module is reloaded"
+  },
+  "p2pmark": {
+    "status": "not_run"
+  },
+  "amd_fabric": {
+    "status": "not_run"
+  },
+  "hardware_run_summary": {},
+  "event_log": [
+    "10:38:23 benchmark start engine=vllm",
+    "10:38:23 startup server=http://127.0.0.1:30006 model=dsv41-flash-uva",
+    "10:38:23 startup decode concurrency=1 contexts=8k",
+    "10:38:23 startup NVIDIA P2P override: not effective: missing=ForceP2P,RMForceP2PType,RMPcieP2PType,GrdmaPciTopoCheckOverride; mismatched=EnableResizableBar",
+    "10:38:23 startup engine vLLM 0.30.1rc1.dev245+gaf7f9488c models=['dsv41-flash-uva']",
+    "10:38:23 startup KV cache budget from vLLM metrics: 3,527,818 tokens (group-aware kv_cache_size_tokens; 34522 blocks x 128 = 4,418,816 ignored)",
+    "10:38:23 startup model context length: 1,048,576 tokens",
+    "10:38:23 startup prefill tests: skipped",
+    "10:38:23 startup calibrating padding text run=jsswtpxdlzjr up_to=8k",
+    "10:38:23 startup context 8k: 51,016 chars (8,192 prompt tokens via /tokenize)",
+    "10:38:23 startup token targeting: /tokenize exact",
+    "10:38:23 startup startup preparation done",
+    "10:38:23 startup hardware monitor disabled",
+    "10:38:23 decode warmup start",
+    "10:38:23 decode warmup start C=1 ctx=8k 3s",
+    "10:38:23 cell start C=1 ctx=8k",
+    "10:38:28 ready C=1 ctx=8k running_reqs=1/1, queue_reqs=0, active_streams=1/1, stable=3.0s",
+    "10:38:31 cell done C=1 ctx=8k 229.9 tok/s | norm 98.7 step/s len=2.33",
+    "10:38:31 decode warmup done C=1 ctx=8k",
+    "10:38:33 cell start C=1 ctx=8k",
+    "10:38:38 measure start C=1 ctx=8k request-count=5",
+    "10:38:58 cell done C=1 ctx=8k 244.4 tok/s | norm 94.7 step/s len=2.58"
+  ],
+  "prefill": {},
+  "results": [
+    {
+      "concurrency": 1,
+      "context_tokens": 8192,
+      "benchmark_mode": "request-count",
+      "request_count_target": 5,
+      "warmup_request_count": 1,
+      "measurement_seconds": 20.951832,
+      "measurement_wall_seconds": 0.0,
+      "client_output_tokens": 5120,
+      "server_output_tokens": 5120,
+      "aggregate_source": "openai_completed_usage",
+      "aggregate_tps": 244.37003679421667,
+      "per_request_avg_tps": 244.37003679421667,
+      "ttft_avg": 0.1475162626011297,
+      "ttft_p50": 0.14667278801789507,
+      "ttft_p90": 0.14988753219367937,
+      "ttft_p99": 0.14999766409397125,
+      "time_to_second_token_avg": 0.002561222808435559,
+      "time_to_second_token_p50": 0.0025683720014058053,
+      "time_to_second_token_p90": 0.0026782542234286668,
+      "time_to_second_token_p99": 0.0027320299367420376,
+      "request_latency_avg": 4.166780390008353,
+      "request_latency_p50": 4.171025344054215,
+      "request_latency_p90": 4.319666974188294,
+      "request_latency_p99": 4.338415251113474,
+      "inter_token_latency_avg": 0.003928899440280765,
+      "inter_token_latency_p50": 0.0039340261173528325,
+      "inter_token_latency_p90": 0.004077215951513263,
+      "inter_token_latency_p99": 0.004094368362326343,
+      "output_tps_per_user_avg": 254.8772852863114,
+      "output_tps_per_user_p50": 254.19251681859453,
+      "output_tps_per_user_p90": 265.9187886216642,
+      "output_tps_per_user_p99": 270.8960923614659,
+      "e2e_output_tps_per_user_avg": 246.075766743642,
+      "e2e_output_tps_per_user_p50": 245.50318339822826,
+      "e2e_output_tps_per_user_p90": 256.40399268282005,
+      "e2e_output_tps_per_user_p99": 261.1425537379259,
+      "chunk_inter_token_latency_avg": 0.010174857166058622,
+      "chunk_inter_token_latency_p50": 0.010158118533787652,
+      "chunk_inter_token_latency_p90": 0.01022014859145051,
+      "chunk_inter_token_latency_p99": 0.010243138680220948,
+      "input_seq_len_avg": 8192.0,
+      "output_seq_len_avg": 1024.0,
+      "output_seq_len_p50": 1024.0,
+      "output_seq_len_p90": 1024.0,
+      "output_seq_len_p99": 1024.0,
+      "request_count": 5,
+      "completed_request_count": 5,
+      "request_samples": [
+        {
+          "ttft": 0.14667278801789507,
+          "time_to_second_token": 0.00252779497532174,
+          "latency": 4.288419845979661,
+          "inter_token_latency_avg": 0.004048628600158128,
+          "chunk_inter_token_latency_avg": 0.01015134082833766,
+          "input_tokens": 8192,
+          "output_tokens": 1024,
+          "output_tps_per_user": 246.99721776429251,
+          "e2e_output_tps_per_user": 238.7825905059149,
+          "completed": true
+        },
+        {
+          "ttft": 0.1497039790265262,
+          "time_to_second_token": 0.002383314014878124,
+          "latency": 4.120618371991441,
+          "inter_token_latency_avg": 0.00388163674776629,
+          "chunk_inter_token_latency_avg": 0.010181831776833114,
+          "input_tokens": 8192,
+          "output_tokens": 1024,
+          "output_tps_per_user": 257.6232823886614,
+          "e2e_output_tps_per_user": 248.5063909243103,
+          "completed": true
+        },
+        {
+          "ttft": 0.146516626002267,
+          "time_to_second_token": 0.0025886280345730484,
+          "latency": 4.171025344054215,
+          "inter_token_latency_avg": 0.0039340261173528325,
+          "chunk_inter_token_latency_avg": 0.010137301556805913,
+          "input_tokens": 8192,
+          "output_tokens": 1024,
+          "output_tps_per_user": 254.19251681859453,
+          "e2e_output_tps_per_user": 245.50318339822826,
+          "completed": true
+        },
+        {
+          "ttft": 0.15000990097178146,
+          "time_to_second_token": 0.0025683720014058053,
+          "latency": 4.34049839299405,
+          "inter_token_latency_avg": 0.004096274185750018,
+          "chunk_inter_token_latency_avg": 0.010245693134528774,
+          "input_tokens": 8192,
+          "output_tokens": 1024,
+          "output_tps_per_user": 244.1242833496758,
+          "e2e_output_tps_per_user": 235.91760836793006,
+          "completed": true
+        },
+        {
+          "ttft": 0.1446780189871788,
+          "time_to_second_token": 0.0027380050159990788,
+          "latency": 3.9133399950223975,
+          "inter_token_latency_avg": 0.003683931550376558,
+          "chunk_inter_token_latency_avg": 0.010158118533787652,
+          "input_tokens": 8192,
+          "output_tokens": 1024,
+          "output_tps_per_user": 271.44912611033277,
+          "e2e_output_tps_per_user": 261.6690605218265,
+          "completed": true
+        }
+      ],
+      "total_tokens": 5120,
+      "wall_time": 20.95183217700105,
+      "num_completed": 5,
+      "num_errors": 0,
+      "server_gen_throughput": 244.37003679421667,
+      "server_utilization": 0.0,
+      "server_spec_accept_rate": 0.3159697732997481,
+      "server_spec_accept_length": 2.5798488664987405,
+      "server_spec_drafts": 1985,
+      "server_spec_draft_tokens": 9925,
+      "server_spec_accepted_tokens": 3136,
+      "server_spec_pos_accept": [
+        0.7113,
+        0.4343,
+        0.2388,
+        0.1295,
+        0.066
+      ],
+      "server_engine_steps": 1985.0,
+      "server_steps_per_s": 94.74111778057033,
+      "server_accept_len_effective": 2.579345088161209,
+      "accept_norm_tps": 0.0,
+      "accept_norm_ref_len": 0.0,
+      "avg_running_reqs": 1.0,
+      "max_running_reqs": 1,
+      "effective_concurrency": 1.0,
+      "avg_queue_reqs": 0,
+      "max_queue_reqs": 0,
+      "queue_fraction": 0.0,
+      "underfilled": false,
+      "warmup_timed_out": false,
+      "warmup_duration": 0.0,
+      "ready_reason": "request_count=5, warmup_request_count=1",
+      "timeout_reason": "",
+      "capacity_limited": false,
+      "hardware_summary": {}
+    }
+  ],
+  "summary_table": {
+    "8192": {
+      "1": 244.37003679421667
+    }
+  },
+  "burst_results": [],
+  "burst_summary_table": {},
+  "methodology": {
+    "prefill": {
+      "name": "Prefill",
+      "present": false,
+      "mode": "skipped",
+      "formula": "prompt_tokens / TTFT",
+      "notes": "Default mode records the required decode scout request for each non-zero decode context, so normal runs do not pay for a separate prefill phase. Standalone mode repeats cold-prefill samples. Prometheus prefill counters, when available and uncontaminated, are stored as validation."
+    },
+    "sustained_decode": {
+      "name": "Sustained Decode",
+      "present": false,
+      "formula": "OpenAI stream usage completion_tokens per measured window; client chunk fallback only when continuous usage is unavailable",
+      "notes": "Duration-based steady-state cell after warmup. This is the main tuning/regression signal for kernels, NCCL, DCP, MTP, and scheduling. Prometheus metrics are stored as validation and scheduler state, not the default headline."
+    },
+    "burst_e2e_decode": {
+      "name": "Burst / E2E Decode",
+      "present": true,
+      "status": "present",
+      "formula": "sum(completion_tokens) / profiling_wall_time",
+      "notes": "Finite client-facing request burst using OpenAI stream usage. It includes request admission, scheduling, prefill/cache behavior, and completion."
+    },
+    "acceptance_normalization": {
+      "name": "Acceptance-normalized decode (MTP / speculative)",
+      "present": true,
+      "formula": "engine_steps = spec_drafts + max(0, output_tokens - (accepted_tokens + spec_drafts)); accept_len_effective = output_tokens / engine_steps; steps_per_s = aggregate_tps / accept_len_effective",
+      "notes": "With speculative decoding tok/s = steps_per_s * accept_len, so raw tok/s mixes engine speed with data-dependent acceptance. steps_per_s (target-model forward passes per second) is the acceptance-independent speed used to compare runs; server_spec_pos_accept holds per-draft-position acceptance probabilities. Counters are vLLM window deltas; SGLang falls back to its lifetime accept-length gauge."
+    }
+  }
+}

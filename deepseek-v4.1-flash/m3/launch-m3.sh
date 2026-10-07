@@ -8,7 +8,7 @@ IMAGE=${IMAGE:-vllm/vllm-openai:nightly-af7f9488c2210d67e1033ecdc845b087ee7fe92b
 MODEL=/home/jasonc/models/DeepSeek-V4.1-Flash
 CACHE=/home/jasonc/research/megamoe/vllm-cache
 HOOK=/home/jasonc/research/megamoe/hook
-SEQS=${SEQS:-24}
+SEQS=${SEQS:-32}
 # DSpark draft length per batch size: 5/3/3 with probabilistic drafting won the 2026-09-28 evening sweep
 # (logs/sweep-pd-k.out; 5/3/2 before, logs/sweep-k-1.out). SPEC_EXTRA= (empty) drops probabilistic drafting.
 KSCHED=${KSCHED:-"[[1,4,5],[5,8,3],[9,$SEQS,3]]"}
@@ -63,6 +63,7 @@ docker run -d --name "$NAME" --gpus '"device=GPU-c146511a-0326-7ddc-4346-998d61a
   -e VLLM_LOGGING_LEVEL=INFO "${ENV_ARGS[@]}" -e MEGA_HOOK=/w/mega_peer_hook.py -e MEGA_ROWMAP=/w/${ROWMAP:-rowmap-static-v1.json} \
   -e MEGA_PEER=${MEGA_PEER:-1} -e MEGA_PEER_MIN_TOKENS=${MEGA_PEER_MIN_TOKENS:-1} -e MEGA_PEER_CHECK=${MEGA_PEER_CHECK:-0} -e MEGA_PEER_CHECK_MIN_T=${MEGA_PEER_CHECK_MIN_T:-65} -e MEGA_COUNT=${MEGA_COUNT:-} -e MEGA_COLD_TRT=${MEGA_COLD_TRT:-1} -e VLLM_EXP_PEER2_SMALL=${VLLM_EXP_PEER2_SMALL:-64} \
   -e MEGA_FUSED_SEND=${MEGA_FUSED_SEND:-2} -e MEGA_MHC_OVERLAP=${MEGA_MHC_OVERLAP:-1} -e MEGA_LL_GEMM=${MEGA_LL_GEMM:-1} \
+  -e MEGA_FI_TUNE_FILE=${MEGA_FI_TUNE_FILE:-} -e MEGA_NO_MEGA_MHC=${MEGA_NO_MEGA_MHC:-0} \
   "${NSYS_MOUNT[@]}" "${MOUNT_ARGS[@]}" "$IMAGE" --membind=0 "${NSYS_CMD[@]}" vllm serve \
   --model /model --served-model-name dsv41-flash-uva --trust-remote-code --tensor-parallel-size 1 \
   --moe-backend deep_gemm_mega_moe --enable-expert-parallel \

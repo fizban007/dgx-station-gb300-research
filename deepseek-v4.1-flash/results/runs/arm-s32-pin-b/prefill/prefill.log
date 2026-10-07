@@ -1,0 +1,6 @@
+target=http://127.0.0.1:30006 points=1 warmup=1 flush_cache=True timeout=1800s seed=1234 output=/home/jasonc/ds41f-exp/runs/arm-s32-pin-b/prefill/prefill.jsonl label='arm-s32-pin-b'
+server: (no /get_model_info or /get_server_info)
+    isl conc    n   wall_s  agg_tok/s ttft_mean  ttft_p50  ttft_p99 req_tok/s util%      W metrics_prompt_d err
+  warn: /flush_cache failed: HTTP 404: {"detail":"Not Found"}
+  16384    1    4     1.48    44308.7     0.370     0.370     0.372   44312.5   100    750            65536   0
+done.

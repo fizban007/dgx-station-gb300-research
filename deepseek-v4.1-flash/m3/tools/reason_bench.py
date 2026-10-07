@@ -8,6 +8,7 @@ the same window.
     reason_bench.py <tag> [concurrencies] [--window 60] [--warmup 15]
 """
 import argparse
+import os
 import json
 import random
 import re
@@ -43,7 +44,7 @@ def metrics():
 
 
 def stream(prompt, events, stop):
-    body = {"model": "dsv41-flash-uva", "temperature": 1.0, "top_p": 0.95, "max_tokens": 4096, "stream": True,
+    body = {"model": os.environ.get("MODEL", "glm53-flash"), "temperature": 1.0, "top_p": 0.95, "max_tokens": 4096, "stream": True,
             "stream_options": {"include_usage": True, "continuous_usage_stats": True},
             "messages": [{"role": "user", "content": prompt}]}
     req = urllib.request.Request(BASE + "/v1/chat/completions", data=json.dumps(body).encode(),
@@ -120,7 +121,7 @@ def main():
         print(json.dumps(r), flush=True)
     json.dump({"tag": args.tag, "time": time.strftime("%Y-%m-%dT%H:%M:%S"), "window_s": args.window,
                "sampling": "T=1.0 top_p=0.95, thinking on at server default effort", "results": results},
-              open(f"/home/jasonc/research/megamoe/logs/reason-{args.tag}.json", "w"), indent=1)
+              open(f"/home/jasonc/research/glm53-flash/logs/reason-{args.tag}.json", "w"), indent=1)
 
 
 if __name__ == "__main__":

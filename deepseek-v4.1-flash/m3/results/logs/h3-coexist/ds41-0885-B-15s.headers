@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+date: Sat, 03 Oct 2026 12:37:32 GMT
+server: uvicorn
+x-request-id: video_sync-bd3ad7be7f64755b
+x-model: minimax-h3
+x-inference-time-s: 238.293
+x-stage-durations: {"MiniMaxH3Pipeline.encode_prompt":31.756257373956032,"MiniMaxH3Pipeline._encode_local_media":7.097702473402023e-05,"MiniMaxH3Pipeline.diffuse":183.9437862240011,"MiniMaxH3Pipeline.video_vae.decode_latent":18.064152489998378,"MiniMaxH3Pipeline.audio_vae.decode_latent":1.8341208789497614,"MiniMaxH3Pipeline.decode":19.983898992068134,"queue_wait_ms":0.2330889692530036,"stage_0_gen_ms":237532.3100090027}
+x-peak-memory-mb: 20830.000
+content-length: 12480669
+content-type: video/mp4
+

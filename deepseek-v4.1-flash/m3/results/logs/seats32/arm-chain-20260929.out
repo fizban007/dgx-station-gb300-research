@@ -1,0 +1,44 @@
+=== boot s32-pin-a (SEQS=32 MEGA_FI_TUNE_FILE=/w/fi-tune/fiset-a964-9a5ab530.json) 10:28:34
+serving 10:35:54
+2026-09-29 14:35:28,033 - INFO - autotuner.py:3554 - flashinfer.jit: [Autotuner]: Saved 117 configs to /tmp/fi-tune-pinned-359.json (0 new, 117 from previous config)
+2026-09-29 14:35:28,742 - INFO - autotuner.py:1992 - flashinfer.jit: [Autotuner]: Config cache hit for mxfp8_gemm (runner=CutedslLowLatencyBlockscaledGemmRunner, source=config file)
+(EngineCore pid=359) INFO 09-29 14:30:16 [model.py:766] Decoder SWA bounded replay: in eager prefill steps, layers 21-39 run on each request's last 128 tokens only.
+(EngineCore pid=359) INFO 09-29 14:32:20 [kv_cache_utils.py:2408] GPU KV cache size: 3,527,818 tokens, Maximum concurrency for 1,048,576 tokens per request: 3.36x
+LL_GEMM cutedsl_low_latency K=1280 N=32768: tactics from the pinned FlashInfer autotune file, no live tune
+LL_GEMM cutedsl_low_latency K=5120 N=1792: tactics from the pinned FlashInfer autotune file, no live tune
+LL_GEMM cutedsl_low_latency K=8192 N=5120: tactics from the pinned FlashInfer autotune file, no live tune
+MEGA_PEER FlashInfer autotune pinned: /w/fi-tune/fiset-a964-9a5ab530.json sha256 9a5ab5308ba02244f4202405a3bd4b449338929fea5fe6b88b5d575fdddba3a2 (working copy /tmp/fi-tune-pinned-359.json)
+check: 40 unseen sizes, 0 new DeepGEMM kernels, slowest 239 tokens in 0.12s
+[s32-pin-a] tool_json    284.4 tok/s  accept=87.1%  acc/step=4.36  tokens=318
+[s32-pin-a] code         390.2 tok/s  accept=63.8%  acc/step=3.19  tokens=678
+[s32-pin-a] shell_ops    389.8 tok/s  accept=76.1%  acc/step=3.81  tokens=149
+[s32-pin-a] structured   321.7 tok/s  accept=51.0%  acc/step=2.55  tokens=426
+[s32-pin-a] prose        241.4 tok/s  accept=28.8%  acc/step=1.44  tokens=400
+[s32-pin-a] weighted accept=58.6%
+[s32-pin-a] tool_json    265.5 tok/s  accept= 86.0%  acc/step=4.30  drafted=515 tokens=550
+[s32-pin-a] shell_ops    358.2 tok/s  accept= 76.3%  acc/step=3.82  drafted=410 tokens=396
+[s32-pin-a] code         430.4 tok/s  accept= 76.5%  acc/step=3.82  drafted=1075 tokens=1038
+[s32-pin-a] structured   331.2 tok/s  accept= 52.5%  acc/step=2.63  drafted=1300 tokens=944
+[s32-pin-a] prose        238.1 tok/s  accept= 28.7%  acc/step=1.43  drafted=2815 tokens=1371
+2026-09-21_tf-r1.jsonl                   agent         1074     19   1.77%   0.04001   5.9950   6.0687        0
+2026-09-21_tf-r1.jsonl                   heldout       2868      0   0.00%   0.00000   2.7700   2.7700        0
+tf-s32-pin-a.jsonl                       agent         1074    123  11.45%   0.26834   5.9950   6.1342        0
+tf-s32-pin-a.jsonl                       heldout       2868    266   9.27%   0.20958   2.7700   2.7848        0
+non-local requests during window: 0
+arm-s32-pin-a: GSM8K 196/200 = 98.0%
+[arm-s32-pin-a] conc= 1:   227.0 agg tok/s  227.03 per-stream  (runs 231.6/222.5)
+[arm-s32-pin-a] conc=16:  1413.1 agg tok/s   88.32 per-stream  (runs 1429.2/1397.0)
+non-local requests during window: 0
+decode                                  1      244.4      254.2      147ms    3.93ms    2.58    0
+decode                                  4      638.8      167.8      165ms    5.96ms    2.61    0
+decode                                  8    1,059.3      140.9      170ms    7.10ms    2.42    0
+decode                                 16    1,620.5      106.2      281ms    9.42ms    2.42    0
+decode                                 24    1,950.1       83.9      303ms   11.91ms    2.41    0
+decode                                 32    2,303.2       74.5      319ms   13.42ms    2.41    0
+=== boot s32-pin-nomega (SEQS=32 MEGA_FI_TUNE_FILE=/w/fi-tune/fiset-a964-9a5ab530.json MEGA_NO_MEGA_MHC=1) 10:51:43
+boot s32-pin-nomega failed
+launched dsv41-flash-megamoe
+M3 exited during startup; see: docker logs dsv41-flash-megamoe
+(EngineCore pid=359) ERROR 09-29 14:59:07 [core.py:1433] torch.AcceleratorError: CUDA error: operation not permitted
+torch.AcceleratorError: CUDA error: operation not permitted
+RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}

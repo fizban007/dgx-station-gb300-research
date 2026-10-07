@@ -2,7 +2,7 @@
 
 Serving DeepSeek-V4.1-Flash (`deepseek-ai/DeepSeek-V4.1-Flash` revision `dba1be0a`, 515 GB, 289 GB of it MXFP4
 routed experts) on one GB300 (251 GiB HBM) plus Grace memory and, in some configurations, the RTX PRO 6000
-Blackwell Max-Q in the same box. Runs: 2026-09-24, with M3 updates on 2026-09-28; host gracie. Full tables, flags and provenance: [DETAILS.md](DETAILS.md). Machine-readable numbers:
+Blackwell Max-Q in the same box. Runs: 2026-09-24, with M3 updates through 2026-10-03; host gracie. Full tables, flags and provenance: [DETAILS.md](DETAILS.md). Machine-readable numbers:
 [results.jsonl](results.jsonl).
 
 ## What we found
@@ -11,6 +11,9 @@ Blackwell Max-Q in the same box. Runs: 2026-09-24, with M3 updates on 2026-09-28
   As of 2026-09-28 it reaches 257.9–266.3 tok/s per user at C1 and 1,046.3 / 1,628.6 aggregate at C8 / C16, about
   1.8× / 2.0× v20. Prefill is 44.5K tok/s at 16K on random token ids and ~60K on real text. GSM8K-200 is 98.0%.
   On 2026-09-24 it stood at 219.1 per user at C1 and 926.4 / 1,333.4 at C8 / C16, with 24K prefill.
+  Since 2026-10-03 it shares the GB300 with a video model (MiniMax-H3). It runs 265 hot experts, NVFP4 Engram
+  tables and NVFP4 KV, keeps 3.42M KV tokens, and decodes reasoning traffic at 304 / 1,071 / 1,470 tok/s at
+  C1 / C8 / C16. Its GPQA-Diamond is 90–92% at T=1. See [m3/README.md](m3/README.md).
 - **Al-ENGR's v20 recipe reproduces on our box** (upstream vLLM nightly + a hook that keeps 295 hot experts
   per layer in HBM and streams 89 cold ones from Grace): 202.6 tok/s per user at C1, 820.5 aggregate at C16,
   15,799 tok/s cold prefill at 16K.
@@ -84,8 +87,8 @@ not C1 (135.2 vs 133.5, `A-fi-tuned` vs `C-peer`); the rebased stack regressed p
 
 ## M3: MegaMoE hot tier + RTX PRO 6000 sidecar
 
-M3 keeps the 285 hottest experts per layer in HBM under DeepGEMM MegaMoE and runs the other 99 on the RTX PRO
-6000 with b12x's SM120 fused MoE, which is the one place b12x paid off in this study. It is documented, with
+M3 keeps the hottest experts per layer in HBM under DeepGEMM MegaMoE (285 until 2026-10-02, 265 since) and runs
+the rest on the RTX PRO 6000 with b12x's SM120 fused MoE, which is the one place b12x paid off in this study. It is documented, with
 its own results and quality checks, in [m3/README.md](m3/README.md).
 
 ## Layout

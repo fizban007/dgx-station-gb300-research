@@ -1,0 +1,4 @@
+layer 1: 69625 rows, read 2.0s; NVFP4 bit-identical True/True (max abs diff 0); FP8 bit-identical True; rel RMS vs FP8 8.9868% (swapped nibbles 140.6%, no global 24057.5%)
+layer 14: 69631 rows, read 2.1s; NVFP4 bit-identical True/True (max abs diff 0); FP8 bit-identical True; rel RMS vs FP8 9.0641% (swapped nibbles 140.8%, no global 10996.7%)
+wrote /work/tests/results/dequant.json PASS
+[rank0]:[W1002 23:59:37.243336675 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())

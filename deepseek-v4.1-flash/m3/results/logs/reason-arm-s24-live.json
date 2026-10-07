@@ -1,0 +1,88 @@
+{
+ "tag": "arm-s24-live",
+ "time": "2026-09-29T10:27:43",
+ "window_s": 60,
+ "sampling": "T=1.0 top_p=0.95, thinking on at server default effort",
+ "results": [
+  {
+   "C": 1,
+   "agg_tok_s": 310.8,
+   "per_stream_tok_s": 310.8,
+   "median_request_decode_tok_s": 388.5,
+   "requests_done": 51,
+   "accept_tokens_per_step": 3.26,
+   "avg_k": 5.0,
+   "accept_per_position": [
+    0.79,
+    0.58,
+    0.41,
+    0.28,
+    0.19
+   ]
+  },
+  {
+   "C": 8,
+   "agg_tok_s": 1079.6,
+   "per_stream_tok_s": 135.0,
+   "median_request_decode_tok_s": 156.6,
+   "requests_done": 133,
+   "accept_tokens_per_step": 2.75,
+   "avg_k": 3.0,
+   "accept_per_position": [
+    0.79,
+    0.57,
+    0.39,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "C": 16,
+   "agg_tok_s": 1541.6,
+   "per_stream_tok_s": 96.4,
+   "median_request_decode_tok_s": 104.7,
+   "requests_done": 183,
+   "accept_tokens_per_step": 2.78,
+   "avg_k": 3.0,
+   "accept_per_position": [
+    0.79,
+    0.58,
+    0.41,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "C": 24,
+   "agg_tok_s": 1777.3,
+   "per_stream_tok_s": 74.1,
+   "median_request_decode_tok_s": 77.9,
+   "requests_done": 242,
+   "accept_tokens_per_step": 2.78,
+   "avg_k": 3.0,
+   "accept_per_position": [
+    0.79,
+    0.58,
+    0.41,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "C": 32,
+   "agg_tok_s": 1773.9,
+   "per_stream_tok_s": 55.4,
+   "median_request_decode_tok_s": 79.4,
+   "requests_done": 239,
+   "accept_tokens_per_step": 2.81,
+   "avg_k": 3.0,
+   "accept_per_position": [
+    0.8,
+    0.59,
+    0.42,
+    0.0,
+    0.0
+   ]
+  }
+ ]
+}

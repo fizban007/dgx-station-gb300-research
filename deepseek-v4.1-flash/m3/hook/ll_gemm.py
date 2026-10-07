@@ -12,6 +12,7 @@ inside CUDA-graph capture.
 """
 from __future__ import annotations
 
+import os
 import sys
 
 import torch
@@ -32,6 +33,10 @@ def _tune(weight: torch.Tensor, weight_scale: torch.Tensor) -> None:
     if (K, N) in _tuned:
         return
     _tuned.add((K, N))
+    if os.environ.get("MEGA_FI_TUNE_FILE"):
+        # Live-tuned entries outrank loaded ones in FlashInfer, so tuning here would override the pinned file.
+        _LOG(f"cutedsl_low_latency K={K} N={N}: tactics from the pinned FlashInfer autotune file, no live tune")
+        return
     with torch.no_grad():
         for m in range(1, LL_MAX_M + 1):
             x = torch.randn(m, K, device=weight.device, dtype=torch.bfloat16)

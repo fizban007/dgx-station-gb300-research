@@ -1,0 +1,4 @@
+Engram NVFP4 table falls back to pin_memory=True; the caching host allocator rounds each block up to a power of two.
+wrote /work/tests/results/load_path.json {'config': True, 'discovery': True, 'dry_run': True, 'subset_load': True, 'footprint': True}
+[rank0]:[W1003 00:00:30.661961329 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+exit 0

@@ -1,0 +1,183 @@
+{
+ "mode": "overlay",
+ "rows": 1048576,
+ "row_start": 128005560,
+ "cases": {
+  "pinned/T1": {
+   "fg": "38724ec7d38aee9d223431edf633b6cc77833e381ae9decfa24d517504c8f2ea",
+   "bg": "38724ec7d38aee9d223431edf633b6cc77833e381ae9decfa24d517504c8f2ea"
+  },
+  "pinned/T3": {
+   "fg": "e75e9b6db753fa94975f4faadfac629ba474cc2a2403c37fdabefa83bab6da2c",
+   "bg": "e75e9b6db753fa94975f4faadfac629ba474cc2a2403c37fdabefa83bab6da2c"
+  },
+  "pinned/T64": {
+   "fg": "21ee525733ca6302354341602932986f3edf56077d22c431b3be2dafc12605a2",
+   "bg": "21ee525733ca6302354341602932986f3edf56077d22c431b3be2dafc12605a2"
+  },
+  "pinned/T1000": {
+   "fg": "4709b83d20c6a5e829e1920a6de1a3b3a0d4e1dcb9e711a336f7c182fde8a519",
+   "bg": "4709b83d20c6a5e829e1920a6de1a3b3a0d4e1dcb9e711a336f7c182fde8a519"
+  },
+  "pinned/T8192": {
+   "fg": "88ef9cdd1f9d664e7e0292157e4b11956d683ae77c1bacfb6d9f8aeabe881bff",
+   "bg": "88ef9cdd1f9d664e7e0292157e4b11956d683ae77c1bacfb6d9f8aeabe881bff"
+  },
+  "thp/T1": {
+   "fg": "38724ec7d38aee9d223431edf633b6cc77833e381ae9decfa24d517504c8f2ea",
+   "bg": "38724ec7d38aee9d223431edf633b6cc77833e381ae9decfa24d517504c8f2ea"
+  },
+  "thp/T3": {
+   "fg": "e75e9b6db753fa94975f4faadfac629ba474cc2a2403c37fdabefa83bab6da2c",
+   "bg": "e75e9b6db753fa94975f4faadfac629ba474cc2a2403c37fdabefa83bab6da2c"
+  },
+  "thp/T64": {
+   "fg": "21ee525733ca6302354341602932986f3edf56077d22c431b3be2dafc12605a2",
+   "bg": "21ee525733ca6302354341602932986f3edf56077d22c431b3be2dafc12605a2"
+  },
+  "thp/T1000": {
+   "fg": "4709b83d20c6a5e829e1920a6de1a3b3a0d4e1dcb9e711a336f7c182fde8a519",
+   "bg": "4709b83d20c6a5e829e1920a6de1a3b3a0d4e1dcb9e711a336f7c182fde8a519"
+  },
+  "thp/T8192": {
+   "fg": "88ef9cdd1f9d664e7e0292157e4b11956d683ae77c1bacfb6d9f8aeabe881bff",
+   "bg": "88ef9cdd1f9d664e7e0292157e4b11956d683ae77c1bacfb6d9f8aeabe881bff"
+  },
+  "hbm/T1": {
+   "fg": "38724ec7d38aee9d223431edf633b6cc77833e381ae9decfa24d517504c8f2ea",
+   "bg": "38724ec7d38aee9d223431edf633b6cc77833e381ae9decfa24d517504c8f2ea"
+  },
+  "hbm/T3": {
+   "fg": "e75e9b6db753fa94975f4faadfac629ba474cc2a2403c37fdabefa83bab6da2c",
+   "bg": "e75e9b6db753fa94975f4faadfac629ba474cc2a2403c37fdabefa83bab6da2c"
+  },
+  "hbm/T64": {
+   "fg": "21ee525733ca6302354341602932986f3edf56077d22c431b3be2dafc12605a2",
+   "bg": "21ee525733ca6302354341602932986f3edf56077d22c431b3be2dafc12605a2"
+  },
+  "hbm/T1000": {
+   "fg": "4709b83d20c6a5e829e1920a6de1a3b3a0d4e1dcb9e711a336f7c182fde8a519",
+   "bg": "4709b83d20c6a5e829e1920a6de1a3b3a0d4e1dcb9e711a336f7c182fde8a519"
+  },
+  "hbm/T8192": {
+   "fg": "88ef9cdd1f9d664e7e0292157e4b11956d683ae77c1bacfb6d9f8aeabe881bff",
+   "bg": "88ef9cdd1f9d664e7e0292157e4b11956d683ae77c1bacfb6d9f8aeabe881bff"
+  }
+ },
+ "ref_bit_identical": {
+  "pinned/T1": true,
+  "pinned/T3": true,
+  "pinned/T64": true,
+  "pinned/T1000": true,
+  "pinned/T8192": true,
+  "thp/T1": true,
+  "thp/T3": true,
+  "thp/T64": true,
+  "thp/T1000": true,
+  "thp/T8192": true,
+  "hbm/T1": true,
+  "hbm/T3": true,
+  "hbm/T64": true,
+  "hbm/T1000": true,
+  "hbm/T8192": true
+ },
+ "timing_fg_us": {
+  "1": 6.14,
+  "64": 22.53,
+  "8192": 1796.75
+ },
+ "real_size_params": {
+  "layout_quant": "fp8",
+  "1": {
+   "q_weight": [
+    [
+     4,
+     5120
+    ],
+    "torch.bfloat16"
+   ],
+   "k_weight": [
+    [
+     4,
+     5120
+    ],
+    "torch.bfloat16"
+   ],
+   "embed_tokens.weight": [
+    [
+     384006168,
+     256
+    ],
+    "torch.float8_e4m3fn"
+   ],
+   "embed_tokens.weight_scale_inv": [
+    [
+     384006168,
+     8
+    ],
+    "torch.uint8"
+   ],
+   "wkv.weight": [
+    [
+     25600,
+     6144
+    ],
+    "torch.float32"
+   ]
+  },
+  "1_embedding": {
+   "vocab": [
+    0,
+    384006168
+   ],
+   "block_size": 32,
+   "weight_loader": "_engram_head_shard_weight_loader"
+  },
+  "14": {
+   "q_weight": [
+    [
+     4,
+     5120
+    ],
+    "torch.bfloat16"
+   ],
+   "k_weight": [
+    [
+     4,
+     5120
+    ],
+    "torch.bfloat16"
+   ],
+   "embed_tokens.weight": [
+    [
+     384016682,
+     256
+    ],
+    "torch.float8_e4m3fn"
+   ],
+   "embed_tokens.weight_scale_inv": [
+    [
+     384016682,
+     8
+    ],
+    "torch.uint8"
+   ],
+   "wkv.weight": [
+    [
+     25600,
+     6144
+    ],
+    "torch.float32"
+   ]
+  },
+  "14_embedding": {
+   "vocab": [
+    0,
+    384016682
+   ],
+   "block_size": 32,
+   "weight_loader": "_engram_head_shard_weight_loader"
+  }
+ },
+ "pass_ref": true
+}

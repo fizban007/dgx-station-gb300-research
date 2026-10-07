@@ -1,0 +1,88 @@
+{
+ "tag": "arm-s32-pin-b",
+ "time": "2026-09-29T11:23:34",
+ "window_s": 60,
+ "sampling": "T=1.0 top_p=0.95, thinking on at server default effort",
+ "results": [
+  {
+   "C": 1,
+   "agg_tok_s": 314.4,
+   "per_stream_tok_s": 314.4,
+   "median_request_decode_tok_s": 394.6,
+   "requests_done": 49,
+   "accept_tokens_per_step": 3.31,
+   "avg_k": 5.0,
+   "accept_per_position": [
+    0.8,
+    0.6,
+    0.42,
+    0.3,
+    0.2
+   ]
+  },
+  {
+   "C": 8,
+   "agg_tok_s": 1081.7,
+   "per_stream_tok_s": 135.2,
+   "median_request_decode_tok_s": 149.7,
+   "requests_done": 136,
+   "accept_tokens_per_step": 2.78,
+   "avg_k": 3.0,
+   "accept_per_position": [
+    0.79,
+    0.58,
+    0.41,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "C": 16,
+   "agg_tok_s": 1487.1,
+   "per_stream_tok_s": 92.9,
+   "median_request_decode_tok_s": 105.8,
+   "requests_done": 198,
+   "accept_tokens_per_step": 2.77,
+   "avg_k": 3.0,
+   "accept_per_position": [
+    0.79,
+    0.58,
+    0.41,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "C": 24,
+   "agg_tok_s": 1764.2,
+   "per_stream_tok_s": 73.5,
+   "median_request_decode_tok_s": 77.2,
+   "requests_done": 228,
+   "accept_tokens_per_step": 2.77,
+   "avg_k": 3.0,
+   "accept_per_position": [
+    0.79,
+    0.57,
+    0.4,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "C": 32,
+   "agg_tok_s": 2035.7,
+   "per_stream_tok_s": 63.6,
+   "median_request_decode_tok_s": 67.6,
+   "requests_done": 267,
+   "accept_tokens_per_step": 2.78,
+   "avg_k": 3.0,
+   "accept_per_position": [
+    0.79,
+    0.58,
+    0.41,
+    0.0,
+    0.0
+   ]
+  }
+ ]
+}

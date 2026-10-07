@@ -58,6 +58,14 @@ FUSED_SEND2 = FUSED_SEND_MODE == "2"
 MHC_OVERLAP = os.environ.get("MEGA_MHC_OVERLAP", "1") != "0"
 # MEGA_LL_GEMM=1: MXFP8 dense linears with M <= 8 use FlashInfer's split-K cutedsl_low_latency kernel (ll_gemm.py).
 LL_GEMM = os.environ.get("MEGA_LL_GEMM", "0") == "1"
+# MEGA_FI_TUNE_FILE=<path>: pin FlashInfer autotune tactics. vLLM loads a per-process copy of this file instead of its
+# engine-config-hash cache, so every arm of an A/B loads the same tactics whatever its config hash, and ll_gemm skips
+# its live M <= 8 tune (the file carries those entries). Shapes the file lacks are still live-tuned; the boot log's
+# "Saved N configs (M new)" line counts them. The pinned file itself is never written.
+FI_TUNE_FILE = os.environ.get("MEGA_FI_TUNE_FILE", "")
+# MEGA_NO_MEGA_MHC=1: never use DeepGEMM's Mega-mHC kernel (vllm#56962) for the shifted mHC post/pre boundary; steps
+# that would take it (T > 16: prefill, and decode at C3+ with k=5 or C5+ with k=3) run the fused TileLang path instead.
+NO_MEGA_MHC = os.environ.get("MEGA_NO_MEGA_MHC", "0") == "1"
 TARGET = "vllm.models.deepseek_v4.nvidia.model"
 TARGET_V41 = "vllm.models.deepseek_v41.nvidia.model"
 _PREFIX = re.compile(r"(?:^|\.)model\.layers\.(\d+)\.ffn\.experts$")
@@ -548,10 +556,39 @@ def _patch_ll_gemm(module):
     ll.patch(module)
 
 
+def _patch_fi_tune(module):
+    import hashlib
+    import shutil
+    from pathlib import Path
+
+    src = Path(FI_TUNE_FILE)
+    digest = hashlib.sha256(src.read_bytes()).hexdigest()
+
+    def resolve_flashinfer_autotune_file(runner) -> Path:
+        # vLLM rewrites the file it loads (save after tuning), so it gets a per-process copy.
+        dst = Path(f"/tmp/fi-tune-pinned-{os.getpid()}.json")
+        if not dst.exists():
+            shutil.copyfile(src, dst)
+            _LOG(f"FlashInfer autotune pinned: {src} sha256 {digest} (working copy {dst})")
+        return dst
+
+    module.resolve_flashinfer_autotune_file = resolve_flashinfer_autotune_file
+
+
+def _patch_mhc(module):
+    module.can_use_mega_mhc = lambda *args, **kwargs: False
+    _LOG("vllm.models.deepseek_v41.nvidia.ops.mhc: Mega-mHC off; T > 16 boundaries use the fused TileLang path")
+
+
 def install():
     targets = [(TARGET, _patch), (TARGET_V41, _patch_v41)]
     if LL_GEMM:
         targets.append(("vllm.model_executor.kernels.linear.mxfp8.flashinfer", _patch_ll_gemm))
+    if FI_TUNE_FILE:
+        # Must patch before kernel_warmup and flashinfer_sparse_mla_warmup import the name.
+        targets.append(("vllm.model_executor.warmup.flashinfer_autotune_cache", _patch_fi_tune))
+    if NO_MEGA_MHC:
+        targets.append(("vllm.models.deepseek_v41.nvidia.ops.mhc", _patch_mhc))
     for target, patch in targets:
         if target in sys.modules:
             patch(sys.modules[target])

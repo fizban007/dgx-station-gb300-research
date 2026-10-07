@@ -1,0 +1,5 @@
+serving
+4d88b3efad076bc7a707c439944f1e0ee3defaf9b3297dbd197dba32fa17943f
+launched dsv41-flash-megamoe
+M3 v2 serving on :30006
+WARNING: REPLAY_OVERLAY=1 but the boot log has no 'Decoder SWA bounded replay' line; prefill runs without it

@@ -1,0 +1,26 @@
+{
+ "cases_compared": 15,
+ "cases_identical": 15,
+ "differing_cases": [],
+ "ref_bit_identical_stock": true,
+ "ref_bit_identical_overlay": true,
+ "real_size_fp8_params_identical": true,
+ "differing_param_entries": [],
+ "layout_quant": {
+  "stock": "<absent: stock>",
+  "overlay": "fp8"
+ },
+ "fp8_timing_fg_us": {
+  "stock": {
+   "1": 6.14,
+   "64": 20.85,
+   "8192": 1757.18
+  },
+  "overlay": {
+   "1": 6.14,
+   "64": 22.53,
+   "8192": 1796.75
+  }
+ },
+ "pass": true
+}

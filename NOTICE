@@ -6,7 +6,8 @@ Original material in this repository is licensed under the Apache License 2.0 (s
 This repository includes files derived from vLLM (Copyright the vLLM contributors, Apache License 2.0,
 https://github.com/vllm-project/vllm): the model files, overlays and backport diffs under
 mimo-v2.6-pro/hook/, mimo-v2.6-pro/backport/ and mimo-v2.6-flash/overlay/; deepseek-v4.1-flash/m3/overlay-58132/
-(the runtime diff of vllm-project/vllm#58132); deepseek-v4.1-flash/m3/tools/mega_attn_bench.py (modified from
+(the runtime diff of vllm-project/vllm#58132); deepseek-v4.1-flash/m3/engram-nvfp4/overlay.diff (NVFP4 Engram
+support, a diff against the nightly-af7f9488 image's deepseek_v41 engram.py files); deepseek-v4.1-flash/m3/tools/mega_attn_bench.py (modified from
 vLLM's benchmarks/kernels/benchmark_dsv41_mega_attn.py); and any other file carrying a vLLM SPDX header. Each such
 file keeps its original header.
 

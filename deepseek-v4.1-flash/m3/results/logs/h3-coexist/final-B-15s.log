@@ -1,0 +1,7 @@
+wall 257.855935186 s
+HTTP/1.1 200 OK
+x-inference-time-s: 257.797
+x-stage-durations: {"MiniMaxH3Pipeline.encode_prompt":30.943991816951893,"MiniMaxH3Pipeline._encode_local_media":7.779302541166544e-05,"MiniMaxH3Pipeline.diffuse":203.65450237994082,"MiniMaxH3Pipeline.video_vae.decode_latent":18.58854979800526,"MiniMaxH3Pipeline.audio_vae.decode_latent":1.6572347240289673,"MiniMaxH3Pipeline.decode":20.33190258697141,"queue_wait_ms":0.22025697398930788,"stage_0_gen_ms":257110.56089401245}
+x-peak-memory-mb: 20830.000
+-rw-rw-r-- 1 jasonc jasonc 12480669 Oct  2 21:55 /home/jasonc/research/minimax-h3/out/final-B-15s.mp4
+/home/jasonc/research/minimax-h3/out/final-B-15s.mp4: ISO Media, MP4 Base Media v1 [ISO 14496-12:2003]
