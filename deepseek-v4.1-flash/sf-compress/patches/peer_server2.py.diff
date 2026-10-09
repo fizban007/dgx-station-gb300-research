@@ -1,0 +1,94 @@
+--- a/deepseek-v4.1-flash/m3/sidecar/peer_server2.py
++++ b/deepseek-v4.1-flash/m3/sidecar/peer_server2.py
+@@ -5,6 +5,10 @@
+ captures one CUDA graph per (layer, row bucket). Per published sequence it copies the compacted rows in,
+ pads the bucket with masked routes, replays, and copies the rows' outputs back.
+ 
++With PEER_CSF=1 (default) the block scales stay compressed in VRAM as b12x MXFP4-CSF planes (row base + selector
++bit + sparse exceptions, ~7x smaller; csf_encode.py) and b12x expands the routed experts' scales into one scratch
++pair shared by all layers before each call (inside the captured graphs). PEER_CSF=0 keeps raw scales.
++
+   CUDA_VISIBLE_DEVICES=<6000> python peer_server2.py --rowmap rowmap.json
+ """
+ import argparse
+@@ -23,12 +27,14 @@
+ 
+ sys.path.insert(0, "/home/jasonc/research/megamoe/hook")
+ import peer_tier2 as pt  # noqa: E402
++from csf_encode import encode_planes, planes_nbytes  # noqa: E402
+ 
+ import b12x.moe.fused_moe as fm  # noqa: E402
+ from b12x.preparation import PreparationSession, PreparedCall  # noqa: E402
+ 
+ H, I, K, LIMIT = pt.HIDDEN, 2304, pt.TOPK, 10.0
+ BUCKETS = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192]
++CSF = os.environ.get("PEER_CSF", "1") == "1"
+ 
+ 
+ @triton.jit
+@@ -98,6 +104,7 @@
+     plan = None
+     experts, decls, keep = {}, {}, []
+     shared_scratch, shared_src = {}, {}
++    csf_scratch, csf_bytes = {}, [0, 0]
+     start = time.time()
+     for layer in range(a.layers):
+         cold = list(rowmap[str(layer)]["cold"])
+@@ -108,7 +115,8 @@
+             parts["s13"].append(torch.cat([tensor(f"{prefix}.w1.scale"), tensor(f"{prefix}.w3.scale")]))
+             parts["w2"].append(tensor(f"{prefix}.w2.weight"))
+             parts["s2"].append(tensor(f"{prefix}.w2.scale"))
+-        W = {k: torch.stack(v).to(dev) for k, v in parts.items()}
++        # Scales stay on the host when compressed; only the CSF planes reach VRAM.
++        W = {k: torch.stack(v) if CSF and k in ("s13", "s2") else torch.stack(v).to(dev) for k, v in parts.items()}
+         del parts
+         ones = torch.ones(len(cold), dtype=torch.float32, device=dev)
+         one = torch.ones((), dtype=torch.float32, device=dev)
+@@ -121,12 +129,30 @@
+                                              swiglu_alpha=None, swiglu_beta=None),
+                 geometry=fm.MoEGeometry(num_experts=len(cold), hidden_size=H, intermediate_size=I))
+         # b12x's DS-V4.1 contract: E8M0 scales clamped to 247, [w1, w3] rows as layout "w31".
+-        ex = fm.prepare_weights(plan=plan, weights=fm.PackedWeights(
+-            w13=W["w13"], w2=W["w2"],
+-            w13_block_scales=W["s13"].clamp_(max=247).view(torch.float8_e8m0fnu),
+-            w2_block_scales=W["s2"].clamp_(max=247).view(torch.float8_e8m0fnu),
+-            w13_global_scales=ones, w2_global_scales=ones, input_scale=one, intermediate_scale=one,
+-            immutable_input_scales=True))
++        if CSF:
++            s13, s2 = W.pop("s13").clamp_(max=247), W.pop("s2").clamp_(max=247)
++            p13, p2 = encode_planes(s13), encode_planes(s2)
++            csf_bytes[0] += s13.numel() + s2.numel()
++            csf_bytes[1] += planes_nbytes(*p13) + planes_nbytes(*p2)
++            # One expansion scratch pair per cold-expert count, shared by every layer (layers run one at a time on
++            # one stream); b12x requires uint8 buffers of exactly the native scale size.
++            if len(cold) not in csf_scratch:
++                csf_scratch[len(cold)] = (torch.empty(s13.shape, dtype=torch.uint8, device=dev),
++                                          torch.empty(s2.shape, dtype=torch.uint8, device=dev))
++            buf13, buf2 = csf_scratch[len(cold)]
++            ex = fm.prepare_weights(plan=plan, weights=fm.Mxfp4CsfWeights(
++                w13=W["w13"], w2=W["w2"], w13_scales=fm.CsfScalePlanes(*p13), w2_scales=fm.CsfScalePlanes(*p2),
++                w13_scale_scratch=buf13, w2_scale_scratch=buf2))
++            del s13, s2, p13, p2
++            # The CSF path defaults to per-expert mutable activation scales; keep the raw path's static unit scalars.
++            ex = replace(ex, _impl=replace(ex._impl, a1_gscale=one, a2_gscale=one, immutable_input_scales=True))
++        else:
++            ex = fm.prepare_weights(plan=plan, weights=fm.PackedWeights(
++                w13=W["w13"], w2=W["w2"],
++                w13_block_scales=W["s13"].clamp_(max=247).view(torch.float8_e8m0fnu),
++                w2_block_scales=W["s2"].clamp_(max=247).view(torch.float8_e8m0fnu),
++                w13_global_scales=ones, w2_global_scales=ones, input_scale=one, intermediate_scale=one,
++                immutable_input_scales=True))
+         decl = fm.plan_execution(experts=ex, capacity=fm.ExecutionCapacity(
+             max_tokens=rows_max, top_k=K, warmup_token_counts=tuple(BUCKETS), route_num_experts=0))
+         def call(st, m, ex=ex):
+@@ -168,6 +194,10 @@
+               f"{torch.cuda.memory_allocated() / 1e9:.1f} GB allocated", flush=True)
+     print(f"prepared {a.layers} layers in {time.time() - start:.0f}s; "
+           f"{torch.cuda.memory_allocated() / 1e9:.1f} GB allocated", flush=True)
++    if CSF:
++        scratch_bytes = sum(t.numel() for pair in csf_scratch.values() for t in pair)
++        print(f"CSF scales: {csf_bytes[0] / 2**30:.2f} GiB raw -> {csf_bytes[1] / 2**30:.2f} GiB compressed "
++              f"+ {scratch_bytes / 2**30:.2f} GiB shared scratch", flush=True)
+ 
+     # One scratch set per bucket, shared by every layer (layers run one at a time).
+     from b12x.preparation.types import require_prepared

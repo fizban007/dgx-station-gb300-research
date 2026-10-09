@@ -1,0 +1,33 @@
+--- a/sm100_fp8_fp4_mega_moe.cuh
++++ b/sm100_fp8_fp4_mega_moe.cuh
+@@ -38,18 +38,18 @@
+ 
+ // Generic-proxy SMEM writes -> async proxy (tcgen05.cp) of this or the peer CTA.
+ CUTLASS_DEVICE void fence_proxy_async() {
+-    asm volatile("fence.proxy.async.shared::cta;" ::: "memory");
++    // no fence (ablation)
+ }
+ 
+ CUTLASS_DEVICE void arrive_expect_tx_release_cluster(const void* bar, uint32_t tx) {
+-    asm volatile("mbarrier.arrive.expect_tx.release.cluster.shared::cta.b64 _, [%0], %1;"
++    asm volatile("mbarrier.arrive.expect_tx.relaxed.cluster.shared::cta.b64 _, [%0], %1;"
+                  :: "r"(smem_addr(bar)), "r"(tx) : "memory");
+ }
+ 
+ CUTLASS_DEVICE void remote_arrive_release_cluster(const void* bar, uint32_t cta_id) {
+     asm volatile("{\n\t.reg .b32 remAddr32;\n\t"
+                  "mapa.shared::cluster.u32 remAddr32, %0, %1;\n\t"
+-                 "mbarrier.arrive.release.cluster.shared::cluster.b64 _, [remAddr32];\n\t}"
++                 "mbarrier.arrive.relaxed.cluster.shared::cluster.b64 _, [remAddr32];\n\t}"
+                  :: "r"(smem_addr(bar)), "r"(cta_id) : "memory");
+ }
+ 
+@@ -65,7 +65,7 @@
+ 
+ // Lanes 0..19 load the 20 words of one slot (coalesced 80 B); other lanes return 0.
+ CUTLASS_DEVICE uint32_t load_slot(const uint32_t* slots, uint64_t chunk, uint32_t lane) {
+-    return lane < 20 ? __ldg(slots + chunk * 20 + lane) : 0u;
++    return lane < 20 ? (lane == 0 ? 0x7fu : 0u) + static_cast<uint32_t>(chunk & 0) : 0u;
+ }
+ 
+ // Lane L returns tile words 4L..4L+3 (rows {L, 32+L, 64+L, 96+L} after the UTCCP permutation).

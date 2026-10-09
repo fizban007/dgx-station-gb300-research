@@ -1,0 +1,11 @@
+--- a/deepseek-v4.1-flash/m3/launch-m3.sh
++++ b/deepseek-v4.1-flash/m3/launch-m3.sh
+@@ -62,7 +62,7 @@
+   -v /usr/bin/numactl:/usr/local/bin/numactl:ro --entrypoint /usr/local/bin/numactl \
+   -e VLLM_LOGGING_LEVEL=INFO "${ENV_ARGS[@]}" -e MEGA_HOOK=/w/mega_peer_hook.py -e MEGA_ROWMAP=/w/${ROWMAP:-rowmap-static-v1.json} \
+   -e MEGA_PEER=${MEGA_PEER:-1} -e MEGA_PEER_MIN_TOKENS=${MEGA_PEER_MIN_TOKENS:-1} -e MEGA_PEER_CHECK=${MEGA_PEER_CHECK:-0} -e MEGA_PEER_CHECK_MIN_T=${MEGA_PEER_CHECK_MIN_T:-65} -e MEGA_COUNT=${MEGA_COUNT:-} -e MEGA_COLD_TRT=${MEGA_COLD_TRT:-1} -e VLLM_EXP_PEER2_SMALL=${VLLM_EXP_PEER2_SMALL:-64} \
+-  -e MEGA_FUSED_SEND=${MEGA_FUSED_SEND:-2} -e MEGA_MHC_OVERLAP=${MEGA_MHC_OVERLAP:-1} -e MEGA_LL_GEMM=${MEGA_LL_GEMM:-1} \
++  -e MEGA_FUSED_SEND=${MEGA_FUSED_SEND:-2} -e MEGA_MHC_OVERLAP=${MEGA_MHC_OVERLAP:-1} -e MEGA_LL_GEMM=${MEGA_LL_GEMM:-1} -e MEGA_SF_COMPRESS=${MEGA_SF_COMPRESS:-1} \
+   -e MEGA_FI_TUNE_FILE=${MEGA_FI_TUNE_FILE:-} -e MEGA_NO_MEGA_MHC=${MEGA_NO_MEGA_MHC:-0} \
+   "${NSYS_MOUNT[@]}" "${MOUNT_ARGS[@]}" "$IMAGE" --membind=0 "${NSYS_CMD[@]}" vllm serve \
+   --model /model --served-model-name dsv41-flash-uva --trust-remote-code --tensor-parallel-size 1 \

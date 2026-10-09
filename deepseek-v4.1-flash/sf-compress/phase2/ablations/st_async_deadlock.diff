@@ -1,0 +1,122 @@
+--- a/sm100_fp8_fp4_mega_moe.cuh
++++ b/sm100_fp8_fp4_mega_moe.cuh
+@@ -63,6 +63,30 @@
+                  :: "r"(smem_addr(bar)), "r"(phase) : "memory");
+ }
+ 
++// 16 B store into this CTA's SMEM at `dst`, completing 16 tx bytes on the barrier `bar` of CTA `bar_cta` (same
++// offset in that CTA). The store and its complete_tx are asynchronous: no release by this thread, so outstanding
++// slot prefetches are not waited on.
++CUTLASS_DEVICE void st_async_tx(void* dst, uint4 v, const void* bar, uint32_t bar_cta, uint32_t own_cta) {
++    asm volatile("{\n\t.reg .b32 d, b;\n\t"
++                 "mapa.shared::cluster.u32 d, %0, %6;\n\t"
++                 "mapa.shared::cluster.u32 b, %1, %7;\n\t"
++                 "st.async.shared::cluster.mbarrier::complete_tx::bytes.v4.b32 [d], {%2, %3, %4, %5}, [b];\n\t}"
++                 :: "r"(smem_addr(dst)), "r"(smem_addr(bar)), "r"(v.x), "r"(v.y), "r"(v.z), "r"(v.w),
++                    "r"(own_cta), "r"(bar_cta) : "memory");
++}
++
++CUTLASS_DEVICE void arrive_expect_tx_relaxed(const void* bar, uint32_t tx) {
++    asm volatile("mbarrier.arrive.expect_tx.relaxed.cluster.shared::cta.b64 _, [%0], %1;"
++                 :: "r"(smem_addr(bar)), "r"(tx) : "memory");
++}
++
++CUTLASS_DEVICE void remote_arrive_relaxed(const void* bar, uint32_t cta_id) {
++    asm volatile("{\n\t.reg .b32 remAddr32;\n\t"
++                 "mapa.shared::cluster.u32 remAddr32, %0, %1;\n\t"
++                 "mbarrier.arrive.relaxed.cluster.shared::cluster.b64 _, [remAddr32];\n\t}"
++                 :: "r"(smem_addr(bar)), "r"(cta_id) : "memory");
++}
++
+ // Lanes 0..19 load the 20 words of one slot (coalesced 80 B); other lanes return 0.
+ CUTLASS_DEVICE uint32_t load_slot(const uint32_t* slots, uint64_t chunk, uint32_t lane) {
+     return lane < 20 ? __ldg(slots + chunk * 20 + lane) : 0u;
+@@ -856,51 +880,48 @@
+             const auto n_block_idx = task_info.n_cluster_idx * 2 + (is_leader_cta ? 0u : 1u);
+             const auto num_k_blocks = math::ceil_div(shape_k, BLOCK_K);
+ 
+-            // csf-port: compressed routed SFB (see csf::). The slot of k-block kb is chunk_base + kb * NB. Loads run
+-            // kCsfLag k-blocks ahead of their decode: step i issues the slot load and weight TMA of k-block i, then
+-            // decodes k-block i - kCsfLag into its (already acquired) stage and arrives. Deadlock-free while
+-            // kCsfLag < kNumStages: the empty wait at step i needs stage i - kNumStages, published at an earlier step.
++            // csf-port: compressed routed SFB (see csf::). The slot of k-block kb is base + kb * NB. Slots are prefetched
++            // kCsfAhead k-blocks ahead into a register ring; each stage is decoded right after it is acquired and
++            // written with st.async, which completes tx bytes on the leader's full barrier like the stock SFB TMA.
+             if (csf_table != nullptr and not task_info.is_shared()) {
+-                constexpr uint32_t kCsfLag = 4;
+-                DG_STATIC_ASSERT(kCsfLag < kNumStages, "csf-port lag must be below the stage count");
++                constexpr uint32_t kCsfAhead = 8;
+                 const bool l1 = task_info.block_phase == sched::BlockPhase::Linear1;
+                 const auto csf_slots = reinterpret_cast<const uint32_t*>(csf_table[l1 ? 0 : 2]);
+                 const auto csf_overflow = reinterpret_cast<const uint32_t*>(csf_table[l1 ? 1 : 3]);
+                 const uint64_t csf_step = shape_n / BLOCK_N;
+                 const uint64_t csf_base = static_cast<uint64_t>(task_info.local_expert_idx) * shape_sfb_k * csf_step + n_block_idx;
+                 const uint32_t n_idx = task_info.local_expert_idx * shape_n + n_block_idx * BLOCK_N;
+-                const uint32_t stage0 = stage_idx;
+-                uint32_t csf_v[kCsfLag];
++                const uint32_t own_cta = is_leader_cta ? 0u : 1u;
++                uint32_t csf_v[kCsfAhead];
++                #pragma unroll
++                for (uint32_t d = 0; d < kCsfAhead; ++ d)
++                    csf_v[d] = d < num_k_blocks ? csf::load_slot(csf_slots, csf_base + d * csf_step, lane_idx) : 0u;
+                 uint32_t k_block_idx = 0;
+-                for (uint32_t i0 = 0; i0 < num_k_blocks + kCsfLag; i0 += kCsfLag) {
++                for (uint32_t i0 = 0; i0 < num_k_blocks; i0 += kCsfAhead) {
+                     #pragma unroll
+-                    for (uint32_t d = 0; d < kCsfLag; ++ d) {
++                    for (uint32_t d = 0; d < kCsfAhead; ++ d) {
+                         const uint32_t i = i0 + d;
+-                        // Decode k-block i - kCsfLag (slot in csf_v[d], loaded kCsfLag steps ago) into its stage
+-                        if (i >= kCsfLag and i - kCsfLag < num_k_blocks) {
+-                            const uint32_t s = (stage0 + i - kCsfLag) % kNumStages;
+-                            reinterpret_cast<uint4*>(shared_storage.smem_sfb[s])[lane_idx] = csf::decode_slot(csf_v[d], csf_overflow, lane_idx);
+-                            csf::fence_proxy_async();
++                        if (i < num_k_blocks) {
++                            shared_storage.empty_barriers[stage_idx].wait(phase ^ 1);
++                            const auto full = &shared_storage.full_barriers[stage_idx];
++                            if (cute::elect_one_sync()) {
++                                tma::copy<BLOCK_K, LOAD_BLOCK_N, kSwizzleBMode, weight_dtype_t>(
++                                    tensor_map_b_ptr, full, shared_storage.smem_b[stage_idx], i * BLOCK_K, n_idx, 2);
++                            }
+                             __syncwarp();
++                            csf::st_async_tx(reinterpret_cast<uint4*>(shared_storage.smem_sfb[stage_idx]) + lane_idx,
++                                             csf::decode_slot(csf_v[d], csf_overflow, lane_idx), full, 0u, own_cta);
+                             if (cute::elect_one_sync()) {
+                                 if (is_leader_cta) {
+                                     constexpr uint32_t kNumWeightBytes = sizeof(SharedStorage::smem_b[0]) * 2 / (kIsWeightFP8 ? 1 : 2);
+-                                    csf::arrive_expect_tx_release_cluster(&shared_storage.full_barriers[s], kNumWeightBytes);
++                                    csf::arrive_expect_tx_relaxed(full, kNumWeightBytes + sizeof(SharedStorage::smem_sfb[0]) * 2);
+                                 } else {
+-                                    csf::remote_arrive_release_cluster(&shared_storage.full_barriers[s], 0u);
++                                    csf::remote_arrive_relaxed(full, 0u);
+                                 }
+                             }
+                             __syncwarp();
+-                        }
+-                        // Issue k-block i: slot load (into the register just freed), stage acquire, weight TMA
+-                        if (i < num_k_blocks) {
+-                            csf_v[d] = csf::load_slot(csf_slots, csf_base + i * csf_step, lane_idx);
+-                            csf::wait_acquire_cluster(&shared_storage.empty_barriers[stage_idx], phase ^ 1);
+-                            if (cute::elect_one_sync()) {
+-                                tma::copy<BLOCK_K, LOAD_BLOCK_N, kSwizzleBMode, weight_dtype_t>(
+-                                    tensor_map_b_ptr, &shared_storage.full_barriers[stage_idx], shared_storage.smem_b[stage_idx], i * BLOCK_K, n_idx, 2);
+-                            }
+-                            __syncwarp();
++                            if (i + kCsfAhead < num_k_blocks)
++                                csf_v[d] = csf::load_slot(csf_slots, csf_base + (i + kCsfAhead) * csf_step, lane_idx);
+                             advance_pipeline(k_block_idx);
+                         }
+                     }
+@@ -1014,10 +1035,9 @@
+                 #pragma unroll 2
+                 for (uint32_t k_block_idx = 0; k_block_idx < num_k_blocks; advance_pipeline(k_block_idx)) {
+                     // Wait TMA load completion (csf-port: cluster-scope acquire, the peer CTA's SFB is written by its threads)
++                    shared_storage.full_barriers[stage_idx].wait(phase);
+                     if (csf_table != nullptr)
+-                        csf::wait_acquire_cluster(&shared_storage.full_barriers[stage_idx], phase);
+-                    else
+-                        shared_storage.full_barriers[stage_idx].wait(phase);
++                        asm volatile("fence.proxy.async.shared::cluster;" ::: "memory");
+                     ptx::tcgen05_after_thread_sync();
+ 
+                     const uint32_t a_desc_base_lo = a_desc_lo + stage_idx * sizeof(SharedStorage::smem_a[0]) / 16;

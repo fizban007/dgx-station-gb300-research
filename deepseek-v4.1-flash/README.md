@@ -91,6 +91,10 @@ M3 keeps the hottest experts per layer in HBM under DeepGEMM MegaMoE (285 until 
 the rest on the RTX PRO 6000 with b12x's SM120 fused MoE, which is the one place b12x paid off in this study. It is documented, with
 its own results and quality checks, in [m3/README.md](m3/README.md).
 
+Since 2026-10-07 M3 can keep the routed experts' MXFP4 block scales compressed (lossless) on both GPUs: 8.6 GiB
+less HBM on the GB300 and 4.5 GiB less VRAM on the RTX PRO 6000, which pays for a 254 hot / 130 cold split. Code,
+patches against `m3/`, tests and results: [sf-compress/README.md](sf-compress/README.md).
+
 ## Layout
 
 | Path | Contents | Copied from (on gracie) |
@@ -104,6 +108,7 @@ its own results and quality checks, in [m3/README.md](m3/README.md).
 | `results/upstream-prof/` | vLLM profiler summary table of the v20 profiling boot (traces not kept) | `/home/jasonc/research/upstream/prof` |
 | `tools/make_results_jsonl.py` | regenerates `results.jsonl` and the DETAILS tables | - |
 | `m3/` | the M3 lane | - |
+| `sf-compress/` | compressed MoE weight scales for M3 (codec, patches against `m3/`, tests, results) | - |
 
 Benchmark scripts are shared across lanes: [`../bench/`](../bench/README.md).
 
@@ -117,3 +122,5 @@ is a modified copy of their v15 hook, both from [J-M-Recipes/recipes](https://gi
 at `dffd01cc` (MIT License, Copyright (c) 2026 J&M Recipes); the change is in `pin_hot_experts_hook.diff`.
 `upstream-v20/hook-peer/peer_tier.py` carries vLLM's Apache-2.0 header. Nothing from catid's repository is
 copied (no license); it is linked.
+`sf-compress/phase2/*.diff` patch DeepGEMM's `sm100_fp8_fp4_mega_moe.cuh` as vendored in vLLM (MIT, DeepSeek);
+the header itself is not copied. `sf-compress/notes/csf-codec.md` quotes short excerpts of b12x (Apache-2.0).

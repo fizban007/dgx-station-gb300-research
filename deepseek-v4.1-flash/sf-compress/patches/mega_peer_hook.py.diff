@@ -1,0 +1,152 @@
+--- a/deepseek-v4.1-flash/m3/hook/mega_peer_hook.py
++++ b/deepseek-v4.1-flash/m3/hook/mega_peer_hook.py
+@@ -66,6 +66,13 @@
+ # MEGA_NO_MEGA_MHC=1: never use DeepGEMM's Mega-mHC kernel (vllm#56962) for the shifted mHC post/pre boundary; steps
+ # that would take it (T > 16: prefill, and decode at C3+ with k=5 or C5+ with k=3) run the fused TileLang path instead.
+ NO_MEGA_MHC = os.environ.get("MEGA_NO_MEGA_MHC", "0") == "1"
++# MEGA_SF_COMPRESS=1: keep the hot experts' MegaMoE weight scales compressed in HBM (sf_compress.py, ~16-20% of
++# raw, bit-exact) and decode the routed experts' scales into one scratch shared by all layers before each call.
++SF_COMPRESS = os.environ.get("MEGA_SF_COMPRESS", "1") == "1"
++# MEGA_SF_CHECK=N: keep raw SF for layers 0 and 39 and, for their first N eager (non-captured) calls, compare the
++# decoded scratch of the routed experts against it and log the result.
++_sf_check_left = int(os.environ.get("MEGA_SF_CHECK", "0"))
++SF_CHECK_LAYERS = (0, 39)
+ TARGET = "vllm.models.deepseek_v4.nvidia.model"
+ TARGET_V41 = "vllm.models.deepseek_v41.nvidia.model"
+ _PREFIX = re.compile(r"(?:^|\.)model\.layers\.(\d+)\.ffn\.experts$")
+@@ -291,6 +298,82 @@
+     st = getattr(self, "_mp", None)
+     if st is not None and st.trt is None:
+         _convert_cold(self, st)
++    if st is not None and SF_COMPRESS and getattr(st, "csf", None) is None:
++        _compress_sf(self, st)
++
++
++_sfc = None
++_sf_scratch: dict = {}   # (shape, stride, device) -> int32 scratch shared by every layer's L1 or L2 SF
++_sf_lists: dict = {}     # (E, device) -> sf_compress.ExpertList
++_sf_bytes = [0, 0]       # raw, compressed
++
++
++def _sf_module():
++    global _sfc
++    if _sfc is None:
++        spec = importlib.util.spec_from_file_location("sf_compress",
++                                                      os.path.join(os.path.dirname(__file__), "sf_compress.py"))
++        _sfc = importlib.util.module_from_spec(spec)
++        sys.modules["sf_compress"] = _sfc  # dataclasses resolve annotations through sys.modules
++        spec.loader.exec_module(_sfc)
++    return _sfc
++
++
++def _compress_sf(self, st) -> None:
++    """Replace this layer's MegaMoE L1/L2 SF tensors by compressed slots plus the shared decode scratch."""
++    sfc = _sf_module()
++    csf = []
++    new = []
++    if _sf_check_left > 0 and st.idx in SF_CHECK_LAYERS:
++        st.sf_raw = (self._transformed_l1_weights[1], self._transformed_l2_weights[1])
++    for w, sf in (self._transformed_l1_weights, self._transformed_l2_weights):
++        c = sfc.encode(sf)
++        key = (tuple(sf.shape), tuple(sf.stride()), sf.device)
++        if key not in _sf_scratch:
++            _sf_scratch[key] = sfc.empty_like_sf(c.shape, c.stride, sf.device)
++        _sf_bytes[0] += sf.numel() * 4
++        _sf_bytes[1] += c.nbytes()
++        csf.append(c)
++        new.append((w, _sf_scratch[key]))
++    self._transformed_l1_weights, self._transformed_l2_weights = new
++    st.csf = csf
++    del w, sf
++    torch.cuda.empty_cache()
++    if st.idx == 39:
++        scratch = sum(t.numel() * 4 for t in _sf_scratch.values())
++        _LOG(f"SF compress: {_sf_bytes[0] / 2**30:.2f} GiB raw -> {_sf_bytes[1] / 2**30:.2f} GiB compressed "
++             f"+ {scratch / 2**30:.2f} GiB shared scratch; HBM free {torch.cuda.mem_get_info()[0] / 2**30:.1f} GiB")
++
++
++def _mega_forward(self, st, hidden_states, topk_weights, hot_ids, **kw):
++    """MegaMoE on the hot experts; with SF_COMPRESS, first decode the routed experts' scales into the scratch."""
++    csf = getattr(st, "csf", None)
++    if csf is not None:
++        sfc = _sf_module()
++        E = csf[0].shape[0]
++        key = (E, hot_ids.device)
++        if key not in _sf_lists:
++            _sf_lists[key] = sfc.make_expert_list(E, hot_ids.device)
++        experts = sfc.fill_expert_list(hot_ids, _sf_lists[key])
++        sfc.decode(csf[0], self._transformed_l1_weights[1], experts)
++        sfc.decode(csf[1], self._transformed_l2_weights[1], experts)
++        if getattr(st, "sf_raw", None) is not None and not torch.cuda.is_current_stream_capturing():
++            _sf_check(self, st, experts)
++    return _orig["forward"](self, hidden_states, topk_weights, hot_ids, **kw)
++
++
++def _sf_check(self, st, experts) -> None:
++    global _sf_check_left
++    if _sf_check_left <= 0:
++        st.sf_raw = None
++        return
++    _sf_check_left -= 1
++    n = int(experts.count)
++    ids = experts.elist[:n].long()
++    ok = all(torch.equal(dec[ids], raw[ids]) for dec, raw in
++             zip((self._transformed_l1_weights[1], self._transformed_l2_weights[1]), st.sf_raw))
++    _LOG(f"SF check layer {st.idx}: {n} routed experts decoded, {'bit-exact' if ok else 'MISMATCH'} "
++         f"({_sf_check_left} checks left)")
+ 
+ 
+ def _quant(x: torch.Tensor):
+@@ -442,8 +525,8 @@
+             sys.modules["peer_tier2"].SMALL_ROWS)
+         if st.counts is not None:
+             _maybe_copy_counts(st)
+-        y = _orig["forward"](self, hidden_states, topk_weights, hot_ids,
+-                             activation_clamp=activation_clamp, fast_math=fast_math)
++        y = _mega_forward(self, st, hidden_states, topk_weights, hot_ids,
++                          activation_clamp=activation_clamp, fast_math=fast_math)
+         pf2.finish2(peer2, y, has, pos, rows)
+         return y
+     if PEER2 and FUSED_SEND and T <= _fused().FUSED_MAX:
+@@ -454,8 +537,8 @@
+             sys.modules["peer_tier2"].SMALL_ROWS)
+         if st.counts is not None:
+             _maybe_copy_counts(st)
+-        y = _orig["forward"](self, hidden_states, topk_weights, hot_ids,
+-                             activation_clamp=activation_clamp, fast_math=fast_math)
++        y = _mega_forward(self, st, hidden_states, topk_weights, hot_ids,
++                          activation_clamp=activation_clamp, fast_math=fast_math)
+         peer2.finish(y, has, pos, rows)
+         return y
+ 
+@@ -472,8 +555,8 @@
+         peer2 = _peer_tier2(hidden_states.device)
+         xq, xs = _quant(hidden_states)
+         has, pos, rows = peer2.send(xq, xs, cold_ids, topk_weights, st.idx)
+-        y = _orig["forward"](self, hidden_states, topk_weights, hot_ids,
+-                             activation_clamp=activation_clamp, fast_math=fast_math)
++        y = _mega_forward(self, st, hidden_states, topk_weights, hot_ids,
++                          activation_clamp=activation_clamp, fast_math=fast_math)
+         check = (_check_left > 0 and st.trt is not None and T >= CHECK_MIN_T
+                  and not torch.cuda.is_current_stream_capturing())
+         if check:
+@@ -496,15 +579,15 @@
+         peer.ids[: cold_ids.numel()].copy_(cold_ids.reshape(-1))
+         peer.w[: topk_weights.numel()].copy_(topk_weights.float().reshape(-1))
+         pt._publish[(1,)](peer.words, peer.header, peer.seq, st.idx, T, count)
+-        y = _orig["forward"](self, hidden_states, topk_weights, hot_ids,
+-                             activation_clamp=activation_clamp, fast_math=fast_math)
++        y = _mega_forward(self, st, hidden_states, topk_weights, hot_ids,
++                          activation_clamp=activation_clamp, fast_math=fast_math)
+         pt._wait[(1,)](peer.words, peer.seq, count, TIMEOUT=peer.timeout)
+         n = T * HIDDEN
+         pt._accumulate[((n + 1023) // 1024,)](y, peer.out, count, N=n, BLOCK=1024)
+         return y
+ 
+-    y = _orig["forward"](self, hidden_states, topk_weights, hot_ids,
+-                         activation_clamp=activation_clamp, fast_math=fast_math)
++    y = _mega_forward(self, st, hidden_states, topk_weights, hot_ids,
++                      activation_clamp=activation_clamp, fast_math=fast_math)
+     _cold_trt(st, y, hidden_states, cold_ids, topk_weights)
+     return y
+ 
