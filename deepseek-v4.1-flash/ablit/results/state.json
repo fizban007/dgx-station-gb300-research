@@ -1,0 +1,63 @@
+{
+ "enabled": true,
+ "reason": "applied abliterated",
+ "selftest": {
+  "checked": 132,
+  "verified": 132,
+  "failed": 0,
+  "failed_tensors": [],
+  "recipes": [
+   "deepep:inline_utccp",
+   "swizzle:swizzle_u8/expand32"
+  ],
+  "layers": [
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36
+  ],
+  "official_root": "/model",
+  "mode": "full",
+  "delta": {
+   "repo": "distributedcognition/DeepSeek-V4.1-Flash-abliterated",
+   "synthetic": false,
+   "tensors": 132
+  },
+  "seconds": 5.95
+ },
+ "applied_mode": "abliterated",
+ "applied_seq": 9,
+ "switches": 3,
+ "last_switch_s": 0.384,
+ "last_switch_at": "2026-10-09T19:45:49+0000",
+ "errors": []
+}

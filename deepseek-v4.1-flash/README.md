@@ -95,6 +95,12 @@ Since 2026-10-07 M3 can keep the routed experts' MXFP4 block scales compressed (
 less HBM on the GB300 and 4.5 GiB less VRAM on the RTX PRO 6000, which pays for a 254 hot / 130 cold split. Code,
 patches against `m3/`, tests and results: [sf-compress/README.md](sf-compress/README.md).
 
+The weights themselves can also be swapped at runtime. The abliterated DeepSeek-V4.1-Flash differs from the
+official checkpoint in 132 tensors — 1.65 GiB of 475 GiB, both residual-writing projections of layers 4-36 — which
+this directory switches in place from the official checkpoint: no restart, no second checkpoint, no sidecar work,
+`m3` untouched, and a self-test that verifies all 132 resident tensors before it will switch anything. Code, boot
+mounts, refusal results and the two failures found on the way: [ablit/README.md](ablit/README.md).
+
 ## Layout
 
 | Path | Contents | Copied from (on gracie) |
@@ -109,6 +115,7 @@ patches against `m3/`, tests and results: [sf-compress/README.md](sf-compress/RE
 | `tools/make_results_jsonl.py` | regenerates `results.jsonl` and the DETAILS tables | - |
 | `m3/` | the M3 lane | - |
 | `sf-compress/` | compressed MoE weight scales for M3 (codec, patches against `m3/`, tests, results) | - |
+| `ablit/` | runtime switching between the official and abliterated weights (hook, boot mounts, delta tooling, refusal and cache results) | - |
 
 Benchmark scripts are shared across lanes: [`../bench/`](../bench/README.md).
 

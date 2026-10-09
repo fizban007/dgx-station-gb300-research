@@ -1,0 +1,1 @@
+import sys; __import__("ablit_switch").install()

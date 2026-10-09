@@ -1,0 +1,85 @@
+{
+ "schema": "dsv41-abliterated-delta/1+report",
+ "created": "2026-10-08T09:12:20-0500",
+ "repo": "distributedcognition/DeepSeek-V4.1-Flash-abliterated",
+ "repo_sha": "6ee13e7ac7c91e7ab937de89a2ffb2a86990d5ed",
+ "changed": 132,
+ "identical": 0,
+ "spot_checks": [
+  {
+   "name": "layers.0.ffn.experts.0.w2.weight",
+   "shard": "model-00003-of-00048.safetensors",
+   "identical": true,
+   "sha256": "45bf4d6f7d2c9e6b6bd6b12e8cafcbae83dca2b769061c6c952ee9274df77079"
+  },
+  {
+   "name": "layers.0.ffn.experts.0.w1.scale",
+   "shard": "model-00003-of-00048.safetensors",
+   "identical": true,
+   "sha256": "4df334ae5e4ade9cc3930a2bdc1037f11c86c2d9e983265a2b99fc934523f124"
+  },
+  {
+   "name": "mtp.0.ffn.gate.bias",
+   "shard": "model-00044-of-00048.safetensors",
+   "identical": true,
+   "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+  },
+  {
+   "name": "layers.0.ffn.shared_experts.w1.weight",
+   "shard": "model-00003-of-00048.safetensors",
+   "identical": true,
+   "sha256": "71f09686a565d2a51befdd3bc860c6f3aae183613dd1fe3cf567650831fc3495"
+  },
+  {
+   "name": "layers.0.attn.wkv.weight",
+   "shard": "model-00003-of-00048.safetensors",
+   "identical": true,
+   "sha256": "a26c48a7a2a9c2cd0a5186d3f21865edde2b32e2ed61948bee17ec1eaa8a5fd0"
+  },
+  {
+   "name": "vision.blocks.0.attn.wo.bias",
+   "shard": "model-00001-of-00048.safetensors",
+   "identical": true,
+   "sha256": "99fa4b19c0816511757488842bbed9927546928b457a140753060e3089912009"
+  },
+  {
+   "name": "norm.weight",
+   "shard": "model-00043-of-00048.safetensors",
+   "identical": true,
+   "sha256": "9cd3b57cd9513541b9771bf66c9b356bf1a7b20ff050ed69f7e97cff9fedd428"
+  },
+  {
+   "name": "layers.1.engram.k_weight",
+   "shard": "model-00047-of-00048.safetensors",
+   "identical": true,
+   "sha256": "61152efdabab20ca8c29fe2e087d7de9c5c1684bfef930fa00541efe58fff422"
+  },
+  {
+   "name": "layers.4.ffn.experts.0.w2.scale",
+   "shard": "model-00007-of-00048.safetensors",
+   "identical": true,
+   "sha256": "258821b14e11af4d98e8957f24673b8a49110e0760be457a22e51aa842b54cb8"
+  },
+  {
+   "name": "layers.37.ffn.experts.0.w2.scale",
+   "shard": "model-00040-of-00048.safetensors",
+   "identical": true,
+   "sha256": "24feb496608e2954c7738cd911347a06d732b627a783dedeea17544bfdff6f70"
+  }
+ ],
+ "spot_skipped": [
+  {
+   "name": "embed.weight",
+   "why": "1262 MiB exceeds the 64 MiB spot cap"
+  },
+  {
+   "name": "head.weight",
+   "why": "1262 MiB exceeds the 64 MiB spot cap"
+  },
+  {
+   "name": "head/embed",
+   "why": "nothing within the size cap"
+  }
+ ],
+ "all_spot_checks_identical": true
+}
